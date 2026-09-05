@@ -1,0 +1,1779 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f5f2">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Handy Convert</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2212%22%20fill%3D%22%2316624F%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cg%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M7%203v4M17%203v4M3%2010h18%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2824%200%29%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M12%207v5l3%202%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%280%2024%29%22%3E%3Cpath%20d%3D%22M5%207.5c3.8.2%208.2-.1%2013-.7%22%2F%3E%3Cpath%20d%3D%22M11%204.5c-.5%204.5-.7%209.1-.3%2013.6%22%2F%3E%3Cpath%20d%3D%22M15.8%2010.1c-1.7%204.7-5.1%208.4-8.1%208.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2%203.7-3.8%206.6-3.9%203.9-.2%206.5%201.8%206.3%204.7-.2%202.7-2.6%204.5-5.7%205.1%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2824%2024%29%22%3E%3Cpath%20d%3D%22M4%208h15m0%200-3-3m3%203-3%203M20%2016H5m0%200%203%203m-3-3%203-3%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f5f2;
+      --surface: #ffffff;
+      --surface-muted: #f0f0ed;
+      --surface-hover: #e9e9e5;
+      --text: #20211f;
+      --muted: #666963;
+      --line: #dadbd6;
+      --line-strong: #bfc1ba;
+      --accent: #16624f;
+      --accent-hover: #0e503f;
+      --accent-soft: #e1f0ea;
+      --danger: #b3261e;
+      --warning: #8a5b12;
+      --warning-soft: #fff6df;
+      --focus: #4d8bc7;
+      --shadow-sm: 0 1px 2px rgba(25, 28, 24, .08), 0 1px 6px rgba(25, 28, 24, .04);
+      --shadow-md: 0 12px 34px rgba(25, 28, 24, .10);
+      --radius: 12px;
+      --header-height: 66px;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, textarea, input, select { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--focus) 55%, transparent);
+      outline-offset: 2px;
+    }
+    .app-header {
+      position: sticky;
+      z-index: 30;
+      top: 0;
+      min-height: var(--header-height);
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(16px) saturate(1.2);
+    }
+    .header-inner {
+      width: min(1180px, 100%);
+      min-height: var(--header-height);
+      margin: 0 auto;
+      padding: 10px clamp(14px, 2.8vw, 30px);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .brand-mark svg { width: 27px; height: 27px; display: block; }
+    .brand-copy { min-width: 0; }
+    .brand-name {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 7px;
+      padding: 1px 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--surface-muted);
+      font-size: 10px;
+      font-weight: 650;
+      vertical-align: 2px;
+    }
+    .brand-meta {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .language-button {
+      min-width: 40px;
+      min-height: 40px;
+      padding: 0 6px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .02em;
+      cursor: pointer;
+    }
+    .language-button:hover { background: var(--surface-hover); color: var(--text); }
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      cursor: pointer;
+    }
+    .icon-button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
+    .icon-button svg { width: 18px; height: 18px; display: block; }
+    .header-icon-button {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+    }
+    .header-icon-button:hover { background: transparent; color: var(--text); }
+    .header-icon-button svg { width: 20px; height: 20px; }
+    .main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 22px clamp(14px, 2.8vw, 30px) 54px;
+    }
+    .page-intro {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 2px 18px;
+    }
+    .page-intro h1 {
+      margin: 0;
+      font-size: clamp(21px, 3vw, 27px);
+      line-height: 1.3;
+      letter-spacing: -.025em;
+    }
+    .page-intro p { margin: 5px 0 0; max-width: 760px; color: var(--muted); font-size: 13px; }
+    .local-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex: 0 0 auto;
+      margin-top: 3px;
+      padding: 7px 10px;
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+      border-radius: 999px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .local-badge svg { width: 15px; height: 15px; display: block; }
+    .category-tabs {
+      position: sticky;
+      top: calc(var(--header-height) + 8px);
+      z-index: 20;
+      display: flex;
+      gap: 7px;
+      margin-bottom: 14px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .category-tab {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1 1 0;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .category-tab:hover { background: var(--surface-hover); color: var(--text); }
+    .category-tab.is-active { background: var(--accent-soft); color: var(--accent); }
+    .category-tab svg { width: 18px; height: 18px; flex: 0 0 auto; }
+    .category-page { display: none; }
+    .category-page.is-mobile-active { display: block; }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .tool-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .tool-card.wide { grid-column: 1 / -1; }
+    .tool-head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 16px; }
+    .tool-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .tool-icon svg { width: 20px; height: 20px; }
+    .tool-title { margin: 0; font-size: 17px; letter-spacing: -.015em; }
+    .tool-description { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .field-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .field { display: grid; gap: 6px; min-width: 0; }
+    .field-label { color: var(--muted); font-size: 11px; font-weight: 750; }
+    .control {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfbf9;
+      color: var(--text);
+    }
+    .control:hover { border-color: var(--line-strong); }
+    .field-with-action { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; }
+    .small-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .small-button:hover { border-color: var(--line-strong); background: var(--surface-hover); }
+    .small-button:disabled { border-color: var(--line); background: var(--surface-muted); color: color-mix(in srgb, var(--muted) 65%, transparent); cursor: default; }
+    .small-button:disabled:hover { border-color: var(--line); background: var(--surface-muted); }
+    .small-button.icon-only { width: 44px; padding: 0; }
+    .small-button.icon-only svg { width: 18px; height: 18px; }
+    .inline-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; min-height: 40px; margin-top: 7px; padding: 3px 0; color: var(--muted); font-size: 12px; cursor: pointer; }
+    .checkbox-row input { width: 17px; height: 17px; accent-color: var(--accent); }
+    .result-box {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--line));
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--accent-soft) 48%, #fff);
+    }
+    .result-main { font-size: 22px; font-weight: 800; letter-spacing: -.02em; overflow-wrap: anywhere; }
+    .result-list { display: grid; gap: 7px; margin-top: 10px; }
+    .result-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 12px; }
+    .result-row span:first-child { color: var(--muted); }
+    .result-row strong { text-align: right; overflow-wrap: anywhere; }
+    .result-action-row { display: flex; justify-content: flex-end; margin-top: 10px; }
+    .error-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--line));
+      border-radius: 10px;
+      background: #fff4f3;
+      color: var(--danger);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .error-box[hidden] { display: none; }
+    .era-direction {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+    .subpanel { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfbf9; }
+    .subpanel h3 { margin: 0 0 10px; font-size: 13px; }
+    .era-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .world-clock-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+    .city-search-wrap { position: relative; min-width: 0; }
+    .city-search-results {
+      position: absolute;
+      z-index: 25;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      max-height: 286px;
+      overflow: auto;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+    }
+    .city-search-results[hidden] { display: none; }
+    .city-search-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+    .city-search-option:hover, .city-search-option:focus-visible, .city-search-option.is-active { background: var(--surface-hover); }
+    .city-search-option.is-active { box-shadow: inset 3px 0 0 var(--accent); }
+    .city-search-option strong { display: block; font-size: 13px; }
+    .city-search-option span { display: block; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .city-search-empty { padding: 11px 10px; color: var(--muted); font-size: 12px; }
+    .world-clock-note { color: var(--muted); font-size: 11px; align-self: center; white-space: nowrap; }
+    .clock-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .clock-card {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fbfbf9;
+    }
+    .clock-card.is-local { border-color: color-mix(in srgb, var(--accent) 28%, var(--line)); background: color-mix(in srgb, var(--accent-soft) 34%, #fff); }
+    .clock-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; min-width: 0; }
+    .clock-place { min-width: 0; }
+    .clock-place-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .clock-city { font-size: 14px; font-weight: 800; overflow-wrap: anywhere; }
+    .clock-country { margin-top: 1px; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .clock-current-chip, .clock-day-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .clock-day-chip { background: var(--surface-muted); color: var(--muted); }
+    .clock-day-chip[hidden] { display: none; }
+    .clock-remove {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .clock-remove:hover { background: var(--surface-hover); color: var(--text); }
+    .clock-remove svg { width: 17px; height: 17px; }
+    .clock-time { margin-top: 11px; font-size: clamp(26px, 5vw, 34px); line-height: 1; font-weight: 820; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+    .clock-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 8px; color: var(--muted); font-size: 11px; }
+    .clock-zone { margin-top: 5px; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .world-clock-empty { padding: 14px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--muted); font-size: 12px; text-align: center; }
+    .timezone-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: end; }
+    .timezone-date-time { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .72fr); gap: 8px; margin-top: 9px; }
+    .timezone-swap { align-self: center; margin-top: 23px; }
+    .timezone-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .timezone-result { margin-top: 14px; }
+    .timezone-result-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .timezone-result-place { min-width: 0; }
+    .timezone-result-city { font-size: 14px; font-weight: 800; overflow-wrap: anywhere; }
+    .timezone-result-country { margin-top: 2px; color: var(--muted); font-size: 10px; }
+    .timezone-result-time { margin-top: 10px; font-size: clamp(25px, 4.6vw, 32px); font-weight: 820; line-height: 1.05; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+    .timezone-result-date { margin-top: 6px; color: var(--muted); font-size: 12px; }
+    .timezone-result-zone { margin-top: 5px; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .ambiguity-box { margin-top: 10px; padding: 11px 12px; border: 1px solid color-mix(in srgb, #c58a24 40%, var(--line)); border-radius: 11px; background: #fff9ed; }
+    .ambiguity-box[hidden] { display: none; }
+    .ambiguity-title { font-size: 12px; font-weight: 800; }
+    .ambiguity-options { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 8px; }
+    .ambiguity-options label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; cursor: pointer; }
+    .ambiguity-options input { width: 16px; height: 16px; accent-color: var(--accent); }
+    .converted-city-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .converted-city-card { min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 11px; background: #fbfbf9; }
+    .converted-city-card strong { display: block; font-size: 12px; overflow-wrap: anywhere; }
+    .converted-city-card .converted-time { margin-top: 7px; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .converted-city-card .converted-date { margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .converted-city-card .converted-relation { display: inline-flex; margin-top: 6px; padding: 2px 6px; border-radius: 999px; background: var(--surface-muted); color: var(--muted); font-size: 9px; font-weight: 800; }
+    .timezone-empty-note { margin-top: 11px; color: var(--muted); font-size: 11px; }
+    .preview-note {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-note-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      background: var(--surface-muted);
+      color: var(--muted);
+    }
+    .preview-note-icon svg { width: 20px; height: 20px; }
+    .preview-note h2 { margin: 0; font-size: 17px; }
+    .preview-note p { margin: 5px 0 0; color: var(--muted); font-size: 13px; max-width: 720px; }
+    .scope-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .scope-chip { padding: 5px 8px; border-radius: 999px; background: var(--surface-muted); color: var(--muted); font-size: 11px; font-weight: 700; }
+
+    .text-tool-grid { align-items: start; }
+    .text-glyph-icon svg { width: 21px; height: 21px; }
+    .text-input { min-height: 132px; resize: vertical; line-height: 1.7; }
+    .text-input-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+    .text-privacy-note { min-width: 0; color: var(--muted); font-size: 11px; }
+    .text-action-group { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+    .text-character-count { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .text-result-grid { display: grid; gap: 10px; margin-top: 2px; }
+    .text-result-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .text-result-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .text-result-card { min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfbf9; }
+    .text-result-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .text-result-head h3 { margin: 0; font-size: 13px; }
+    .text-output { min-height: 94px; margin-top: 10px; padding: 10px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+    .text-output.is-empty { color: var(--muted); }
+    .text-settings { margin-bottom: 12px; border: 1px solid var(--line); border-radius: 11px; background: #fbfbf9; overflow: hidden; }
+    .text-settings summary { cursor: pointer; padding: 10px 12px; font-size: 12px; font-weight: 750; }
+    .text-setting-options { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 0 12px 9px; }
+    .text-setting-options label { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 2px 0; color: var(--muted); font-size: 12px; cursor: pointer; }
+    .text-setting-options input { width: 16px; height: 16px; accent-color: var(--accent); }
+    .text-settings-note { margin: 0; padding: 0 12px 11px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    details.app-info { margin-top: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+    details.app-info summary { cursor: pointer; padding: 13px 15px; font-size: 12px; font-weight: 750; }
+    .build-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; padding: 0 15px 15px; }
+    .build-item { padding: 10px; border-radius: 10px; background: var(--surface-muted); }
+    .build-item span { display: block; color: var(--muted); font-size: 10px; }
+    .build-item strong { display: block; overflow-wrap: anywhere; font-size: 12px; }
+    footer { width: min(1180px, 100%); margin: 0 auto; padding: 0 clamp(14px, 2.8vw, 30px) 34px; color: var(--muted); font-size: 12px; }
+
+    /* Reusable toast / Undo component. Canonical source: components/toast.html */
+    .app-toast {
+      position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 60;
+      display: flex; align-items: center; gap: 12px; max-width: min(420px, calc(100vw - 36px));
+      padding: 10px 12px 10px 14px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--surface); color: var(--text); box-shadow: var(--shadow-md); opacity: 0;
+      transform: translateY(12px); pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+    }
+    .app-toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .app-toast[data-tone="success"] { border-color: color-mix(in srgb, var(--accent) 34%, var(--line)); }
+    .app-toast[data-tone="warning"] { border-color: #c58a24; }
+    .app-toast-message { min-width: 0; flex: 1 1 auto; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+    .app-toast-action { flex: 0 0 auto; min-height: 34px; padding: 5px 8px; border: 0; border-radius: 8px; background: transparent; color: var(--accent); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+    .app-toast-action:hover { background: var(--surface-hover); }
+    .app-toast-action[hidden] { display: none; }
+
+    dialog {
+      box-sizing: border-box;
+      width: min(640px, calc(100% - 28px));
+      max-height: min(760px, calc(100dvh - 28px));
+      padding: 0;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-md);
+    }
+    dialog[open] { display: flex; }
+    dialog::backdrop { background: rgba(15, 17, 14, .52); backdrop-filter: blur(4px); }
+    .dialog-header { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); background: var(--surface); }
+    .dialog-header h2 { margin: 0; font-size: 17px; }
+    .dialog-body { flex: 1 1 auto; min-height: 0; padding: 20px 20px 28px; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-gutter: stable; }
+    .dialog-body h3 { margin: 25px 0 8px; padding-top: 19px; border-top: 1px solid color-mix(in srgb, var(--line) 78%, transparent); font-size: 14px; }
+    .dialog-body h3:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    .dialog-body p, .dialog-body li { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .dialog-body p { margin: 8px 0 0; }
+    .dialog-body ul, .dialog-body ol { margin: 8px 0 0; padding-left: 22px; }
+    .dialog-body li + li { margin-top: 7px; }
+    .dialog-note { margin-top: 12px; padding: 11px 12px; border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line)); border-radius: 10px; background: var(--accent-soft); color: var(--text) !important; }
+
+    /* Reusable mobile page tabs. Canonical source: components/mobile-bottom-bar.html */
+    .app-mobile-bottom-bar { display: none; }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    @media (max-width: 820px) {
+      .page-intro { align-items: stretch; flex-direction: column; gap: 10px; }
+      .local-badge { align-self: flex-start; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .tool-card.wide { grid-column: auto; }
+      .era-direction { grid-template-columns: 1fr; }
+      .build-grid { grid-template-columns: 1fr; }
+      .clock-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      :root { --header-height: 58px; }
+      body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+      .header-inner { padding-block: 8px; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+      .brand-name { font-size: 15px; }
+      .brand-meta { display: none; }
+      .header-actions { gap: 11px; }
+      .main { padding-top: 18px; padding-bottom: 26px; }
+      .page-intro { padding-bottom: 14px; }
+      .category-tabs { display: none; position: static; }
+      .tool-card { padding: 14px; border-radius: 14px; }
+      .field-grid, .field-grid.three { grid-template-columns: 1fr; }
+      .world-clock-toolbar { grid-template-columns: 1fr; }
+      .world-clock-note { white-space: normal; }
+      .timezone-layout { grid-template-columns: 1fr; }
+      .timezone-swap { margin-top: 0; justify-self: start; }
+      .converted-city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .era-fields { grid-template-columns: minmax(0, 1.4fr) minmax(64px, .75fr); }
+      .era-fields .era-month, .era-fields .era-day { grid-column: auto; }
+      .result-main { font-size: 20px; }
+      .result-row { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .result-row strong { text-align: left; }
+      .app-toast { left: 12px; right: 12px; bottom: calc(82px + env(safe-area-inset-bottom)); max-width: none; }
+      .app-mobile-bottom-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 48;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+        border-top: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+        background: color-mix(in srgb, var(--surface) 96%, transparent);
+        box-shadow: 0 -8px 24px rgba(25, 28, 24, .08);
+        backdrop-filter: blur(16px) saturate(1.15);
+      }
+      .app-mobile-bottom-item {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: 3px;
+        min-width: 0;
+        min-height: 52px;
+        padding: 5px 4px;
+        border: 0;
+        border-radius: 11px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+        cursor: pointer;
+      }
+      .app-mobile-bottom-item:hover { background: var(--surface-hover); color: var(--text); }
+      .app-mobile-bottom-item.is-active { background: var(--accent-soft); color: var(--accent); }
+      .app-mobile-bottom-item svg { width: 20px; height: 20px; }
+      dialog { width: calc(100% - 20px); max-height: calc(100dvh - 20px); }
+      .dialog-header { padding: 14px 16px; }
+      .dialog-body { padding: 16px 16px calc(22px + env(safe-area-inset-bottom)); }
+    }
+    @media (max-width: 360px) {
+      .field-with-action { grid-template-columns: 1fr; }
+      .field-with-action .small-button { width: 100%; }
+      .era-fields { grid-template-columns: 1fr 1fr; }
+      .timezone-date-time { grid-template-columns: 1fr; }
+      .converted-city-grid { grid-template-columns: 1fr; }
+      .text-result-grid.three, .text-result-grid.two { grid-template-columns: 1fr; }
+      .text-input-actions { align-items: stretch; flex-direction: column; }
+      .text-action-group { justify-content: space-between; width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <g><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></g>
+            <g transform="translate(24 0)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+            <g transform="translate(0 24)"><path d="M5 7.5c3.8.2 8.2-.1 13-.7"/><path d="M11 4.5c-.5 4.5-.7 9.1-.3 13.6"/><path d="M15.8 10.1c-1.7 4.7-5.1 8.4-8.1 8.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2 3.7-3.8 6.6-3.9 3.9-.2 6.5 1.8 6.3 4.7-.2 2.7-2.6 4.5-5.7 5.1"/></g>
+            <g transform="translate(24 24)"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></g>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <p class="brand-name"><span id="brandName">Handy Convert</span><span class="version-badge" id="versionBadge">v1.0.0</span></p>
+          <p class="brand-meta" data-i18n="brandMeta">日付・時刻・文字のちょっとした変換</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="language-button" id="languageButton" type="button" aria-label="Switch language">EN</button>
+        <button class="icon-button header-icon-button" id="helpButton" type="button" data-i18n-title="helpTitle" data-i18n-aria-label="helpTitle" title="使い方と注意事項" aria-label="使い方と注意事項">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><path d="M12 17h.01"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="page-intro" aria-labelledby="heroTitle">
+      <div>
+        <h1 id="heroTitle" data-i18n="introTitle">日付・時刻・文字のちょっとした変換</h1>
+        <p data-i18n="lead">日付計算、世界時計、タイムゾーン、かな・全角半角など、たまに必要になる変換をひとつにまとめます。</p>
+      </div>
+      <div class="local-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg>
+        <span data-i18n="localBadge">完全ローカル処理</span>
+      </div>
+    </section>
+
+    <nav class="category-tabs" aria-label="Categories" data-i18n-aria-label="categoriesLabel">
+      <button class="category-tab is-active" type="button" data-category="date" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
+        <span data-i18n="categoryDate">日付</span>
+      </button>
+      <button class="category-tab" type="button" data-category="time">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span data-i18n="categoryTime">時刻</span>
+      </button>
+      <button class="category-tab" type="button" data-category="text">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5c3.8.2 8.2-.1 13-.7"/><path d="M11 4.5c-.5 4.5-.7 9.1-.3 13.6"/><path d="M15.8 10.1c-1.7 4.7-5.1 8.4-8.1 8.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2 3.7-3.8 6.6-3.9 3.9-.2 6.5 1.8 6.3 4.7-.2 2.7-2.6 4.5-5.7 5.1"/></svg>
+        <span data-i18n="categoryText">文字</span>
+      </button>
+    </nav>
+
+    <!-- APP:BEGIN Handy Convert application area. -->
+    <section class="category-page is-mobile-active" id="datePage" data-category-page="date" aria-labelledby="datePageTitle">
+      <h2 class="sr-only" id="datePageTitle" data-i18n="categoryDate">日付</h2>
+      <div class="tool-grid">
+        <article class="tool-card">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14M8 4v4M16 4v4"/><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 13h3M13 16h3"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="betweenTitle">2つの日付の間</h2><p class="tool-description" data-i18n="betweenDescription">日数、週数、月日、平日数をまとめて確認します。</p></div>
+          </div>
+          <div class="field-grid">
+            <label class="field"><span class="field-label" data-i18n="startDate">開始日</span><span class="field-with-action"><input class="control" id="betweenStart" type="date"><button class="small-button" type="button" data-today-target="betweenStart" data-i18n="today">今日</button></span></label>
+            <label class="field"><span class="field-label" data-i18n="endDate">終了日</span><span class="field-with-action"><input class="control" id="betweenEnd" type="date"><button class="small-button" type="button" data-today-target="betweenEnd" data-i18n="today">今日</button></span></label>
+          </div>
+          <div class="inline-actions"><button class="small-button" id="swapDatesButton" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg><span data-i18n="swap">入れ替える</span></button></div>
+          <label class="checkbox-row"><input id="countBothEndpoints" type="checkbox"><span data-i18n="countBoth">開始日と終了日を両方数える</span></label>
+          <div class="result-box" id="betweenResult" aria-live="polite">
+            <div class="result-main" id="betweenMain">—</div>
+            <div class="result-list">
+              <div class="result-row"><span data-i18n="weeksAndDays">週と日</span><strong id="betweenWeeks">—</strong></div>
+              <div class="result-row"><span data-i18n="calendarPeriod">暦の期間</span><strong id="betweenCalendar">—</strong></div>
+              <div class="result-row"><span data-i18n="weekdays">平日（土日を除く）</span><strong id="betweenWeekdays">—</strong></div>
+            </div>
+          </div>
+          <div class="error-box" id="betweenError" hidden></div>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="addTitle">○日後・○日前</h2><p class="tool-description" data-i18n="addDescription">基準日から日・週・月・年を足し引きします。</p></div>
+          </div>
+          <label class="field"><span class="field-label" data-i18n="baseDate">基準日</span><span class="field-with-action"><input class="control" id="addBaseDate" type="date"><button class="small-button" type="button" data-today-target="addBaseDate" data-i18n="today">今日</button></span></label>
+          <div class="field-grid three" style="margin-top:10px">
+            <label class="field"><span class="field-label" data-i18n="quantity">数</span><input class="control" id="addQuantity" type="number" min="0" max="100000" step="1" value="30" inputmode="numeric"></label>
+            <label class="field"><span class="field-label" data-i18n="unit">単位</span><select class="control" id="addUnit"><option value="day" data-i18n="unitDay">日</option><option value="week" data-i18n="unitWeek">週</option><option value="month" data-i18n="unitMonth">月</option><option value="year" data-i18n="unitYear">年</option></select></label>
+            <label class="field"><span class="field-label" data-i18n="direction">方向</span><select class="control" id="addDirection"><option value="after" data-i18n="after">後</option><option value="before" data-i18n="before">前</option></select></label>
+          </div>
+          <div class="result-box" id="addResult" aria-live="polite"><div class="result-main" id="addResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="addResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="addResultCopy"></span></div>
+          <div class="error-box" id="addError" hidden></div>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M6 16V9m4 7V5m4 11v-4m4 4V7"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="elapsedTitle">年齢・経過期間</h2><p class="tool-description" data-i18n="elapsedDescription">生年月日や開始日から、基準日までの期間を確認します。</p></div>
+          </div>
+          <div class="field-grid">
+            <label class="field"><span class="field-label" data-i18n="startOrBirth">開始日 / 生年月日</span><input class="control" id="elapsedStart" type="date"></label>
+            <label class="field"><span class="field-label" data-i18n="referenceDate">基準日</span><span class="field-with-action"><input class="control" id="elapsedEnd" type="date"><button class="small-button" type="button" data-today-target="elapsedEnd" data-i18n="today">今日</button></span></label>
+          </div>
+          <div class="result-box" aria-live="polite">
+            <div class="result-main" id="elapsedMain">—</div>
+            <div class="result-list">
+              <div class="result-row"><span data-i18n="detailedPeriod">詳しい期間</span><strong id="elapsedCalendar">—</strong></div>
+              <div class="result-row"><span data-i18n="totalDays">合計日数</span><strong id="elapsedDays">—</strong></div>
+            </div>
+          </div>
+          <div class="error-box" id="elapsedError" hidden></div>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5M8 17h3"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="eraTitle">西暦・和暦</h2><p class="tool-description" data-i18n="eraDescription">明治・大正・昭和・平成・令和と西暦を相互変換します。</p></div>
+          </div>
+          <div class="era-direction">
+            <section class="subpanel" aria-labelledby="westernToEraTitle">
+              <h3 id="westernToEraTitle" data-i18n="westernToEra">西暦 → 和暦</h3>
+              <label class="field"><span class="field-label" data-i18n="gregorianDate">西暦の日付</span><input class="control" id="gregorianDate" type="date" min="1873-01-01"></label>
+              <div class="result-box" aria-live="polite"><div class="result-main" id="eraResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="eraResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="eraResultCopy"></span></div>
+              <div class="error-box" id="eraWesternError" hidden></div>
+            </section>
+            <section class="subpanel" aria-labelledby="eraToWesternTitle">
+              <h3 id="eraToWesternTitle" data-i18n="eraToWestern">和暦 → 西暦</h3>
+              <div class="era-fields">
+                <label class="field"><span class="field-label" data-i18n="era">元号</span><select class="control" id="eraSelect"></select></label>
+                <label class="field"><span class="field-label" data-i18n="eraYear">年</span><input class="control" id="eraYear" type="number" min="1" step="1" value="8" inputmode="numeric"></label>
+                <label class="field era-month"><span class="field-label" data-i18n="month">月</span><input class="control" id="eraMonth" type="number" min="1" max="12" step="1" value="9" inputmode="numeric"></label>
+                <label class="field era-day"><span class="field-label" data-i18n="day">日</span><input class="control" id="eraDay" type="number" min="1" max="31" step="1" value="5" inputmode="numeric"></label>
+              </div>
+              <div class="result-box" aria-live="polite"><div class="result-main" id="westernResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="westernResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="westernResultCopy"></span></div>
+              <div class="error-box" id="eraInputError" hidden></div>
+            </section>
+          </div>
+          <p class="tool-description" style="margin-top:10px" data-i18n="eraRangeNote">1873年1月1日以降を対象にします。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="category-page" id="timePage" data-category-page="time" aria-labelledby="timePageTitle">
+      <h2 class="sr-only" id="timePageTitle" data-i18n="categoryTime">時刻</h2>
+      <div class="tool-grid">
+        <article class="tool-card wide">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="worldClock">世界時計</h2><p class="tool-description" data-i18n="worldClockDescription">現在地と選んだ都市の時刻を並べて確認します。</p></div>
+          </div>
+          <div class="world-clock-toolbar">
+            <div class="city-search-wrap">
+              <label class="field"><span class="field-label" data-i18n="addCity">都市を追加</span><input class="control" id="citySearch" type="search" autocomplete="off" data-i18n-placeholder="citySearchPlaceholder" placeholder="都市名を検索" aria-controls="citySearchResults" aria-expanded="false" aria-haspopup="listbox" aria-autocomplete="list"></label>
+              <div class="city-search-results" id="citySearchResults" role="listbox" hidden></div>
+            </div>
+            <div class="world-clock-note" data-i18n="deviceClockNote">端末の時計を使用します</div>
+          </div>
+          <div class="clock-grid" id="worldClockList" aria-live="polite"></div>
+        </article>
+
+        <article class="tool-card wide">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="timezoneTitle">タイムゾーン変換</h2><p class="tool-description" data-i18n="timezoneDescription">指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。</p></div>
+          </div>
+          <div class="timezone-layout">
+            <div>
+              <label class="field"><span class="field-label" data-i18n="fromCity">変換元</span><select class="control" id="timezoneSource"></select></label>
+              <div class="timezone-date-time">
+                <label class="field"><span class="field-label" data-i18n="localDate">現地の日付</span><input class="control" id="timezoneDate" type="date"></label>
+                <label class="field"><span class="field-label" data-i18n="localTime">現地の時刻</span><input class="control" id="timezoneTime" type="time" step="60"></label>
+              </div>
+            </div>
+            <button class="small-button icon-only timezone-swap" id="swapTimezonesButton" type="button" data-i18n-title="swapTimezones" data-i18n-aria-label="swapTimezones" title="変換元と変換先を入れ替える" aria-label="変換元と変換先を入れ替える">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg>
+            </button>
+            <label class="field"><span class="field-label" data-i18n="toCity">変換先</span><select class="control" id="timezoneTarget"></select></label>
+          </div>
+          <div class="timezone-actions"><button class="small-button" id="timezoneNowButton" type="button" data-i18n="currentTime">現在時刻</button></div>
+          <div class="ambiguity-box" id="timezoneAmbiguity" hidden>
+            <div class="ambiguity-title" data-i18n="ambiguousTimeTitle">この時刻は2通りあります</div>
+            <div class="ambiguity-options">
+              <label><input type="radio" name="timezoneOccurrence" value="0" checked><span id="timezoneOccurrenceFirst">1回目</span></label>
+              <label><input type="radio" name="timezoneOccurrence" value="1"><span id="timezoneOccurrenceSecond">2回目</span></label>
+            </div>
+          </div>
+          <div class="error-box" id="timezoneError" hidden></div>
+          <div class="result-box timezone-result" id="timezoneResult" aria-live="polite">
+            <div class="timezone-result-head"><div class="timezone-result-place"><div class="timezone-result-city" id="timezoneResultCity">—</div><div class="timezone-result-country" id="timezoneResultCountry"></div></div><span class="clock-day-chip" id="timezoneRelation" hidden></span></div>
+            <div class="timezone-result-time" id="timezoneResultTime">—</div>
+            <div class="timezone-result-date" id="timezoneResultDate">—</div>
+            <div class="timezone-result-zone" id="timezoneResultZone">—</div>
+            <div class="result-action-row"><button class="small-button" type="button" data-copy-target="timezoneResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="timezoneResultCopy"></span>
+          </div>
+          <div class="converted-city-grid" id="timezoneOtherCities" aria-live="polite"></div>
+          <p class="timezone-empty-note" id="timezoneOtherCitiesNote" data-i18n="otherCitiesNote">世界時計に追加した都市も同じ日時で表示します。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="category-page" id="textPage" data-category-page="text" aria-labelledby="textPageTitle">
+      <h2 class="sr-only" id="textPageTitle" data-i18n="categoryText">文字</h2>
+      <div class="tool-grid text-tool-grid">
+        <article class="tool-card wide">
+          <div class="tool-head">
+            <div class="tool-icon text-glyph-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5c3.8.2 8.2-.1 13-.7"/><path d="M11 4.5c-.5 4.5-.7 9.1-.3 13.6"/><path d="M15.8 10.1c-1.7 4.7-5.1 8.4-8.1 8.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2 3.7-3.8 6.6-3.9 3.9-.2 6.5 1.8 6.3 4.7-.2 2.7-2.6 4.5-5.7 5.1"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="textInputTitle">文字を入力</h2><p class="tool-description" data-i18n="textInputDescription">入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。</p></div>
+          </div>
+          <label class="field"><span class="field-label" data-i18n="inputText">入力</span><textarea class="control text-input" id="textInput" rows="6" aria-describedby="textPrivacyNote textCharacterCount" data-i18n-placeholder="textInputPlaceholder" placeholder="文字を入力または貼り付けてください"></textarea></label>
+          <div class="text-input-actions"><span class="text-privacy-note" id="textPrivacyNote" data-i18n="textNotSaved">入力した文字列は端末内だけで処理し、保存しません。</span><span class="text-action-group"><span class="text-character-count" id="textCharacterCount" aria-live="polite">0文字</span><button class="small-button" id="clearTextButton" type="button" data-i18n="clear">クリア</button></span></div>
+        </article>
+
+        <article class="tool-card wide">
+          <div class="tool-head">
+            <div class="tool-icon text-glyph-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5c3.8.2 8.2-.1 13-.7"/><path d="M11 4.5c-.5 4.5-.7 9.1-.3 13.6"/><path d="M15.8 10.1c-1.7 4.7-5.1 8.4-8.1 8.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2 3.7-3.8 6.6-3.9 3.9-.2 6.5 1.8 6.3 4.7-.2 2.7-2.6 4.5-5.7 5.1"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="kanaConvert">かな変換</h2><p class="tool-description" data-i18n="kanaDescription">ひらがな、カタカナ、半角カナを同時に確認できます。</p></div>
+          </div>
+          <div class="text-result-grid three">
+            <section class="text-result-card">
+              <div class="text-result-head"><h3 data-i18n="hiragana">ひらがな</h3><button class="small-button" type="button" data-copy-target="hiraganaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-output" id="hiraganaResult">—</div>
+            </section>
+            <section class="text-result-card">
+              <div class="text-result-head"><h3 data-i18n="katakana">カタカナ</h3><button class="small-button" type="button" data-copy-target="katakanaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-output" id="katakanaResult">—</div>
+            </section>
+            <section class="text-result-card">
+              <div class="text-result-head"><h3 data-i18n="halfwidthKana">半角カナ</h3><button class="small-button" type="button" data-copy-target="halfwidthKanaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-output" id="halfwidthKanaResult">—</div>
+            </section>
+          </div>
+        </article>
+
+        <article class="tool-card wide">
+          <div class="tool-head">
+            <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M7 4v6M17 4v6M5 17h14M9 14v6M15 14v6"/></svg></div>
+            <div><h2 class="tool-title" data-i18n="widthConvert">全角・半角</h2><p class="tool-description" data-i18n="widthDescription">文字種ごとに、全角・半角へ変換する対象を選べます。</p></div>
+          </div>
+          <details class="text-settings">
+            <summary data-i18n="conversionTargets">変換対象</summary>
+            <div class="text-setting-options">
+              <label><input id="widthLetters" type="checkbox" checked><span data-i18n="letters">英字</span></label>
+              <label><input id="widthDigits" type="checkbox" checked><span data-i18n="digits">数字</span></label>
+              <label><input id="widthSymbols" type="checkbox" checked><span data-i18n="symbols">記号</span></label>
+              <label><input id="widthSpaces" type="checkbox" checked><span data-i18n="spaces">スペース</span></label>
+            </div>
+            <p class="text-settings-note" data-i18n="kanaWidthNote">カナと日本語の句読点は、全角・半角の結果に合わせて変換します。</p>
+          </details>
+          <div class="text-result-grid two">
+            <section class="text-result-card">
+              <div class="text-result-head"><h3 data-i18n="fullwidth">全角</h3><button class="small-button" type="button" data-copy-target="fullwidthResult" data-i18n="copy">コピー</button></div>
+              <div class="text-output" id="fullwidthResult">—</div>
+            </section>
+            <section class="text-result-card">
+              <div class="text-result-head"><h3 data-i18n="halfwidth">半角</h3><button class="small-button" type="button" data-copy-target="halfwidthResult" data-i18n="copy">コピー</button></div>
+              <div class="text-output" id="halfwidthResult">—</div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+    <!-- APP:END -->
+
+    <details class="app-info">
+      <summary data-i18n="buildInfo">アプリ情報</summary>
+      <div class="build-grid">
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">—</strong></div>
+        <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
+        <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">—</strong></div>
+      </div>
+    </details>
+  </main>
+
+  <footer><span id="footerName">Handy Convert</span> · <span data-i18n="footer">完全内包HTMLとして生成</span></footer>
+
+  <!-- Canonical smartphone page tabs from components/mobile-bottom-bar.html. -->
+  <nav class="app-mobile-bottom-bar" id="mobileBottomBar" aria-label="Mobile navigation">
+    <button class="app-mobile-bottom-item is-active" type="button" data-mobile-key="date" data-mobile-page-target="datePage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg><span data-i18n="categoryDate">日付</span>
+    </button>
+    <button class="app-mobile-bottom-item" type="button" data-mobile-key="time" data-mobile-page-target="timePage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i18n="categoryTime">時刻</span>
+    </button>
+    <button class="app-mobile-bottom-item" type="button" data-mobile-key="text" data-mobile-page-target="textPage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5c3.8.2 8.2-.1 13-.7"/><path d="M11 4.5c-.5 4.5-.7 9.1-.3 13.6"/><path d="M15.8 10.1c-1.7 4.7-5.1 8.4-8.1 8.1-2.1-.2-2.7-1.8-2.1-3.4.8-2.2 3.7-3.8 6.6-3.9 3.9-.2 6.5 1.8 6.3 4.7-.2 2.7-2.6 4.5-5.7 5.1"/></svg><span data-i18n="categoryText">文字</span>
+    </button>
+  </nav>
+
+  <dialog id="helpDialog" aria-labelledby="helpDialogTitle">
+    <div class="dialog-header">
+      <h2 id="helpDialogTitle" data-i18n="helpTitle">使い方と注意事項</h2>
+      <button class="icon-button" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body">
+      <!-- APP:HELP:BEGIN -->
+      <h3 data-i18n="helpBasicsTitle">基本操作</h3>
+      <ol><li data-i18n="helpStep1">日付・時刻・文字から使いたいカテゴリを選びます。</li><li data-i18n="helpStep2">入力を変更すると、表示中の変換結果が自動で更新されます。</li><li data-i18n="helpStep3">結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。</li></ol>
+      <h3 data-i18n="helpDateTitle">日付計算について</h3>
+      <ul><li data-i18n="helpDateWeekdays">平日は土曜日と日曜日だけを除き、祝日は考慮しません。</li><li data-i18n="helpDateMonthEnd">月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。</li><li data-i18n="helpDateEra">和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。</li></ul>
+      <h3 data-i18n="helpTimeTitle">世界時計について</h3>
+      <ul><li data-i18n="helpTimeDevice">世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。</li><li data-i18n="helpTimeCities">追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。</li><li data-i18n="helpTimeDst">夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。</li></ul>
+      <h3 data-i18n="helpTextTitle">文字変換について</h3>
+      <ul><li data-i18n="helpTextKana">かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。</li><li data-i18n="helpTextWidth">全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。</li><li data-i18n="helpTextNoHistory">入力した文字列や変換履歴は保存しません。</li></ul>
+      <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
+      <p data-i18n="helpPrivacyBody">入力した日付や文字列はブラウザー内で処理され、このアプリから外部へ送信されません。入力内容や変換履歴も保存しません。</p>
+      <p class="dialog-note" data-i18n="helpOffline">必要なコードは配布用HTMLに内包され、実行時の外部通信は行いません。</p>
+      <h3 data-i18n="helpNotesTitle">注意事項</h3>
+      <ul><li data-i18n="helpNoteClock">世界時計は端末の時計を基準にするため、端末時刻がずれている場合は表示もずれます。</li></ul>
+      <!-- APP:HELP:END -->
+    </div>
+  </dialog>
+
+  <div class="app-toast" id="appToast" role="status" aria-live="polite" aria-atomic="true" data-tone="default">
+    <span class="app-toast-message" id="appToastMessage"></span>
+    <button class="app-toast-action" id="appToastAction" type="button" hidden></button>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.0","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-09-05T17:09:17.4227270Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.0"},"dependencies":[]};
+      // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
+      const assetBundle = {"schemaVersion":2,"dependencies":{}};
+      const blobUrls = new Set();
+      const assetByteCache = new Map();
+
+      function decodeBase64Bytes(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+        return bytes;
+      }
+
+      function getAsset(dependencyId, assetKey) {
+        const asset = assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey];
+        if (!asset) throw new Error(`Embedded asset not found: ${dependencyId}/${assetKey}`);
+        return asset;
+      }
+
+      async function inflateAsset(asset) {
+        const stored = decodeBase64Bytes(asset.base64);
+        if (!asset.compression || asset.compression === 'none') return stored;
+        if (asset.compression !== 'gzip') throw new Error(`Unsupported embedded asset compression: ${asset.compression}`);
+        if (typeof DecompressionStream !== 'function') throw new Error('This browser cannot expand gzip-compressed embedded assets.');
+        const stream = new Blob([stored]).stream().pipeThrough(new DecompressionStream('gzip'));
+        const expanded = new Uint8Array(await new Response(stream).arrayBuffer());
+        if (Number.isFinite(asset.originalBytes) && expanded.byteLength !== asset.originalBytes) {
+          throw new Error(`Embedded gzip asset size mismatch: expected ${asset.originalBytes}, got ${expanded.byteLength}`);
+        }
+        return expanded;
+      }
+
+      window.StandaloneAssets = Object.freeze({
+        manifest: BUILD_MANIFEST,
+        list() {
+          return Object.entries(assetBundle.dependencies || {}).flatMap(([dependencyId, dependency]) =>
+            Object.keys(dependency.assets || {}).map(assetKey => `${dependencyId}/${assetKey}`));
+        },
+        has(dependencyId, assetKey) { return Boolean(assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey]); },
+        bytes(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          if (asset.compression && asset.compression !== 'none') throw new Error(`Embedded asset ${dependencyId}/${assetKey} is gzip-compressed; use await StandaloneAssets.bytesAsync().`);
+          return decodeBase64Bytes(asset.base64);
+        },
+        async bytesAsync(dependencyId, assetKey) {
+          const cacheKey = `${dependencyId}/${assetKey}`;
+          if (!assetByteCache.has(cacheKey)) assetByteCache.set(cacheKey, inflateAsset(getAsset(dependencyId, assetKey)));
+          return new Uint8Array(await assetByteCache.get(cacheKey));
+        },
+        text(dependencyId, assetKey) { return new TextDecoder().decode(this.bytes(dependencyId, assetKey)); },
+        async textAsync(dependencyId, assetKey) { return new TextDecoder().decode(await this.bytesAsync(dependencyId, assetKey)); },
+        blobUrl(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          const url = URL.createObjectURL(new Blob([this.bytes(dependencyId, assetKey)], { type: asset.mime || 'application/octet-stream' }));
+          blobUrls.add(url);
+          return url;
+        },
+        async blobUrlAsync(dependencyId, assetKey) {
+          const asset = getAsset(dependencyId, assetKey);
+          const url = URL.createObjectURL(new Blob([await this.bytesAsync(dependencyId, assetKey)], { type: asset.mime || 'application/octet-stream' }));
+          blobUrls.add(url);
+          return url;
+        },
+        async loadClassicScript(dependencyId, assetKey, globalName = '') {
+          const sourceUrl = await this.blobUrlAsync(dependencyId, assetKey);
+          try {
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = sourceUrl;
+              script.onload = resolve;
+              script.onerror = () => reject(new Error(`Failed to load embedded script: ${dependencyId}/${assetKey}`));
+              document.head.append(script);
+            });
+            return globalName ? window[globalName] : true;
+          } finally {
+            URL.revokeObjectURL(sourceUrl);
+            blobUrls.delete(sourceUrl);
+          }
+        },
+        async importModule(dependencyId, assetKey) {
+          const sourceUrl = await this.blobUrlAsync(dependencyId, assetKey);
+          try { return await import(sourceUrl); }
+          finally { URL.revokeObjectURL(sourceUrl); blobUrls.delete(sourceUrl); }
+        }
+      });
+
+      window.addEventListener('pagehide', () => {
+        blobUrls.forEach(url => URL.revokeObjectURL(url));
+        blobUrls.clear();
+      });
+
+      const $ = selector => document.querySelector(selector);
+      const $$ = selector => Array.from(document.querySelectorAll(selector));
+      const DAY_MS = 86400000;
+      const SUPPORTED_START = '1873-01-01';
+      const translations = {
+        ja: {
+          brandMeta: '日付・時刻・文字のちょっとした変換', helpTitle: '使い方と注意事項', close: '閉じる',
+          introTitle: '日付・時刻・文字のちょっとした変換', lead: '日付計算、世界時計、タイムゾーン、かな・全角半角など、たまに必要になる変換をひとつにまとめます。', localBadge: '完全ローカル処理', categoriesLabel: 'カテゴリ',
+          categoryDate: '日付', categoryTime: '時刻', categoryText: '文字',
+          betweenTitle: '2つの日付の間', betweenDescription: '日数、週数、月日、平日数をまとめて確認します。', startDate: '開始日', endDate: '終了日', today: '今日', swap: '入れ替える', countBoth: '開始日と終了日を両方数える', weeksAndDays: '週と日', calendarPeriod: '暦の期間', weekdays: '平日（土日を除く）',
+          addTitle: '○日後・○日前', addDescription: '基準日から日・週・月・年を足し引きします。', baseDate: '基準日', quantity: '数', unit: '単位', unitDay: '日', unitWeek: '週', unitMonth: '月', unitYear: '年', direction: '方向', after: '後', before: '前',
+          elapsedTitle: '年齢・経過期間', elapsedDescription: '生年月日や開始日から、基準日までの期間を確認します。', startOrBirth: '開始日 / 生年月日', referenceDate: '基準日', detailedPeriod: '詳しい期間', totalDays: '合計日数',
+          eraTitle: '西暦・和暦', eraDescription: '明治・大正・昭和・平成・令和と西暦を相互変換します。', westernToEra: '西暦 → 和暦', eraToWestern: '和暦 → 西暦', gregorianDate: '西暦の日付', era: '元号', eraYear: '年', month: '月', day: '日', eraRangeNote: '1873年1月1日以降を対象にします。',
+          copy: 'コピー', copied: 'コピーしました', copyFailed: 'コピーできませんでした',
+          worldClock: '世界時計', worldClockDescription: '現在地と選んだ都市の時刻を並べて確認します。', addCity: '都市を追加', citySearchPlaceholder: '都市名を検索', deviceClockNote: '端末の時計を使用します', currentLocation: '現在地', previousDay: '前日', nextDay: '翌日', daysEarlier: '{n}日前', daysLater: '{n}日後', removeCity: '{city}を削除', cityRemoved: '{city}を削除しました', undo: '元に戻す', cityRestored: '{city}を戻しました', cityAlreadyAdded: 'この都市はすでに表示されています', cityLimitReached: '追加できる都市は12件までです', noCitiesFound: '一致する都市がありません', localZoneFallback: '端末のタイムゾーン',
+          timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
+          textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
+          buildInfo: 'アプリ情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: '完全内包HTMLとして生成',
+          helpBasicsTitle: '基本操作', helpStep1: '日付・時刻・文字から使いたいカテゴリを選びます。', helpStep2: '入力を変更すると、表示中の変換結果が自動で更新されます。', helpStep3: '結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。',
+          helpDateTitle: '日付計算について', helpDateWeekdays: '平日は土曜日と日曜日だけを除き、祝日は考慮しません。', helpDateMonthEnd: '月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。', helpDateEra: '和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。',
+          helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
+          helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '入力した日付や文字列はブラウザー内で処理され、このアプリから外部へ送信されません。入力内容や変換履歴も保存しません。', helpOffline: '必要なコードは配布用HTMLに内包され、実行時の外部通信は行いません。',
+          helpNotesTitle: '注意事項', helpNoteClock: '世界時計は端末の時計を基準にするため、端末時刻がずれている場合は表示もずれます。',
+          invalidDate: '有効な日付を入力してください。', invalidQuantity: '0以上の整数を入力してください。', resultOutOfRange: '計算結果がブラウザーで扱える日付範囲を超えています。', referenceBeforeStart: '基準日は開始日以降の日付にしてください。', unsupportedEraDate: '1873年1月1日より前の日付は対象外です。', invalidEraDate: 'その元号には存在しない日付です。', invalidEraInput: '元号・年・月・日を正しく入力してください。',
+          dayUnit: '日', daysUnit: '日', weekUnit: '週間', monthUnit: 'か月', yearUnit: '年', fullYears: '満{n}年', earlierSuffix: '前', laterSuffix: '後',
+          eraMeiji: '明治', eraTaisho: '大正', eraShowa: '昭和', eraHeisei: '平成', eraReiwa: '令和'
+        },
+        en: {
+          brandMeta: 'Small date, time & text conversions', helpTitle: 'How to use & notes', close: 'Close',
+          introTitle: 'Small date, time & text conversions', lead: 'Keep occasional date calculations, world clocks, time zones, kana, and width conversions in one lightweight browser tool.', localBadge: 'Fully local processing', categoriesLabel: 'Categories',
+          categoryDate: 'Date', categoryTime: 'Time', categoryText: 'Text',
+          betweenTitle: 'Between two dates', betweenDescription: 'Check days, weeks, calendar period, and weekdays together.', startDate: 'Start date', endDate: 'End date', today: 'Today', swap: 'Swap', countBoth: 'Count both start and end dates', weeksAndDays: 'Weeks and days', calendarPeriod: 'Calendar period', weekdays: 'Weekdays (Mon–Fri)',
+          addTitle: 'Add or subtract a period', addDescription: 'Move a base date by days, weeks, months, or years.', baseDate: 'Base date', quantity: 'Amount', unit: 'Unit', unitDay: 'Day', unitWeek: 'Week', unitMonth: 'Month', unitYear: 'Year', direction: 'Direction', after: 'After', before: 'Before',
+          elapsedTitle: 'Age / elapsed period', elapsedDescription: 'Measure calendar time from a birth or start date to a reference date.', startOrBirth: 'Start / birth date', referenceDate: 'Reference date', detailedPeriod: 'Detailed period', totalDays: 'Total days',
+          eraTitle: 'Gregorian / Japanese era', eraDescription: 'Convert between Gregorian dates and Meiji, Taisho, Showa, Heisei, or Reiwa.', westernToEra: 'Gregorian → Era', eraToWestern: 'Era → Gregorian', gregorianDate: 'Gregorian date', era: 'Era', eraYear: 'Year', month: 'Month', day: 'Day', eraRangeNote: 'Supported from January 1, 1873 onward.',
+          copy: 'Copy', copied: 'Copied', copyFailed: 'Could not copy',
+          worldClock: 'World clock', worldClockDescription: 'Compare your current zone with the cities you choose.', addCity: 'Add city', citySearchPlaceholder: 'Search cities', deviceClockNote: 'Uses your device clock', currentLocation: 'Current', previousDay: 'Previous day', nextDay: 'Next day', daysEarlier: '{n} days earlier', daysLater: '{n} days later', removeCity: 'Remove {city}', cityRemoved: 'Removed {city}', undo: 'Undo', cityRestored: 'Restored {city}', cityAlreadyAdded: 'That city is already shown', cityLimitReached: 'You can show up to 12 cities', noCitiesFound: 'No matching cities', localZoneFallback: 'Device time zone',
+          timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
+          textInputTitle: 'Enter text', textInputDescription: 'Kana and width conversion results update together as you type. The input is not saved.', inputText: 'Input', textInputPlaceholder: 'Type or paste text', textNotSaved: 'Your text is processed on this device and is not saved.', characterCount: 'Characters: {n}', textEmptyResult: 'Results appear here as you type', clear: 'Clear', textCleared: 'Input cleared', kanaConvert: 'Kana conversion', kanaDescription: 'See hiragana, katakana, and half-width kana results together.', hiragana: 'Hiragana', katakana: 'Katakana', halfwidthKana: 'Half-width kana', widthConvert: 'Full / half width', widthDescription: 'Choose which character types are converted between full and half width.', conversionTargets: 'Conversion targets', letters: 'Letters', digits: 'Numbers', symbols: 'Symbols', spaces: 'Spaces', kanaWidthNote: 'Kana and Japanese punctuation follow the width of the selected result.', fullwidth: 'Full width', halfwidth: 'Half width',
+          buildInfo: 'App information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Generated as one self-contained HTML file',
+          helpBasicsTitle: 'Basics', helpStep1: 'Choose Date, Time, or Text.', helpStep2: 'Conversion results update automatically when you change an input.', helpStep3: 'Where a Copy button is available, it copies only that result.',
+          helpDateTitle: 'Date calculations', helpDateWeekdays: 'Weekday counts exclude Saturday and Sunday only; public holidays are not considered.', helpDateMonthEnd: 'When adding months or years and the same day does not exist, the result is clamped to the final day of that month.', helpDateEra: 'Japanese era conversion supports Meiji, Taisho, Showa, Heisei, and Reiwa from January 1, 1873 onward.',
+          helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
+          helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Entered dates and text are processed in the browser and are not sent outside by this app. Inputs and conversion history are not stored.', helpOffline: 'Required code is embedded in the distributable HTML and the app performs no runtime network requests.',
+          helpNotesTitle: 'Notes', helpNoteClock: 'The world clock uses your device clock, so an incorrect device time will also affect displayed times.',
+          invalidDate: 'Enter a valid date.', invalidQuantity: 'Enter a whole number of zero or more.', resultOutOfRange: 'The calculated date is outside the date range supported by the browser.', referenceBeforeStart: 'The reference date must be on or after the start date.', unsupportedEraDate: 'Dates before January 1, 1873 are outside the supported range.', invalidEraDate: 'That date does not exist within the selected era.', invalidEraInput: 'Enter a valid era, year, month, and day.',
+          dayUnit: 'day', daysUnit: 'days', weekUnit: 'weeks', monthUnit: 'months', yearUnit: 'years', fullYears: '{n} full years', earlierSuffix: 'earlier', laterSuffix: 'later',
+          eraMeiji: 'Meiji', eraTaisho: 'Taisho', eraShowa: 'Showa', eraHeisei: 'Heisei', eraReiwa: 'Reiwa'
+        }
+      };
+
+      const ERAS = [
+        { id: 'meiji', key: 'eraMeiji', start: '1868-10-23', supportedStart: '1873-01-01', end: '1912-07-29', startYear: 1868, minYear: 6 },
+        { id: 'taisho', key: 'eraTaisho', start: '1912-07-30', supportedStart: '1912-07-30', end: '1926-12-24', startYear: 1912, minYear: 1 },
+        { id: 'showa', key: 'eraShowa', start: '1926-12-25', supportedStart: '1926-12-25', end: '1989-01-07', startYear: 1926, minYear: 1 },
+        { id: 'heisei', key: 'eraHeisei', start: '1989-01-08', supportedStart: '1989-01-08', end: '2019-04-30', startYear: 1989, minYear: 1 },
+        { id: 'reiwa', key: 'eraReiwa', start: '2019-05-01', supportedStart: '2019-05-01', end: null, startYear: 2019, minYear: 1 }
+      ];
+
+      const CITY_ZONES = [
+        { id: 'tokyo', zone: 'Asia/Tokyo', ja: '東京', en: 'Tokyo', countryJa: '日本', countryEn: 'Japan' },
+        { id: 'osaka', zone: 'Asia/Tokyo', ja: '大阪', en: 'Osaka', countryJa: '日本', countryEn: 'Japan' },
+        { id: 'seoul', zone: 'Asia/Seoul', ja: 'ソウル', en: 'Seoul', countryJa: '韓国', countryEn: 'South Korea' },
+        { id: 'beijing', zone: 'Asia/Shanghai', ja: '北京', en: 'Beijing', countryJa: '中国', countryEn: 'China' },
+        { id: 'shanghai', zone: 'Asia/Shanghai', ja: '上海', en: 'Shanghai', countryJa: '中国', countryEn: 'China' },
+        { id: 'hong-kong', zone: 'Asia/Hong_Kong', ja: '香港', en: 'Hong Kong', countryJa: '香港', countryEn: 'Hong Kong' },
+        { id: 'taipei', zone: 'Asia/Taipei', ja: '台北', en: 'Taipei', countryJa: '台湾', countryEn: 'Taiwan' },
+        { id: 'singapore', zone: 'Asia/Singapore', ja: 'シンガポール', en: 'Singapore', countryJa: 'シンガポール', countryEn: 'Singapore' },
+        { id: 'bangkok', zone: 'Asia/Bangkok', ja: 'バンコク', en: 'Bangkok', countryJa: 'タイ', countryEn: 'Thailand' },
+        { id: 'jakarta', zone: 'Asia/Jakarta', ja: 'ジャカルタ', en: 'Jakarta', countryJa: 'インドネシア', countryEn: 'Indonesia' },
+        { id: 'manila', zone: 'Asia/Manila', ja: 'マニラ', en: 'Manila', countryJa: 'フィリピン', countryEn: 'Philippines' },
+        { id: 'kuala-lumpur', zone: 'Asia/Kuala_Lumpur', ja: 'クアラルンプール', en: 'Kuala Lumpur', countryJa: 'マレーシア', countryEn: 'Malaysia' },
+        { id: 'hanoi', zone: 'Asia/Ho_Chi_Minh', ja: 'ハノイ', en: 'Hanoi', countryJa: 'ベトナム', countryEn: 'Vietnam' },
+        { id: 'ho-chi-minh', zone: 'Asia/Ho_Chi_Minh', ja: 'ホーチミン', en: 'Ho Chi Minh City', countryJa: 'ベトナム', countryEn: 'Vietnam' },
+        { id: 'delhi', zone: 'Asia/Kolkata', ja: 'デリー', en: 'Delhi', countryJa: 'インド', countryEn: 'India' },
+        { id: 'mumbai', zone: 'Asia/Kolkata', ja: 'ムンバイ', en: 'Mumbai', countryJa: 'インド', countryEn: 'India' },
+        { id: 'kathmandu', zone: 'Asia/Kathmandu', ja: 'カトマンズ', en: 'Kathmandu', countryJa: 'ネパール', countryEn: 'Nepal' },
+        { id: 'dhaka', zone: 'Asia/Dhaka', ja: 'ダッカ', en: 'Dhaka', countryJa: 'バングラデシュ', countryEn: 'Bangladesh' },
+        { id: 'karachi', zone: 'Asia/Karachi', ja: 'カラチ', en: 'Karachi', countryJa: 'パキスタン', countryEn: 'Pakistan' },
+        { id: 'dubai', zone: 'Asia/Dubai', ja: 'ドバイ', en: 'Dubai', countryJa: 'アラブ首長国連邦', countryEn: 'United Arab Emirates' },
+        { id: 'riyadh', zone: 'Asia/Riyadh', ja: 'リヤド', en: 'Riyadh', countryJa: 'サウジアラビア', countryEn: 'Saudi Arabia' },
+        { id: 'jerusalem', zone: 'Asia/Jerusalem', ja: 'エルサレム', en: 'Jerusalem', countryJa: 'イスラエル', countryEn: 'Israel' },
+        { id: 'istanbul', zone: 'Europe/Istanbul', ja: 'イスタンブール', en: 'Istanbul', countryJa: 'トルコ', countryEn: 'Türkiye' },
+        { id: 'moscow', zone: 'Europe/Moscow', ja: 'モスクワ', en: 'Moscow', countryJa: 'ロシア', countryEn: 'Russia' },
+        { id: 'athens', zone: 'Europe/Athens', ja: 'アテネ', en: 'Athens', countryJa: 'ギリシャ', countryEn: 'Greece' },
+        { id: 'helsinki', zone: 'Europe/Helsinki', ja: 'ヘルシンキ', en: 'Helsinki', countryJa: 'フィンランド', countryEn: 'Finland' },
+        { id: 'stockholm', zone: 'Europe/Stockholm', ja: 'ストックホルム', en: 'Stockholm', countryJa: 'スウェーデン', countryEn: 'Sweden' },
+        { id: 'oslo', zone: 'Europe/Oslo', ja: 'オスロ', en: 'Oslo', countryJa: 'ノルウェー', countryEn: 'Norway' },
+        { id: 'copenhagen', zone: 'Europe/Copenhagen', ja: 'コペンハーゲン', en: 'Copenhagen', countryJa: 'デンマーク', countryEn: 'Denmark' },
+        { id: 'berlin', zone: 'Europe/Berlin', ja: 'ベルリン', en: 'Berlin', countryJa: 'ドイツ', countryEn: 'Germany' },
+        { id: 'paris', zone: 'Europe/Paris', ja: 'パリ', en: 'Paris', countryJa: 'フランス', countryEn: 'France' },
+        { id: 'rome', zone: 'Europe/Rome', ja: 'ローマ', en: 'Rome', countryJa: 'イタリア', countryEn: 'Italy' },
+        { id: 'madrid', zone: 'Europe/Madrid', ja: 'マドリード', en: 'Madrid', countryJa: 'スペイン', countryEn: 'Spain' },
+        { id: 'amsterdam', zone: 'Europe/Amsterdam', ja: 'アムステルダム', en: 'Amsterdam', countryJa: 'オランダ', countryEn: 'Netherlands' },
+        { id: 'brussels', zone: 'Europe/Brussels', ja: 'ブリュッセル', en: 'Brussels', countryJa: 'ベルギー', countryEn: 'Belgium' },
+        { id: 'zurich', zone: 'Europe/Zurich', ja: 'チューリッヒ', en: 'Zurich', countryJa: 'スイス', countryEn: 'Switzerland' },
+        { id: 'vienna', zone: 'Europe/Vienna', ja: 'ウィーン', en: 'Vienna', countryJa: 'オーストリア', countryEn: 'Austria' },
+        { id: 'prague', zone: 'Europe/Prague', ja: 'プラハ', en: 'Prague', countryJa: 'チェコ', countryEn: 'Czechia' },
+        { id: 'warsaw', zone: 'Europe/Warsaw', ja: 'ワルシャワ', en: 'Warsaw', countryJa: 'ポーランド', countryEn: 'Poland' },
+        { id: 'lisbon', zone: 'Europe/Lisbon', ja: 'リスボン', en: 'Lisbon', countryJa: 'ポルトガル', countryEn: 'Portugal' },
+        { id: 'london', zone: 'Europe/London', ja: 'ロンドン', en: 'London', countryJa: 'イギリス', countryEn: 'United Kingdom' },
+        { id: 'dublin', zone: 'Europe/Dublin', ja: 'ダブリン', en: 'Dublin', countryJa: 'アイルランド', countryEn: 'Ireland' },
+        { id: 'cairo', zone: 'Africa/Cairo', ja: 'カイロ', en: 'Cairo', countryJa: 'エジプト', countryEn: 'Egypt' },
+        { id: 'johannesburg', zone: 'Africa/Johannesburg', ja: 'ヨハネスブルグ', en: 'Johannesburg', countryJa: '南アフリカ', countryEn: 'South Africa' },
+        { id: 'nairobi', zone: 'Africa/Nairobi', ja: 'ナイロビ', en: 'Nairobi', countryJa: 'ケニア', countryEn: 'Kenya' },
+        { id: 'new-york', zone: 'America/New_York', ja: 'ニューヨーク', en: 'New York', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'boston', zone: 'America/New_York', ja: 'ボストン', en: 'Boston', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'washington', zone: 'America/New_York', ja: 'ワシントンD.C.', en: 'Washington, D.C.', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'toronto', zone: 'America/Toronto', ja: 'トロント', en: 'Toronto', countryJa: 'カナダ', countryEn: 'Canada' },
+        { id: 'montreal', zone: 'America/Toronto', ja: 'モントリオール', en: 'Montreal', countryJa: 'カナダ', countryEn: 'Canada' },
+        { id: 'chicago', zone: 'America/Chicago', ja: 'シカゴ', en: 'Chicago', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'mexico-city', zone: 'America/Mexico_City', ja: 'メキシコシティ', en: 'Mexico City', countryJa: 'メキシコ', countryEn: 'Mexico' },
+        { id: 'denver', zone: 'America/Denver', ja: 'デンバー', en: 'Denver', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'phoenix', zone: 'America/Phoenix', ja: 'フェニックス', en: 'Phoenix', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'los-angeles', zone: 'America/Los_Angeles', ja: 'ロサンゼルス', en: 'Los Angeles', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'san-francisco', zone: 'America/Los_Angeles', ja: 'サンフランシスコ', en: 'San Francisco', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'vancouver', zone: 'America/Vancouver', ja: 'バンクーバー', en: 'Vancouver', countryJa: 'カナダ', countryEn: 'Canada' },
+        { id: 'anchorage', zone: 'America/Anchorage', ja: 'アンカレッジ', en: 'Anchorage', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'honolulu', zone: 'Pacific/Honolulu', ja: 'ホノルル', en: 'Honolulu', countryJa: 'アメリカ', countryEn: 'United States' },
+        { id: 'sao-paulo', zone: 'America/Sao_Paulo', ja: 'サンパウロ', en: 'São Paulo', countryJa: 'ブラジル', countryEn: 'Brazil' },
+        { id: 'buenos-aires', zone: 'America/Argentina/Buenos_Aires', ja: 'ブエノスアイレス', en: 'Buenos Aires', countryJa: 'アルゼンチン', countryEn: 'Argentina' },
+        { id: 'santiago', zone: 'America/Santiago', ja: 'サンティアゴ', en: 'Santiago', countryJa: 'チリ', countryEn: 'Chile' },
+        { id: 'lima', zone: 'America/Lima', ja: 'リマ', en: 'Lima', countryJa: 'ペルー', countryEn: 'Peru' },
+        { id: 'bogota', zone: 'America/Bogota', ja: 'ボゴタ', en: 'Bogotá', countryJa: 'コロンビア', countryEn: 'Colombia' },
+        { id: 'sydney', zone: 'Australia/Sydney', ja: 'シドニー', en: 'Sydney', countryJa: 'オーストラリア', countryEn: 'Australia' },
+        { id: 'melbourne', zone: 'Australia/Melbourne', ja: 'メルボルン', en: 'Melbourne', countryJa: 'オーストラリア', countryEn: 'Australia' },
+        { id: 'brisbane', zone: 'Australia/Brisbane', ja: 'ブリスベン', en: 'Brisbane', countryJa: 'オーストラリア', countryEn: 'Australia' },
+        { id: 'perth', zone: 'Australia/Perth', ja: 'パース', en: 'Perth', countryJa: 'オーストラリア', countryEn: 'Australia' },
+        { id: 'adelaide', zone: 'Australia/Adelaide', ja: 'アデレード', en: 'Adelaide', countryJa: 'オーストラリア', countryEn: 'Australia' },
+        { id: 'auckland', zone: 'Pacific/Auckland', ja: 'オークランド', en: 'Auckland', countryJa: 'ニュージーランド', countryEn: 'New Zealand' },
+        { id: 'wellington', zone: 'Pacific/Auckland', ja: 'ウェリントン', en: 'Wellington', countryJa: 'ニュージーランド', countryEn: 'New Zealand' },
+        { id: 'suva', zone: 'Pacific/Fiji', ja: 'スバ', en: 'Suva', countryJa: 'フィジー', countryEn: 'Fiji' }
+      ];
+      const DEFAULT_CITY_IDS = ['tokyo', 'london', 'new-york', 'singapore'];
+      const MAX_WORLD_CLOCK_CITIES = 12;
+      const localTimeZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
+
+      const storageKeys = { language: `${APP_CONFIG.slug}:language`, category: `${APP_CONFIG.slug}:category`, cities: `${APP_CONFIG.slug}:world-clock-cities` };
+      let language = readStorage(storageKeys.language) || detectLanguage();
+      let activeCategory = readStorage(storageKeys.category) || 'date';
+      if (!['date', 'time', 'text'].includes(activeCategory)) activeCategory = 'date';
+      let mobileNav = null;
+
+      function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
+      function writeStorage(key, value) { try { localStorage.setItem(key, value); } catch { /* Storage can be unavailable. */ } }
+      function readJsonStorage(key, fallback) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } }
+      function writeJsonStorage(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage can be unavailable. */ } }
+      function detectLanguage() {
+        if (APP_CONFIG.defaultLanguage === 'ja' || APP_CONFIG.defaultLanguage === 'en') return APP_CONFIG.defaultLanguage;
+        return (navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en';
+      }
+      function t(key, params = {}) {
+        let value = translations[language]?.[key] ?? translations.en[key] ?? key;
+        Object.entries(params).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
+        return value;
+      }
+      function readToday() {
+        const now = new Date();
+        return `${now.getFullYear().toString().padStart(4, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      }
+      function parseYmd(value) {
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+        if (!match) return null;
+        const year = Number(match[1]); const month = Number(match[2]); const day = Number(match[3]);
+        const date = new Date(Date.UTC(year, month - 1, day));
+        if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+        return { year, month, day, date, value: `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` };
+      }
+      function ymdFromDate(date) { return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate(), date }; }
+      function compareYmd(a, b) { return Math.sign(a.date.getTime() - b.date.getTime()); }
+      function daysBetween(a, b) { return Math.round((b.date.getTime() - a.date.getTime()) / DAY_MS); }
+      function daysInMonth(year, month) { return new Date(Date.UTC(year, month, 0)).getUTCDate(); }
+      function makeYmd(year, month, day) {
+        if (!Number.isInteger(year) || year < 1 || year > 9999 || !Number.isInteger(month) || month < 1 || month > 12 || !Number.isInteger(day) || day < 1 || day > daysInMonth(year, month)) return null;
+        const date = new Date(Date.UTC(year, month - 1, day));
+        return { year, month, day, date, value: `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` };
+      }
+      function addDays(input, amount) {
+        const date = new Date(input.date.getTime() + amount * DAY_MS);
+        const result = ymdFromDate(date);
+        return result.year >= 1 && result.year <= 9999 ? { ...result, value: `${String(result.year).padStart(4, '0')}-${String(result.month).padStart(2, '0')}-${String(result.day).padStart(2, '0')}` } : null;
+      }
+      function addMonthsClamped(input, amount) {
+        const total = (input.year * 12 + (input.month - 1)) + amount;
+        const year = Math.floor(total / 12);
+        const monthIndex = ((total % 12) + 12) % 12;
+        const normalizedYear = monthIndex < 0 ? year - 1 : year;
+        const month = monthIndex + 1;
+        if (normalizedYear < 1 || normalizedYear > 9999) return null;
+        return makeYmd(normalizedYear, month, Math.min(input.day, daysInMonth(normalizedYear, month)));
+      }
+      function calendarDiff(startInput, endInput) {
+        let start = startInput; let end = endInput; let sign = 1;
+        if (compareYmd(start, end) > 0) { [start, end] = [end, start]; sign = -1; }
+        let months = (end.year - start.year) * 12 + (end.month - start.month);
+        let candidate = addMonthsClamped(start, months);
+        if (candidate && compareYmd(candidate, end) > 0) { months -= 1; candidate = addMonthsClamped(start, months); }
+        const days = candidate ? Math.abs(daysBetween(candidate, end)) : 0;
+        return { sign, years: Math.floor(months / 12), months: months % 12, days };
+      }
+      function countWeekdays(startInput, endInput, includeBoth) {
+        let start = startInput; let end = endInput; let sign = 1;
+        if (compareYmd(start, end) > 0) { [start, end] = [end, start]; sign = -1; }
+        const firstOffset = includeBoth ? 0 : 1;
+        const total = Math.max(0, daysBetween(start, end) + (includeBoth ? 1 : 0));
+        if (total === 0) return 0;
+        const fullWeeks = Math.floor(total / 7);
+        let weekdays = fullWeeks * 5;
+        const remainder = total % 7;
+        for (let i = 0; i < remainder; i += 1) {
+          const day = new Date(start.date.getTime() + (firstOffset + fullWeeks * 7 + i) * DAY_MS).getUTCDay();
+          if (day !== 0 && day !== 6) weekdays += 1;
+        }
+        return weekdays * sign;
+      }
+      function weekdayName(ymd) {
+        return new Intl.DateTimeFormat(language === 'ja' ? 'ja-JP' : 'en-US', { weekday: 'short', timeZone: 'UTC' }).format(ymd.date);
+      }
+      function formatDate(ymd) {
+        if (language === 'ja') return `${ymd.year}年${ymd.month}月${ymd.day}日（${weekdayName(ymd)}）`;
+        const base = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(ymd.date);
+        return `${base} (${weekdayName(ymd)})`;
+      }
+      function formatSignedCount(value, singularKey, pluralKey = singularKey) {
+        const abs = Math.abs(value);
+        const unit = language === 'ja' ? t(pluralKey) : t(abs === 1 ? singularKey : pluralKey);
+        if (language === 'ja') return `${new Intl.NumberFormat('ja-JP').format(abs)}${unit}${value < 0 ? t('earlierSuffix') : ''}`;
+        return `${new Intl.NumberFormat('en-US').format(abs)} ${unit}${value < 0 ? ` ${t('earlierSuffix')}` : ''}`;
+      }
+      function formatWeeksDays(totalDays) {
+        const sign = totalDays < 0 ? -1 : 1; const abs = Math.abs(totalDays); const weeks = Math.floor(abs / 7); const days = abs % 7;
+        if (language === 'ja') return `${weeks}${t('weekUnit')}と${days}${t('dayUnit')}${sign < 0 ? t('earlierSuffix') : ''}`;
+        return `${weeks} ${t('weekUnit')} ${days} ${days === 1 ? t('dayUnit') : t('daysUnit')}${sign < 0 ? ` ${t('earlierSuffix')}` : ''}`;
+      }
+      function formatCalendar(diff) {
+        if (language === 'ja') {
+          const body = `${diff.years ? `${diff.years}${t('yearUnit')}` : ''}${diff.months ? `${diff.months}${t('monthUnit')}` : ''}${diff.days || (!diff.years && !diff.months) ? `${diff.days}${t('dayUnit')}` : ''}`;
+          return `${body}${diff.sign < 0 ? t('earlierSuffix') : ''}`;
+        }
+        const parts = [];
+        if (diff.years) parts.push(`${diff.years} ${diff.years === 1 ? 'year' : 'years'}`);
+        if (diff.months) parts.push(`${diff.months} ${diff.months === 1 ? 'month' : 'months'}`);
+        if (diff.days || !parts.length) parts.push(`${diff.days} ${diff.days === 1 ? 'day' : 'days'}`);
+        return `${parts.join(', ')}${diff.sign < 0 ? ' earlier' : ''}`;
+      }
+      function setError(element, message = '') { element.textContent = message; element.hidden = !message; }
+
+      const AppToast = (() => {
+        const root = $('#appToast'); const message = $('#appToastMessage'); const action = $('#appToastAction'); let timer = 0; let actionHandler = null;
+        function dismiss() { clearTimeout(timer); timer = 0; root.classList.remove('show'); actionHandler = null; }
+        function show({ message: text = '', actionLabel = '', onAction = null, duration = 3200, tone = 'default' } = {}) {
+          clearTimeout(timer); message.textContent = String(text); root.dataset.tone = tone; actionHandler = typeof onAction === 'function' ? onAction : null; action.textContent = actionLabel || ''; action.hidden = !actionHandler || !actionLabel; root.classList.add('show'); if (duration > 0) timer = window.setTimeout(dismiss, duration); return Object.freeze({ dismiss });
+        }
+        action.addEventListener('click', () => { const handler = actionHandler; dismiss(); if (handler) handler(); });
+        return Object.freeze({ show, dismiss });
+      })();
+      window.AppToast = AppToast;
+
+      function mountMobileBottomBar(root, options = {}) {
+        if (!(root instanceof HTMLElement)) throw new TypeError('A mobile bottom bar root element is required.');
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        const mobileQuery = window.matchMedia?.('(max-width: 600px)') || null;
+        const buttons = Array.from(root.querySelectorAll('.app-mobile-bottom-item'));
+        let currentPageKey = null;
+        function pageEntryByKeyOrId(keyOrId) {
+          const button = buttons.find(candidate => candidate.dataset.mobileKey === keyOrId || candidate.dataset.mobilePageTarget === keyOrId) || null;
+          if (!button) return null;
+          const page = document.getElementById(button.dataset.mobilePageTarget);
+          return page ? { button, page } : null;
+        }
+        function setActive(key) {
+          buttons.forEach(button => {
+            const active = button.dataset.mobileKey === key;
+            button.classList.toggle('is-active', active);
+            if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
+          });
+        }
+        function showPage(keyOrId, showOptions = {}) {
+          const entry = pageEntryByKeyOrId(keyOrId); if (!entry) return false;
+          const key = entry.button.dataset.mobileKey || entry.button.dataset.mobilePageTarget;
+          buttons.forEach(button => document.getElementById(button.dataset.mobilePageTarget)?.classList.toggle('is-mobile-active', button === entry.button));
+          currentPageKey = key; setActive(key);
+          if (mobileQuery?.matches && showOptions.scroll !== false) window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+          options.onPageChange?.({ key, page: entry.page, button: entry.button });
+          return true;
+        }
+        root.addEventListener('click', event => { const button = event.target.closest('.app-mobile-bottom-item'); if (button && root.contains(button) && !button.disabled) showPage(button.dataset.mobileKey || button.dataset.mobilePageTarget); });
+        return Object.freeze({ setActive, showPage, currentPage: () => currentPageKey });
+      }
+      window.AppMobileBottomBar = Object.freeze({ mount: mountMobileBottomBar });
+
+      function cityById(id) { return CITY_ZONES.find(city => city.id === id) || null; }
+      function cityName(city) { return language === 'ja' ? city.ja : city.en; }
+      function cityCountry(city) { return language === 'ja' ? city.countryJa : city.countryEn; }
+      function normalizedSearch(value) { return String(value || '').normalize('NFKC').toLocaleLowerCase(); }
+      function sanitizeSelectedCityIds(value) {
+        const source = Array.isArray(value) ? value : [];
+        const unique = [];
+        source.forEach(id => {
+          const city = cityById(id);
+          if (!city || city.zone === localTimeZone || unique.includes(id)) return;
+          if (unique.length < MAX_WORLD_CLOCK_CITIES) unique.push(id);
+        });
+        return unique;
+      }
+      let selectedCityIds = sanitizeSelectedCityIds(readJsonStorage(storageKeys.cities, []));
+      if (!selectedCityIds.length) selectedCityIds = sanitizeSelectedCityIds(DEFAULT_CITY_IDS);
+      function persistSelectedCities() { writeJsonStorage(storageKeys.cities, selectedCityIds); }
+      function zoneDateParts(date, timeZone) {
+        try {
+          const formatter = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+          const parts = Object.fromEntries(formatter.formatToParts(date).filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
+          return { year: Number(parts.year), month: Number(parts.month), day: Number(parts.day), hour: Number(parts.hour), minute: Number(parts.minute), second: Number(parts.second) };
+        } catch { return null; }
+      }
+      function zoneDateSerial(date, timeZone) {
+        const parts = zoneDateParts(date, timeZone); return parts ? Math.floor(Date.UTC(parts.year, parts.month - 1, parts.day) / DAY_MS) : null;
+      }
+      function zoneOffsetMinutes(date, timeZone) {
+        const parts = zoneDateParts(date, timeZone); if (!parts) return null;
+        const reconstructed = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+        const currentSecond = Math.floor(date.getTime() / 1000) * 1000;
+        return Math.round((reconstructed - currentSecond) / 60000);
+      }
+      function formatUtcOffset(minutes) {
+        if (!Number.isFinite(minutes)) return 'UTC';
+        if (minutes === 0) return 'UTC';
+        const sign = minutes > 0 ? '+' : '-'; const absolute = Math.abs(minutes); const hours = Math.floor(absolute / 60); const mins = absolute % 60;
+        return `UTC${sign}${hours}${mins ? `:${String(mins).padStart(2, '0')}` : ''}`;
+      }
+      function formatWorldTime(date, timeZone) {
+        try { return new Intl.DateTimeFormat(language === 'ja' ? 'ja-JP' : 'en-US', { timeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date); }
+        catch { return '—'; }
+      }
+      function formatWorldDate(date, timeZone) {
+        try {
+          return new Intl.DateTimeFormat(language === 'ja' ? 'ja-JP' : 'en-US', language === 'ja'
+            ? { timeZone, month: 'numeric', day: 'numeric', weekday: 'short' }
+            : { timeZone, month: 'short', day: 'numeric', weekday: 'short' }).format(date);
+        } catch { return '—'; }
+      }
+      function dayRelationLabel(date, timeZone) {
+        const localSerial = zoneDateSerial(date, localTimeZone); const targetSerial = zoneDateSerial(date, timeZone);
+        if (!Number.isFinite(localSerial) || !Number.isFinite(targetSerial)) return '';
+        const difference = targetSerial - localSerial;
+        if (difference === -1) return t('previousDay'); if (difference === 1) return t('nextDay');
+        if (difference < -1) return t('daysEarlier', { n: Math.abs(difference) }); if (difference > 1) return t('daysLater', { n: difference });
+        return '';
+      }
+      function createClockCard({ city = null, timeZone, isLocal = false }, now) {
+        const card = document.createElement('article'); card.className = `clock-card${isLocal ? ' is-local' : ''}`;
+        const head = document.createElement('div'); head.className = 'clock-card-head';
+        const place = document.createElement('div'); place.className = 'clock-place';
+        const row = document.createElement('div'); row.className = 'clock-place-row';
+        const cityLabel = document.createElement('div'); cityLabel.className = 'clock-city'; cityLabel.textContent = isLocal ? t('currentLocation') : cityName(city); row.append(cityLabel);
+        place.append(row);
+        const country = document.createElement('div'); country.className = 'clock-country'; country.textContent = isLocal ? timeZone : cityCountry(city); place.append(country); head.append(place);
+        if (!isLocal && city) {
+          const remove = document.createElement('button'); remove.className = 'clock-remove'; remove.type = 'button'; remove.dataset.removeCity = city.id; remove.title = t('removeCity', { city: cityName(city) }); remove.setAttribute('aria-label', remove.title);
+          remove.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'; head.append(remove);
+        }
+        card.append(head);
+        const time = document.createElement('div'); time.className = 'clock-time'; time.textContent = formatWorldTime(now, timeZone); card.append(time);
+        const meta = document.createElement('div'); meta.className = 'clock-meta'; const dateLabel = document.createElement('span'); dateLabel.textContent = formatWorldDate(now, timeZone); meta.append(dateLabel);
+        const relation = dayRelationLabel(now, timeZone); if (relation) { const chip = document.createElement('span'); chip.className = 'clock-day-chip'; chip.textContent = relation; meta.append(chip); }
+        card.append(meta);
+        const zone = document.createElement('div'); zone.className = 'clock-zone'; zone.textContent = `${formatUtcOffset(zoneOffsetMinutes(now, timeZone))} · ${timeZone}`; card.append(zone);
+        return card;
+      }
+      function renderWorldClocks(now = new Date()) {
+        const root = $('#worldClockList'); if (!root) return; root.textContent = '';
+        root.append(createClockCard({ timeZone: localTimeZone, isLocal: true }, now));
+        selectedCityIds.forEach(id => { const city = cityById(id); if (city && city.zone !== localTimeZone) root.append(createClockCard({ city, timeZone: city.zone }, now)); });
+      }
+      function matchingCities(query = '') {
+        const normalized = normalizedSearch(query); const selectedIds = new Set(selectedCityIds);
+        return CITY_ZONES.filter(city => {
+          if (city.zone === localTimeZone || selectedIds.has(city.id)) return false;
+          if (!normalized) return DEFAULT_CITY_IDS.includes(city.id) || ['los-angeles','sydney','paris','seoul'].includes(city.id);
+          return [city.ja, city.en, city.countryJa, city.countryEn, city.zone].some(value => normalizedSearch(value).includes(normalized));
+        }).slice(0, 8);
+      }
+      let citySearchActiveIndex = -1;
+      function citySearchOptions() { return $$('#citySearchResults .city-search-option'); }
+      function setCitySearchActive(index) {
+        const input=$('#citySearch'); const options=citySearchOptions();
+        if (!options.length) { citySearchActiveIndex=-1; input?.removeAttribute('aria-activedescendant'); return; }
+        citySearchActiveIndex=((index % options.length) + options.length) % options.length;
+        options.forEach((option, optionIndex) => { const active=optionIndex===citySearchActiveIndex; option.classList.toggle('is-active', active); option.setAttribute('aria-selected', active ? 'true' : 'false'); });
+        const activeOption=options[citySearchActiveIndex]; input?.setAttribute('aria-activedescendant', activeOption.id); activeOption.scrollIntoView({ block: 'nearest' });
+      }
+      function hideCitySearchResults() { const root = $('#citySearchResults'); if (!root) return; root.hidden = true; citySearchActiveIndex=-1; const input=$('#citySearch'); input?.setAttribute('aria-expanded', 'false'); input?.removeAttribute('aria-activedescendant'); }
+      function renderCitySearchResults() {
+        const input = $('#citySearch'); const root = $('#citySearchResults'); if (!input || !root) return;
+        const matches = matchingCities(input.value); root.textContent = ''; citySearchActiveIndex=-1; input.removeAttribute('aria-activedescendant');
+        if (!matches.length) { const empty = document.createElement('div'); empty.className = 'city-search-empty'; empty.textContent = t('noCitiesFound'); root.append(empty); }
+        else matches.forEach(city => {
+          const button = document.createElement('button'); button.type = 'button'; button.className = 'city-search-option'; button.id=`cityOption-${city.id}`; button.dataset.cityId = city.id; button.setAttribute('role', 'option'); button.setAttribute('aria-selected', 'false');
+          const copy = document.createElement('span'); const name = document.createElement('strong'); name.textContent = cityName(city); const meta = document.createElement('span'); meta.textContent = `${cityCountry(city)} · ${city.zone}`; copy.append(name, meta);
+          const add = document.createElement('strong'); add.textContent = '+'; button.append(copy, add); root.append(button);
+        });
+        root.hidden = false; input.setAttribute('aria-expanded', 'true');
+      }
+      function addWorldClockCity(id) {
+        const city = cityById(id); if (!city) return;
+        if (city.zone === localTimeZone || selectedCityIds.includes(id)) { AppToast.show({ message: t('cityAlreadyAdded'), tone: 'warning' }); return; }
+        if (selectedCityIds.length >= MAX_WORLD_CLOCK_CITIES) { AppToast.show({ message: t('cityLimitReached'), tone: 'warning' }); return; }
+        selectedCityIds.push(id); persistSelectedCities(); renderWorldClocks(); updateTimezoneConversion(); $('#citySearch').value = ''; hideCitySearchResults();
+      }
+      function removeWorldClockCity(id) {
+        const index = selectedCityIds.indexOf(id); const city = cityById(id); if (index < 0 || !city) return;
+        selectedCityIds.splice(index, 1); persistSelectedCities(); renderWorldClocks(); updateTimezoneConversion();
+        AppToast.show({ message: t('cityRemoved', { city: cityName(city) }), actionLabel: t('undo'), duration: 5000, onAction: () => {
+          if (!selectedCityIds.includes(id) && selectedCityIds.length < MAX_WORLD_CLOCK_CITIES) { selectedCityIds.splice(Math.min(index, selectedCityIds.length), 0, id); persistSelectedCities(); renderWorldClocks(); updateTimezoneConversion(); AppToast.show({ message: t('cityRestored', { city: cityName(city) }), tone: 'success' }); }
+        } });
+      }
+
+      let timezoneCandidates = [];
+      let timezoneOccurrenceIndex = 0;
+      function timezoneChoice(value) {
+        if (value === 'local') return { value: 'local', zone: localTimeZone, city: null, isLocal: true };
+        const city = cityById(value); return city ? { value: city.id, zone: city.zone, city, isLocal: false } : null;
+      }
+      function timezoneChoiceName(choice) { return choice?.isLocal ? t('currentLocation') : choice?.city ? cityName(choice.city) : '—'; }
+      function timezoneChoiceCountry(choice) { return choice?.isLocal ? choice.zone : choice?.city ? cityCountry(choice.city) : ''; }
+      function populateTimezoneSelects() {
+        const source = $('#timezoneSource'); const target = $('#timezoneTarget'); if (!source || !target) return;
+        const oldSource = source.value || 'local'; const oldTarget = target.value || (localTimeZone === 'Asia/Tokyo' ? 'new-york' : 'tokyo');
+        [source, target].forEach(select => {
+          select.textContent = '';
+          const local = document.createElement('option'); local.value = 'local'; local.textContent = `${t('currentLocation')} — ${localTimeZone}`; select.append(local);
+          CITY_ZONES.forEach(city => { const option = document.createElement('option'); option.value = city.id; option.textContent = `${cityName(city)} — ${cityCountry(city)}`; select.append(option); });
+        });
+        source.value = timezoneChoice(oldSource) ? oldSource : 'local';
+        target.value = timezoneChoice(oldTarget) ? oldTarget : (localTimeZone === 'Asia/Tokyo' ? 'new-york' : 'tokyo');
+        if (source.value === target.value) target.value = source.value === 'tokyo' ? 'new-york' : 'tokyo';
+      }
+      function wallRequest() {
+        const ymd = parseYmd($('#timezoneDate')?.value || ''); const match = /^(\d{2}):(\d{2})$/.exec($('#timezoneTime')?.value || '');
+        if (!ymd || !match) return null;
+        const hour = Number(match[1]); const minute = Number(match[2]);
+        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+        return { ...ymd, hour, minute };
+      }
+      function wallUtcMs(wall) {
+        const date = new Date(0); date.setUTCFullYear(wall.year, wall.month - 1, wall.day); date.setUTCHours(wall.hour, wall.minute, 0, 0); return date.getTime();
+      }
+      function wallMatches(parts, wall) {
+        return Boolean(parts && parts.year === wall.year && parts.month === wall.month && parts.day === wall.day && parts.hour === wall.hour && parts.minute === wall.minute);
+      }
+      function resolveWallTime(wall, timeZone) {
+        const naive = wallUtcMs(wall); const offsets = new Set();
+        [-2 * DAY_MS, -DAY_MS, -12 * 3600000, 0, 12 * 3600000, DAY_MS, 2 * DAY_MS].forEach(delta => {
+          const offset = zoneOffsetMinutes(new Date(naive + delta), timeZone); if (Number.isFinite(offset)) offsets.add(offset);
+        });
+        const candidates = [];
+        offsets.forEach(offset => {
+          const date = new Date(naive - offset * 60000); if (wallMatches(zoneDateParts(date, timeZone), wall) && !candidates.some(item => item.getTime() === date.getTime())) candidates.push(date);
+        });
+        return candidates.sort((a, b) => a - b);
+      }
+      function formatZoneFullDate(date, timeZone) {
+        try { return new Intl.DateTimeFormat(language === 'ja' ? 'ja-JP' : 'en-US', language === 'ja' ? { timeZone, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' } : { timeZone, year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' }).format(date); }
+        catch { return '—'; }
+      }
+      function sourceDayRelation(date, targetZone, wall) {
+        const target = zoneDateParts(date, targetZone); if (!target) return '';
+        const sourceSerial = Math.floor(wallUtcMs({ ...wall, hour: 0, minute: 0 }) / DAY_MS);
+        const targetSerial = Math.floor(wallUtcMs({ ...target, hour: 0, minute: 0 }) / DAY_MS);
+        const diff = targetSerial - sourceSerial;
+        if (diff === -1) return t('previousDay'); if (diff === 1) return t('nextDay');
+        if (diff < -1) return t('daysEarlier', { n: Math.abs(diff) }); if (diff > 1) return t('daysLater', { n: diff }); return '';
+      }
+      function clearTimezoneResult(message = '') {
+        setError($('#timezoneError'), message); $('#timezoneAmbiguity').hidden = true; timezoneCandidates = []; timezoneOccurrenceIndex = 0;
+        $('#timezoneResultCity').textContent = '—'; $('#timezoneResultCountry').textContent = ''; $('#timezoneResultTime').textContent = '—'; $('#timezoneResultDate').textContent = '—'; $('#timezoneResultZone').textContent = '—'; $('#timezoneResultCopy').textContent = ''; $('#timezoneRelation').hidden = true; $('#timezoneOtherCities').textContent = '';
+      }
+      function updateAmbiguityUi() {
+        const box = $('#timezoneAmbiguity'); if (!box) return; box.hidden = timezoneCandidates.length < 2;
+        if (timezoneCandidates.length >= 2) {
+          const source = timezoneChoice($('#timezoneSource').value); const firstOffset = formatUtcOffset(zoneOffsetMinutes(timezoneCandidates[0], source.zone)); const secondOffset = formatUtcOffset(zoneOffsetMinutes(timezoneCandidates[1], source.zone));
+          $('#timezoneOccurrenceFirst').textContent = `${t('firstOccurrence')} · ${firstOffset}`; $('#timezoneOccurrenceSecond').textContent = `${t('secondOccurrence')} · ${secondOffset}`;
+          const radio = document.querySelector(`input[name="timezoneOccurrence"][value="${timezoneOccurrenceIndex}"]`); if (radio) radio.checked = true;
+        }
+      }
+      function renderConvertedOtherCities(instant, wall, sourceChoice, targetChoice) {
+        const root = $('#timezoneOtherCities'); if (!root) return; root.textContent = '';
+        selectedCityIds.map(cityById).filter(Boolean).filter(city => city.id !== sourceChoice?.city?.id && city.id !== targetChoice?.city?.id).forEach(city => {
+          const card = document.createElement('div'); card.className = 'converted-city-card';
+          const name = document.createElement('strong'); name.textContent = cityName(city); card.append(name);
+          const time = document.createElement('div'); time.className = 'converted-time'; time.textContent = formatWorldTime(instant, city.zone); card.append(time);
+          const date = document.createElement('div'); date.className = 'converted-date'; date.textContent = formatWorldDate(instant, city.zone); card.append(date);
+          const relation = sourceDayRelation(instant, city.zone, wall); if (relation) { const chip = document.createElement('span'); chip.className = 'converted-relation'; chip.textContent = relation; card.append(chip); }
+          root.append(card);
+        });
+      }
+      function updateTimezoneConversion({ resetOccurrence = false } = {}) {
+        const wall = wallRequest(); const source = timezoneChoice($('#timezoneSource')?.value); const target = timezoneChoice($('#timezoneTarget')?.value);
+        if (!wall || !source || !target) { clearTimezoneResult(t('invalidLocalDateTime')); return; }
+        if (resetOccurrence) timezoneOccurrenceIndex = 0;
+        timezoneCandidates = resolveWallTime(wall, source.zone);
+        if (!timezoneCandidates.length) { clearTimezoneResult(t('nonexistentLocalTime')); return; }
+        if (timezoneOccurrenceIndex >= timezoneCandidates.length) timezoneOccurrenceIndex = 0;
+        setError($('#timezoneError')); updateAmbiguityUi();
+        const instant = timezoneCandidates[timezoneOccurrenceIndex]; const targetName = timezoneChoiceName(target); const relation = sourceDayRelation(instant, target.zone, wall);
+        $('#timezoneResultCity').textContent = targetName; $('#timezoneResultCountry').textContent = timezoneChoiceCountry(target);
+        $('#timezoneResultTime').textContent = formatWorldTime(instant, target.zone); $('#timezoneResultDate').textContent = formatZoneFullDate(instant, target.zone); $('#timezoneResultZone').textContent = `${formatUtcOffset(zoneOffsetMinutes(instant, target.zone))} · ${target.zone}`;
+        $('#timezoneResultCopy').textContent = `${formatZoneFullDate(instant, target.zone)} ${formatWorldTime(instant, target.zone)} · ${targetName}`;
+        const relationEl = $('#timezoneRelation'); relationEl.textContent = relation; relationEl.hidden = !relation;
+        renderConvertedOtherCities(instant, wall, source, target);
+      }
+      function setTimezoneInputsToInstant(instant, sourceChoice = timezoneChoice($('#timezoneSource')?.value)) {
+        if (!sourceChoice) return; const parts = zoneDateParts(instant, sourceChoice.zone); if (!parts) return;
+        $('#timezoneDate').value = `${String(parts.year).padStart(4, '0')}-${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`;
+        $('#timezoneTime').value = `${String(parts.hour).padStart(2, '0')}:${String(parts.minute).padStart(2, '0')}`;
+      }
+      function setTimezoneNow() { setTimezoneInputsToInstant(new Date()); updateTimezoneConversion({ resetOccurrence: true }); }
+      function swapTimezones() {
+        const sourceSelect = $('#timezoneSource'); const targetSelect = $('#timezoneTarget'); const wall = wallRequest(); const source = timezoneChoice(sourceSelect.value);
+        let instant = null; if (wall && source) { const candidates = resolveWallTime(wall, source.zone); if (candidates.length) instant = candidates[Math.min(timezoneOccurrenceIndex, candidates.length - 1)]; }
+        const previousSource = sourceSelect.value; sourceSelect.value = targetSelect.value; targetSelect.value = previousSource;
+        if (instant) setTimezoneInputsToInstant(instant, timezoneChoice(sourceSelect.value));
+        updateTimezoneConversion({ resetOccurrence: true });
+      }
+
+      function syncDesktopTabs(key) {
+        $$('.category-tab').forEach(button => { const active = button.dataset.category === key; button.classList.toggle('is-active', active); if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current'); });
+      }
+
+      const FULL_TO_HALF_KANA = (() => {
+        const full = '。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン';
+        const half = '｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+        const map = new Map(); Array.from(full).forEach((char, index) => map.set(char, Array.from(half)[index])); map.set('\u3099', 'ﾞ'); map.set('\u309A', 'ﾟ'); return map;
+      })();
+      function normalizeHalfwidthKana(text) { return String(text).replace(/[\uFF61-\uFF9F]+/g, segment => segment.normalize('NFKC')); }
+      function toHiragana(text) {
+        const normalized = normalizeHalfwidthKana(text);
+        const special = new Map([['ヷ','わ\u3099'],['ヸ','ゐ\u3099'],['ヹ','ゑ\u3099'],['ヺ','を\u3099'],['ヽ','ゝ'],['ヾ','ゞ']]);
+        return Array.from(normalized, char => { if (special.has(char)) return special.get(char); const cp=char.codePointAt(0); return cp>=0x30A1 && cp<=0x30F6 ? String.fromCodePoint(cp-0x60) : char; }).join('');
+      }
+      function toKatakana(text) {
+        const normalized = normalizeHalfwidthKana(text);
+        return Array.from(normalized, char => { if (char === 'ゝ') return 'ヽ'; if (char === 'ゞ') return 'ヾ'; const cp=char.codePointAt(0); return cp>=0x3041 && cp<=0x3096 ? String.fromCodePoint(cp+0x60) : char; }).join('');
+      }
+      function halfwidthKanaChar(char) {
+        if (FULL_TO_HALF_KANA.has(char)) return FULL_TO_HALF_KANA.get(char);
+        const cp = char.codePointAt(0);
+        if (!((cp >= 0x30A0 && cp <= 0x30FF) || ['゛','゜'].includes(char))) return char;
+        const decomposed = Array.from(char.normalize('NFD'));
+        let result = '';
+        for (const part of decomposed) { if (!FULL_TO_HALF_KANA.has(part)) return char; result += FULL_TO_HALF_KANA.get(part); }
+        return result || char;
+      }
+      function toHalfwidthKana(text) { return Array.from(toKatakana(text), halfwidthKanaChar).join(''); }
+      function asciiCategory(char) {
+        const cp = char.codePointAt(0); if (cp === 0x20) return 'spaces'; if ((cp>=65&&cp<=90)||(cp>=97&&cp<=122)) return 'letters'; if (cp>=48&&cp<=57) return 'digits'; if (cp>=0x21&&cp<=0x7E) return 'symbols'; return null;
+      }
+      function fullwidthCategory(char) {
+        const cp=char.codePointAt(0); if (cp===0x3000) return 'spaces'; if ((cp>=0xFF21&&cp<=0xFF3A)||(cp>=0xFF41&&cp<=0xFF5A)) return 'letters'; if (cp>=0xFF10&&cp<=0xFF19) return 'digits'; if (cp>=0xFF01&&cp<=0xFF5E) return 'symbols'; return null;
+      }
+      function widthOptions() { return { letters: $('#widthLetters').checked, digits: $('#widthDigits').checked, symbols: $('#widthSymbols').checked, spaces: $('#widthSpaces').checked }; }
+      function toFullwidthText(text, options) {
+        const kanaNormalized = normalizeHalfwidthKana(text);
+        return Array.from(kanaNormalized, char => { const category=asciiCategory(char); if (!category || !options[category]) return char; if (category==='spaces') return '\u3000'; return String.fromCodePoint(char.codePointAt(0)+0xFEE0); }).join('');
+      }
+      function toHalfwidthText(text, options) {
+        const kanaConverted = Array.from(String(text), halfwidthKanaChar).join('');
+        return Array.from(kanaConverted, char => { const category=fullwidthCategory(char); if (!category || !options[category]) return char; if (category==='spaces') return ' '; return String.fromCodePoint(char.codePointAt(0)-0xFEE0); }).join('');
+      }
+      function setTextResult(id, value) { const element=$(id); if (!element) return; const hasValue=Boolean(value); element.textContent=hasValue ? value : t('textEmptyResult'); element.classList.toggle('is-empty', !hasValue); }
+      function updateTextConversions() {
+        const value=$('#textInput')?.value || ''; const options=widthOptions();
+        setTextResult('#hiraganaResult', value ? toHiragana(value) : ''); setTextResult('#katakanaResult', value ? toKatakana(value) : ''); setTextResult('#halfwidthKanaResult', value ? toHalfwidthKana(value) : ''); setTextResult('#fullwidthResult', value ? toFullwidthText(value, options) : ''); setTextResult('#halfwidthResult', value ? toHalfwidthText(value, options) : '');
+        const count=Array.from(value).length; $('#textCharacterCount').textContent=t('characterCount', { n: new Intl.NumberFormat(language === 'ja' ? 'ja-JP' : 'en-US').format(count) }); $('#clearTextButton').disabled=!value;
+      }
+      function setCategory(key, options = {}) {
+        if (!['date', 'time', 'text'].includes(key)) return;
+        activeCategory = key; writeStorage(storageKeys.category, key); syncDesktopTabs(key);
+        if (mobileNav?.currentPage() !== key) mobileNav?.showPage(key, { scroll: options.scroll !== false });
+        else $$('.category-page').forEach(page => page.classList.toggle('is-mobile-active', page.dataset.categoryPage === key));
+      }
+
+      function updateBetween() {
+        const start = parseYmd($('#betweenStart').value); const end = parseYmd($('#betweenEnd').value); const error = $('#betweenError');
+        if (!start || !end) { setError(error, t('invalidDate')); ['#betweenMain','#betweenWeeks','#betweenCalendar','#betweenWeekdays'].forEach(selector => $(selector).textContent = '—'); return; }
+        setError(error);
+        const rawDays = daysBetween(start, end); const sign = rawDays < 0 ? -1 : 1; const includeBoth = $('#countBothEndpoints').checked;
+        const totalDays = rawDays === 0 ? (includeBoth ? 1 : 0) : sign * (Math.abs(rawDays) + (includeBoth ? 1 : 0));
+        $('#betweenMain').textContent = formatSignedCount(totalDays, 'dayUnit', 'daysUnit');
+        $('#betweenWeeks').textContent = formatWeeksDays(totalDays);
+        $('#betweenCalendar').textContent = formatCalendar(calendarDiff(start, end));
+        $('#betweenWeekdays').textContent = formatSignedCount(countWeekdays(start, end, includeBoth), 'dayUnit', 'daysUnit');
+      }
+      function updateAdd() {
+        const base = parseYmd($('#addBaseDate').value); const quantity = Number($('#addQuantity').value); const error = $('#addError');
+        if (!base) { setError(error, t('invalidDate')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
+        if (!Number.isInteger(quantity) || quantity < 0 || quantity > 100000) { setError(error, t('invalidQuantity')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
+        const direction = $('#addDirection').value === 'before' ? -1 : 1; const unit = $('#addUnit').value; let result = null;
+        if (unit === 'day') result = addDays(base, quantity * direction);
+        else if (unit === 'week') result = addDays(base, quantity * 7 * direction);
+        else if (unit === 'month') result = addMonthsClamped(base, quantity * direction);
+        else if (unit === 'year') result = addMonthsClamped(base, quantity * 12 * direction);
+        if (!result) { setError(error, t('resultOutOfRange')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
+        setError(error); const formatted = formatDate(result); $('#addResultMain').textContent = formatted; $('#addResultCopy').textContent = formatted;
+      }
+      function updateElapsed() {
+        const start = parseYmd($('#elapsedStart').value); const end = parseYmd($('#elapsedEnd').value); const error = $('#elapsedError');
+        if (!start || !end) { setError(error, t('invalidDate')); $('#elapsedMain').textContent = $('#elapsedCalendar').textContent = $('#elapsedDays').textContent = '—'; return; }
+        if (compareYmd(start, end) > 0) { setError(error, t('referenceBeforeStart')); $('#elapsedMain').textContent = $('#elapsedCalendar').textContent = $('#elapsedDays').textContent = '—'; return; }
+        setError(error); const diff = calendarDiff(start, end); const total = daysBetween(start, end);
+        $('#elapsedMain').textContent = t('fullYears', { n: diff.years });
+        $('#elapsedCalendar').textContent = formatCalendar(diff);
+        $('#elapsedDays').textContent = formatSignedCount(total, 'dayUnit', 'daysUnit');
+      }
+      function eraForDate(ymd) {
+        if (ymd.value < SUPPORTED_START) return null;
+        for (let i = ERAS.length - 1; i >= 0; i -= 1) if (ymd.value >= ERAS[i].supportedStart) return ERAS[i];
+        return null;
+      }
+      function eraYearFor(era, year) { return year - era.startYear + 1; }
+      function formatEraDate(era, eraYear, ymd) {
+        if (language === 'ja') return `${t(era.key)}${eraYear === 1 ? '元' : eraYear}年${ymd.month}月${ymd.day}日（${weekdayName(ymd)}）`;
+        return `${t(era.key)} ${eraYear}, ${ymd.month}/${ymd.day} (${weekdayName(ymd)})`;
+      }
+      function updateWesternToEra() {
+        const ymd = parseYmd($('#gregorianDate').value); const error = $('#eraWesternError');
+        if (!ymd) { setError(error, t('invalidDate')); $('#eraResultMain').textContent = '—'; $('#eraResultCopy').textContent = ''; return; }
+        if (ymd.value < SUPPORTED_START) { setError(error, t('unsupportedEraDate')); $('#eraResultMain').textContent = '—'; $('#eraResultCopy').textContent = ''; return; }
+        const era = eraForDate(ymd); if (!era) { setError(error, t('unsupportedEraDate')); return; }
+        setError(error); const formatted = formatEraDate(era, eraYearFor(era, ymd.year), ymd); $('#eraResultMain').textContent = formatted; $('#eraResultCopy').textContent = formatted;
+      }
+      function selectedEra() { return ERAS.find(era => era.id === $('#eraSelect').value) || ERAS[ERAS.length - 1]; }
+      function updateEraLimits() {
+        const era = selectedEra(); const input = $('#eraYear'); input.min = String(era.minYear);
+        if (era.end) input.max = String(parseYmd(era.end).year - era.startYear + 1); else input.removeAttribute('max');
+      }
+      function updateEraToWestern() {
+        const era = selectedEra(); const eraYear = Number($('#eraYear').value); const month = Number($('#eraMonth').value); const day = Number($('#eraDay').value); const error = $('#eraInputError');
+        const maxYear = era.end ? parseYmd(era.end).year - era.startYear + 1 : 9999 - era.startYear + 1;
+        if (!Number.isInteger(eraYear) || eraYear < era.minYear || eraYear > maxYear || !Number.isInteger(month) || !Number.isInteger(day)) { setError(error, t('invalidEraInput')); $('#westernResultMain').textContent = '—'; $('#westernResultCopy').textContent = ''; return; }
+        const ymd = makeYmd(era.startYear + eraYear - 1, month, day);
+        if (!ymd || ymd.value < era.supportedStart || (era.end && ymd.value > era.end)) { setError(error, t('invalidEraDate')); $('#westernResultMain').textContent = '—'; $('#westernResultCopy').textContent = ''; return; }
+        setError(error); const formatted = formatDate(ymd); $('#westernResultMain').textContent = formatted; $('#westernResultCopy').textContent = formatted;
+      }
+      function populateEraSelect() {
+        const select = $('#eraSelect'); const current = select.value || 'reiwa'; select.textContent = '';
+        ERAS.forEach(era => { const option = document.createElement('option'); option.value = era.id; option.textContent = t(era.key); select.append(option); });
+        select.value = ERAS.some(era => era.id === current) ? current : 'reiwa'; updateEraLimits();
+      }
+      function refreshAllResults() { updateBetween(); updateAdd(); updateElapsed(); updateWesternToEra(); updateEraToWestern(); updateTextConversions(); }
+      function applyLanguage() {
+        document.documentElement.lang = language;
+        $$('[data-i18n]').forEach(element => { element.textContent = t(element.dataset.i18n); });
+        $$('[data-i18n-title]').forEach(element => { element.title = t(element.dataset.i18nTitle); });
+        $$('[data-i18n-aria-label]').forEach(element => { element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel)); });
+        $$('[data-i18n-placeholder]').forEach(element => { element.placeholder = t(element.dataset.i18nPlaceholder); });
+        $('#languageButton').textContent = language === 'ja' ? 'EN' : '日本語';
+        $('#languageButton').setAttribute('aria-label', language === 'ja' ? '英語に切り替え' : 'Switch to Japanese');
+        document.title = APP_CONFIG.name;
+        $('#brandName').textContent = APP_CONFIG.name;
+        $('#footerName').textContent = APP_CONFIG.name;
+        populateEraSelect(); populateTimezoneSelects(); refreshAllResults(); renderWorldClocks(); updateTimezoneConversion(); if (!$('#citySearchResults')?.hidden) renderCitySearchResults();
+      }
+      function copyTargetHasValue(target) {
+        if (!target || target.classList?.contains('is-empty')) return false;
+        const value=target.textContent?.trim() || '';
+        return Boolean(value && value !== '—');
+      }
+      function syncCopyButton(button) {
+        const target=document.getElementById(button.dataset.copyTarget || '');
+        button.disabled=!copyTargetHasValue(target);
+      }
+      function setupCopyButtonStates() {
+        $$('[data-copy-target]').forEach(button => {
+          const target=document.getElementById(button.dataset.copyTarget || '');
+          syncCopyButton(button);
+          if (!target) return;
+          const observer=new MutationObserver(() => syncCopyButton(button));
+          observer.observe(target, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        });
+      }
+
+      async function copyResult(targetId) {
+        const target = document.getElementById(targetId); const value = target?.textContent?.trim() || '';
+        if (!value || value === '—') return;
+        try { await navigator.clipboard.writeText(value); AppToast.show({ message: t('copied'), tone: 'success' }); }
+        catch {
+          const area = document.createElement('textarea'); area.value = value; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0'; document.body.append(area); area.select();
+          const ok = document.execCommand('copy'); area.remove(); AppToast.show({ message: t(ok ? 'copied' : 'copyFailed'), tone: ok ? 'success' : 'warning' });
+        }
+      }
+
+      const today = readToday();
+      $('#betweenStart').value = today; $('#betweenEnd').value = today; $('#addBaseDate').value = today; $('#elapsedEnd').value = today; $('#gregorianDate').value = today;
+      const thirtyYearsAgo = addMonthsClamped(parseYmd(today), -360); $('#elapsedStart').value = thirtyYearsAgo?.value || today;
+      const todayParts = parseYmd(today); if (todayParts) { const todayEra = eraForDate(todayParts); if (todayEra) { $('#eraSelect').value = todayEra.id; $('#eraYear').value = String(eraYearFor(todayEra, todayParts.year)); $('#eraMonth').value = String(todayParts.month); $('#eraDay').value = String(todayParts.day); } }
+      populateTimezoneSelects(); setTimezoneInputsToInstant(new Date(), timezoneChoice('local'));
+
+      mobileNav = window.AppMobileBottomBar.mount($('#mobileBottomBar'), { initialPage: activeCategory, onPageChange: ({ key }) => { activeCategory = key; writeStorage(storageKeys.category, key); syncDesktopTabs(key); } });
+      mobileNav.showPage(activeCategory, { scroll: false }); syncDesktopTabs(activeCategory);
+      $$('.category-tab').forEach(button => button.addEventListener('click', () => setCategory(button.dataset.category)));
+      $('#languageButton').addEventListener('click', () => { language = language === 'ja' ? 'en' : 'ja'; writeStorage(storageKeys.language, language); applyLanguage(); });
+      const helpDialog = $('#helpDialog');
+      const helpDialogBody = helpDialog.querySelector('.dialog-body');
+      const openHelpDialog = () => { helpDialog.showModal(); if (helpDialogBody) { helpDialogBody.scrollTop = 0; requestAnimationFrame(() => { helpDialogBody.scrollTop = 0; }); } };
+      $('#helpButton').addEventListener('click', openHelpDialog); $('#closeHelpButton').addEventListener('click', () => helpDialog.close());
+      helpDialog.addEventListener('click', event => { const rect = helpDialog.getBoundingClientRect(); const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; if (outside) helpDialog.close(); });
+      $$('[data-today-target]').forEach(button => button.addEventListener('click', () => { const input = document.getElementById(button.dataset.todayTarget); if (input) { input.value = readToday(); input.dispatchEvent(new Event('input', { bubbles: true })); } }));
+      $('#swapDatesButton').addEventListener('click', () => { const start = $('#betweenStart').value; $('#betweenStart').value = $('#betweenEnd').value; $('#betweenEnd').value = start; updateBetween(); });
+      ['betweenStart','betweenEnd','countBothEndpoints'].forEach(id => $(`#${id}`).addEventListener('input', updateBetween));
+      ['addBaseDate','addQuantity','addUnit','addDirection'].forEach(id => $(`#${id}`).addEventListener('input', updateAdd));
+      ['elapsedStart','elapsedEnd'].forEach(id => $(`#${id}`).addEventListener('input', updateElapsed));
+      $('#gregorianDate').addEventListener('input', updateWesternToEra);
+      $('#eraSelect').addEventListener('change', () => { updateEraLimits(); updateEraToWestern(); });
+      ['eraYear','eraMonth','eraDay'].forEach(id => $(`#${id}`).addEventListener('input', updateEraToWestern));
+      setupCopyButtonStates();
+      $$('[data-copy-target]').forEach(button => button.addEventListener('click', () => copyResult(button.dataset.copyTarget)));
+      $('#timezoneSource').addEventListener('change', () => updateTimezoneConversion({ resetOccurrence: true }));
+      $('#timezoneTarget').addEventListener('change', () => updateTimezoneConversion());
+      ['timezoneDate','timezoneTime'].forEach(id => $(`#${id}`).addEventListener('input', () => updateTimezoneConversion({ resetOccurrence: true })));
+      $('#timezoneNowButton').addEventListener('click', setTimezoneNow);
+      $('#swapTimezonesButton').addEventListener('click', swapTimezones);
+      $$('input[name="timezoneOccurrence"]').forEach(radio => radio.addEventListener('change', () => { timezoneOccurrenceIndex = Number(radio.value) || 0; updateTimezoneConversion(); }));
+      const citySearch = $('#citySearch');
+      citySearch.addEventListener('focus', renderCitySearchResults);
+      citySearch.addEventListener('input', renderCitySearchResults);
+      citySearch.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { hideCitySearchResults(); return; }
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); if ($('#citySearchResults').hidden) renderCitySearchResults(); const options=citySearchOptions(); if (options.length) setCitySearchActive(citySearchActiveIndex + (event.key === 'ArrowDown' ? 1 : -1)); return; }
+        if (event.key === 'Enter') { const options=citySearchOptions(); const option=options[citySearchActiveIndex >= 0 ? citySearchActiveIndex : 0]; if (option) { event.preventDefault(); addWorldClockCity(option.dataset.cityId); } }
+      });
+      $('#citySearchResults').addEventListener('click', event => { const option = event.target.closest('[data-city-id]'); if (option) addWorldClockCity(option.dataset.cityId); });
+      $('#worldClockList').addEventListener('click', event => { const remove = event.target.closest('[data-remove-city]'); if (remove) removeWorldClockCity(remove.dataset.removeCity); });
+      document.addEventListener('pointerdown', event => { if (!event.target.closest('.city-search-wrap')) hideCitySearchResults(); });
+      window.setInterval(() => renderWorldClocks(new Date()), 30000);
+      $('#textInput').addEventListener('input', updateTextConversions);
+      ['widthLetters','widthDigits','widthSymbols','widthSpaces'].forEach(id => $(`#${id}`).addEventListener('input', updateTextConversions));
+      $('#clearTextButton').addEventListener('click', () => { const previous=$('#textInput').value; if (!previous) return; $('#textInput').value=''; updateTextConversions(); AppToast.show({ message: t('textCleared'), actionLabel: t('undo'), onAction: () => { $('#textInput').value=previous; updateTextConversions(); $('#textInput').focus(); }, duration: 5000 }); });
+
+      $('#versionBadge').textContent = `v${APP_CONFIG.version}`; $('#buildVersion').textContent = APP_CONFIG.version; $('#builtAt').textContent = BUILD_MANIFEST.generatedAtUtc || '—'; $('#dependencyCount').textContent = String(BUILD_MANIFEST.dependencies?.length || 0);
+      applyLanguage();
+    })();
+  </script>
+</body>
+</html>
