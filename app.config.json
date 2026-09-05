@@ -1,0 +1,26 @@
+{
+  "$schema": "./schemas/app-config.schema.json",
+  "name": "Handy Convert",
+  "nameJa": "Handy Convert",
+  "slug": "handy-convert",
+  "version": "1.0.0",
+  "description": "Small date, time, and Japanese text conversion tools that run entirely in your browser.",
+  "descriptionJa": "日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。",
+  "defaultLanguage": "auto",
+  "repository": {
+    "owner": "ttomohisa",
+    "name": "htmlapps-handy-convert"
+  },
+  "build": {
+    "output": "dist/index.html",
+    "blockRuntimeNetwork": true,
+    "selfExtract": {
+      "enabled": true,
+      "output": "dist/index.self-extract.html"
+    },
+    "sizeBudget": {
+      "readableWarningMb": 2,
+      "selfExtractWarningMb": 1
+    }
+  }
+}
