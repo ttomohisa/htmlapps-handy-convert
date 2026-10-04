@@ -9,6 +9,7 @@ $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $required = @(
   "AGENTS.md",
   "APP_SPEC.md",
+  "handy-convert.html",
   "app.config.json",
   "dependencies.json",
   "dependencies.lock.json",
@@ -221,15 +222,20 @@ if ([string]::IsNullOrWhiteSpace([string]$app.name)) { throw "app.config.json: n
 if ([string]::IsNullOrWhiteSpace([string]$app.slug)) { throw "app.config.json: slug is required" }
 if ([string]::IsNullOrWhiteSpace([string]$app.version)) { throw "app.config.json: version is required" }
 
-$buildArguments = @{}
+# Build into dist without replacing the checked-in download, so stale artifacts
+# are detected rather than silently repaired by CI.
+$buildArguments = @{ OutputPath = [string]$app.build.output }
 if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 & (Join-Path $Root "build-standalone.ps1") @buildArguments
 
-# Run application behavior regressions against source and the generated readable release.
-$testFiles = @(Get-ChildItem -LiteralPath (Join-Path $Root "scripts/tests") -Filter "*.test.cjs" | ForEach-Object { $_.FullName })
+& node --test (Join-Path $Root "scripts/tests/distribution.test.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Distribution regression tests failed. Run build-standalone.ps1 and commit handy-convert.html." }
+
+# Run application behavior regressions against source and both readable releases.
+$testFiles = @(Get-ChildItem -LiteralPath (Join-Path $Root "scripts/tests") -Filter "*.test.cjs" | Where-Object { $_.Name -ne "distribution.test.cjs" } | ForEach-Object { $_.FullName })
 $previousTestHtml = $env:HANDY_CONVERT_HTML
 try {
-  foreach ($htmlPath in @("src/index.template.html", "dist/index.html")) {
+  foreach ($htmlPath in @("src/index.template.html", "dist/index.html", "handy-convert.html")) {
     $env:HANDY_CONVERT_HTML = Join-Path $Root $htmlPath
     & node --test @testFiles
     if ($LASTEXITCODE -ne 0) { throw "Application regression tests failed for $htmlPath." }

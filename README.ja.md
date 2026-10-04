@@ -37,17 +37,17 @@ GitHub Pagesから最初のHTMLを読み込んだ後、日付計算、世界時�
 
 ### 単一HTMLをダウンロードして使う
 
-1. このリポジトリから `dist/index.html` または `dist/index.self-extract.html` をダウンロードします。
+1. このリポジトリの [`handy-convert.html`](handy-convert.html) を開き、**Download raw file** で保存します。
 2. 現在のブラウザーでファイルを開きます。
 3. ローカルWebサーバーを用意しなくても、その1ファイルだけで利用できます。
 
-`dist/index.html` は読みやすい通常の単一HTML版です。`dist/index.self-extract.html` は同じアプリをgzip圧縮した状態で保持し、ブラウザーの `DecompressionStream` で端末内展開する版です。
+`handy-convert.html` はリポジトリに含まれる通常の単一HTML版です。ローカルでビルドすると、同じアプリの `dist/index.html` も生成されます。`dist/index.self-extract.html` は同じアプリをgzip圧縮した状態で保持し、ブラウザーの `DecompressionStream` で端末内展開する版です。
 
 ### 自分でビルドする（上級者向け）
 
 1. Windowsでこのリポジトリをダウンロードまたはクローンします。
 2. `build-standalone.bat` をダブルクリックします。
-3. リポジトリ検査とビルドが実行され、`dist/` に単一HTMLが生成されます。
+3. 単一HTMLのビルドと検査が実行され、`dist/` に両方の版を生成し、`handy-convert.html` も更新します。
 4. 生成されたHTMLを任意の場所へコピーして利用できます。
 
 Handy Convertにはサードパーティ製の実行時ライブラリ依存がないため、通常ビルドでライブラリをダウンロードする必要はありません。Node.js、Python、ローカルWebサーバーも不要です。
@@ -92,6 +92,7 @@ Handy Convertにはサードパーティ製の実行時ライブラリ依存が�
 
 ```text
 .
+├─ handy-convert.html           # 生成してコミットする配布用単一HTML
 ├─ src/index.template.html       # アプリ本体のテンプレート
 ├─ app.config.json               # アプリ情報とビルド設定
 ├─ dependencies.json             # 実行時依存の宣言（このアプリでは空）
@@ -109,6 +110,8 @@ Handy Convertにはサードパーティ製の実行時ライブラリ依存が�
 ```
 
 ### ビルドと検査
+
+ソース変更後は `build-standalone.ps1`（またはバッチファイル）を実行し、再生成した `handy-convert.html` もコミットしてください。生成HTMLは直接編集しません。`-OutputPath` を明示したビルドは配布用ファイルを上書きしません。`dist/` はローカルとCIで生成するため、中のHTMLはコミットしません。
 
 リポジトリ検査では、`scripts/tests/` の依存ライブラリー不要のNode.js回帰テストも実行します（Node.js 18以降）。
 
@@ -131,6 +134,7 @@ CIと同じリポジトリ全体の検査を行う場合：
 - `app.config.json` の設定どおり実行時通信が禁止されていること
 - 禁止された外部ランタイム参照が残っていないこと
 - 自己展開版が元の `dist/index.html` と同じHTMLを復元すること
+- コミット済みの配布用HTMLがビルド日時以外は最新ビルドと一致すること（古い場合は上書きせず検査を失敗させます）
 - 必須リポジトリファイルとリリース用アセットが揃っていること
 
 ## プライバシーと実行時通信

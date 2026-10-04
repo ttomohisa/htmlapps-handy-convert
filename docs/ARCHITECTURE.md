@@ -15,12 +15,13 @@ build-standalone.ps1         Dependency lock verification, embed, and build
 scripts/check-dependency-updates.ps1  Update discovery/reporting
 scripts/update-dependency.ps1          Reviewed upgrade helper
 scripts/verify-standalone.ps1 Static release checks
+handy-convert.html           Generated, checked-in readable download
 dist/index.html              Generated readable release artifact
 dist/index.self-extract.html Generated gzip self-extracting artifact
 dist/build-size-report.json    Generated size and embedded-asset storage report
 ```
 
-`dist/index.html` and `dist/index.self-extract.html` are generated and must not be edited manually.
+`handy-convert.html`, `dist/index.html`, and `dist/index.self-extract.html` are generated and must not be edited manually. Only the root download is committed; `dist/` is built locally and in CI.
 
 
 ## Reusable component layer
@@ -47,6 +48,9 @@ The starter includes the canonical confirmation and toast APIs in the default so
 14. Verify that the loader stays ASCII-only and embedded-only, the favicon matches the readable HTML, and the gzip payload restores byte-for-byte.
 15. Write manifests, `build-size-report.json`, and `dist/.nojekyll`; emit warning-only size-budget messages when configured thresholds are exceeded.
 16. Reject the declared unresolved build placeholders and common external runtime resource references.
+17. For a default build, copy the verified readable HTML byte-for-byte to `handy-convert.html`. Explicit `-OutputPath` builds leave that download untouched.
+
+The repository check uses an explicit output path and compares the checked-in download with the fresh build, normalizing only `BUILD_MANIFEST.generatedAtUtc`. This makes a forgotten rebuild fail CI. It also verifies the current template, the exact self-extract payload, default/custom build behavior, and application regressions for source plus both readable artifacts.
 
 ## Dependency maintenance lifecycle
 

@@ -7,6 +7,7 @@
 - Added dependency-free workflow regression tests to the repository check.
 
 ### Fixed
+- Refresh the checked-in `handy-convert.html` on default builds and fail validation when it is stale, so repository downloads include the same fixes as GitHub Pages.
 - Preserve leading/trailing whitespace and line breaks when copying text; allow whitespace-only and literal em-dash results.
 - Prevent Clear/reuse Undo from overwriting newer input and delayed clipboard feedback from replacing newer text Undo.
 - Clean up and report compatibility-clipboard failures safely.

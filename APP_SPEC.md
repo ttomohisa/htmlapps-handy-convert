@@ -8,7 +8,7 @@
 - **Repository:** `ttomohisa/htmlapps-handy-convert`
 - **Browser Kitty path:** `/tools/handy-convert/`
 - **Current implementation version:** v1.0.0
-- **Release artifacts:** `dist/index.html` and `dist/index.self-extract.html`
+- **Release artifacts:** checked-in `handy-convert.html`, generated `dist/index.html`, and `dist/index.self-extract.html`
 
 ## 2. Purpose
 
@@ -235,7 +235,8 @@ The Text category must preserve characters outside the intended conversion range
 
 ## 14. Acceptance criteria
 
-- `build-standalone.ps1` produces readable and self-extracting one-file variants.
+- `build-standalone.ps1` produces readable and self-extracting one-file variants and refreshes the checked-in `handy-convert.html` from the exact readable build. Explicit `-OutputPath` builds do not replace the checked-in download.
+- Repository validation rejects a checked-in download that differs from a fresh build beyond the build timestamp, without silently updating it.
 - `scripts/verify-standalone.ps1` passes.
 - Build placeholders appear exactly once in source and are fully resolved in generated output.
 - CSP retains `connect-src 'none'`.
