@@ -63,7 +63,7 @@ Public holidays are not considered.
 Inputs:
 
 - base date,
-- positive integer quantity,
+- non-negative integer quantity (zero is valid; a blank field is invalid),
 - unit: day / week / month / year,
 - direction: after / before.
 
@@ -113,18 +113,19 @@ Requirements:
 - Bundle a curated city-to-IANA-time-zone list locally.
 - Search and add cities.
 - Remove a city with Toast + Undo.
-- Persist selected cities only.
+- Persist selected cities only, including an intentionally empty list. Only absent or malformed stored preferences receive the default cities.
 - Show previous/next-day context and UTC offset.
 - Avoid duplicate “current location” and city entries when they resolve to the same zone.
 
 ### 6.2 Time-zone conversion (implemented in v0.4.0)
 
 - Source city/time zone + local date/time.
-- Primary destination city/time zone with Swap action.
+- Primary destination city/time zone with Swap action. Swap preserves the selected instant, including the correct occurrence during a daylight-saving overlap.
 - Additional same-instant results for cities already selected in the World clock.
 - Current-time shortcut sets the wall-clock input in the selected source zone.
 - Use IANA zones and browser `Intl` data rather than fixed UTC offsets.
 - Resolve a wall-clock input back to matching instants. A daylight-saving gap produces an inline error; an overlap exposes first/second occurrence selection.
+- Time input is minute-precision. Reject source or primary destination dates requiring historical sub-minute UTC offsets, or destination years outside 0001–9999, with a distinct explanatory inline error. An unsupported additional city shows its own limitation without hiding an otherwise valid primary result.
 - Do not persist the entered conversion date/time.
 
 ## 7. Text tools (implemented in v0.5.0)
@@ -143,12 +144,17 @@ Detailed width-conversion settings may independently include/exclude letters, di
 
 Do not apply broad Unicode normalization to the entire string when that would change characters outside the selected conversion scope.
 
+Each of the five results has a localized **Use as input** action beside Copy. It replaces the shared input with the exact result and recomputes all results, allowing chained conversions. It is disabled for empty or identical results. Result data is kept transiently separate from translated empty-state messages.
+
+Use as input and Clear show a five-second Toast + Undo and focus the input. Undo restores the exact prior input only if no newer edit, replacement, or Undo has occurred. A delayed Copy response must not replace a newer text-edit Undo. No history is retained beyond the transient Undo callback.
+
 Input text is never persisted.
 
 ## 8. Copy behavior
 
 - Copy buttons appear only for useful textual outputs and remain disabled while the related result is empty or invalid.
-- Use the Clipboard API with the template-compatible fallback.
+- Text Copy preserves the exact converted string, including surrounding whitespace, line breaks, whitespace-only strings, and literal em dashes. Empty-state messages and invalid date placeholders are never copied.
+- Use the Clipboard API with the template-compatible fallback. Fallback failure reports a Toast and removes its temporary textarea.
 - Show success/failure through the canonical Toast component.
 - Do not maintain clipboard history.
 
@@ -236,10 +242,11 @@ The Text category must preserve characters outside the intended conversion range
 - No runtime external script, stylesheet, font, image, module, frame, or network API dependency.
 - Japanese and English UI both fit at 320px / 360px without horizontal scrolling.
 - Smartphone navigation uses the canonical bottom page-tab pattern and reserves safe-area bottom space.
+- Calendar helpers preserve years 0001–9999 without JavaScript’s special 1900 offset for years below 0100. Era conversion retains its 1873 lower bound.
 - Date calculations cover equal dates, reverse direction, month/year boundaries, leap years, month-end clamping, and era boundaries.
 - Time-zone conversion covers ordinary offsets, date-boundary changes, a DST gap, and a DST overlap with both occurrences selectable.
 - Text conversion covers voiced/semi-voiced kana, half-width kana, mixed full/half-width ASCII, punctuation, spaces, multiline input, and preservation of kanji/emoji outside the conversion scope.
 - Gregorian/era invalid inputs produce an explanatory inline error rather than a native alert.
-- Copy result works with a compatibility fallback and produces a Toast.
+- Copy result works with a compatibility fallback and produces a Toast. Regression tests cover native/fallback exact whitespace, chained kana/width results, stale Undo, repeated/no-op reuse, and delayed Copy completion.
 - Help content matches current behavior and contains no starter text.
 - README files, config, changelog, screenshots, and favicon match Handy Convert.
