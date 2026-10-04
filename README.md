@@ -73,7 +73,9 @@ The world clock uses your device clock. If the device time is incorrect, the dis
 - Type or paste text once to see **hiragana**, **katakana**, and **half-width kana** results.
 - Full-width / half-width conversion can target **letters**, **numbers**, **symbols**, and **spaces** independently.
 - Kanji, emoji, and other characters outside the selected conversion ranges are preserved.
-- Each available result can be copied separately. Clearing text supports Undo.
+- **Use as input** beside each result lets you chain conversions, for example katakana → full width → half width → hiragana. It is disabled for empty or unchanged results.
+- Copy preserves the exact text, including leading/trailing spaces, line breaks, and a literal em dash. Whitespace-only results are valid.
+- Use as input and Clear show a short-lived **Undo**. Undo restores the previous text only until you edit or replace the input again; no input or conversion history is saved.
 
 ## Publish with GitHub Pages
 
@@ -107,6 +109,8 @@ Each push to `main` runs `scripts/check-repository.ps1`, rebuilds the standalone
 ```
 
 ### Build and verify
+
+The repository check also runs the dependency-free Node.js regression tests in `scripts/tests/` (Node.js 18 or later).
 
 Run:
 
@@ -159,6 +163,7 @@ The self-extracting variant requires `DecompressionStream`. If a browser does no
 - Weekday counts exclude Saturday and Sunday only; public holidays and country-specific business calendars are not included.
 - Age output is a calendar elapsed period and is not intended for legal-age determination.
 - Japanese era conversion supports dates from January 1, 1873 onward; historical lunisolar-calendar conversion is not included.
+- Time-zone input has minute precision. Historical offsets containing seconds and destination years outside 0001–9999 show a limitation message rather than a rounded result.
 - Time-zone results depend on the IANA time-zone data supplied by the browser, so very old browsers may contain outdated rules.
 - Current world-clock time is based on the device clock and is not synchronized with a network time service.
 - Full-width / half-width conversion changes only the selected target ranges; unrelated Unicode characters are intentionally preserved.

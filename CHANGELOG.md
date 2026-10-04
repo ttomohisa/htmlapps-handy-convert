@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Added localized Use as input actions for all five text results, allowing chained kana and width conversions with guarded Undo.
+- Added dependency-free workflow regression tests to the repository check.
+
+### Fixed
+- Preserve leading/trailing whitespace and line breaks when copying text; allow whitespace-only and literal em-dash results.
+- Prevent Clear/reuse Undo from overwriting newer input and delayed clipboard feedback from replacing newer text Undo.
+- Clean up and report compatibility-clipboard failures safely.
+- Preserve the selected instant when swapping time zones across a daylight-saving overlap.
+- Keep an intentionally empty world-clock city list after reload.
+- Validate historical time-zone precision and year boundaries instead of silently rounding second-level offsets.
+- Reject blank date-offset quantities and preserve years 0001–0099 in calendar arithmetic.
+
 ## [1.0.0] - 2026-09-05
 
 ### Release

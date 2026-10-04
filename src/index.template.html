@@ -464,7 +464,8 @@
     .text-result-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .text-result-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .text-result-card { min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfbf9; }
-    .text-result-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .text-result-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+    .text-result-actions { display: flex; flex-wrap: wrap; gap: 6px; }
     .text-result-head h3 { margin: 0; font-size: 13px; }
     .text-output { min-height: 94px; margin-top: 10px; padding: 10px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
     .text-output.is-empty { color: var(--muted); }
@@ -555,6 +556,7 @@
       .world-clock-toolbar { grid-template-columns: 1fr; }
       .world-clock-note { white-space: normal; }
       .timezone-layout { grid-template-columns: 1fr; }
+      .text-result-grid.three, .text-result-grid.two { grid-template-columns: 1fr; }
       .timezone-swap { margin-top: 0; justify-self: start; }
       .converted-city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .era-fields { grid-template-columns: minmax(0, 1.4fr) minmax(64px, .75fr); }
@@ -608,7 +610,6 @@
       .era-fields { grid-template-columns: 1fr 1fr; }
       .timezone-date-time { grid-template-columns: 1fr; }
       .converted-city-grid { grid-template-columns: 1fr; }
-      .text-result-grid.three, .text-result-grid.two { grid-template-columns: 1fr; }
       .text-input-actions { align-items: stretch; flex-direction: column; }
       .text-action-group { justify-content: space-between; width: 100%; }
     }
@@ -836,15 +837,15 @@
           </div>
           <div class="text-result-grid three">
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="hiragana">ひらがな</h3><button class="small-button" type="button" data-copy-target="hiraganaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-result-head"><h3 data-i18n="hiragana">ひらがな</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="hiraganaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="hiraganaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="hiraganaResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="katakana">カタカナ</h3><button class="small-button" type="button" data-copy-target="katakanaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-result-head"><h3 data-i18n="katakana">カタカナ</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="katakanaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="katakanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="katakanaResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="halfwidthKana">半角カナ</h3><button class="small-button" type="button" data-copy-target="halfwidthKanaResult" data-i18n="copy">コピー</button></div>
+              <div class="text-result-head"><h3 data-i18n="halfwidthKana">半角カナ</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="halfwidthKanaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="halfwidthKanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="halfwidthKanaResult">—</div>
             </section>
           </div>
@@ -867,11 +868,11 @@
           </details>
           <div class="text-result-grid two">
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="fullwidth">全角</h3><button class="small-button" type="button" data-copy-target="fullwidthResult" data-i18n="copy">コピー</button></div>
+              <div class="text-result-head"><h3 data-i18n="fullwidth">全角</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="fullwidthResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="fullwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="fullwidthResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="halfwidth">半角</h3><button class="small-button" type="button" data-copy-target="halfwidthResult" data-i18n="copy">コピー</button></div>
+              <div class="text-result-head"><h3 data-i18n="halfwidth">半角</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="halfwidthResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="halfwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="halfwidthResult">—</div>
             </section>
           </div>
@@ -919,9 +920,9 @@
       <h3 data-i18n="helpDateTitle">日付計算について</h3>
       <ul><li data-i18n="helpDateWeekdays">平日は土曜日と日曜日だけを除き、祝日は考慮しません。</li><li data-i18n="helpDateMonthEnd">月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。</li><li data-i18n="helpDateEra">和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。</li></ul>
       <h3 data-i18n="helpTimeTitle">世界時計について</h3>
-      <ul><li data-i18n="helpTimeDevice">世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。</li><li data-i18n="helpTimeCities">追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。</li><li data-i18n="helpTimeDst">夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。</li></ul>
+      <ul><li data-i18n="helpTimeDevice">世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。</li><li data-i18n="helpTimeCities">追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。</li><li data-i18n="helpTimeDst">夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。</li><li data-i18n="helpTimePrecision">時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。</li></ul>
       <h3 data-i18n="helpTextTitle">文字変換について</h3>
-      <ul><li data-i18n="helpTextKana">かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。</li><li data-i18n="helpTextWidth">全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。</li><li data-i18n="helpTextNoHistory">入力した文字列や変換履歴は保存しません。</li></ul>
+      <ul><li data-i18n="helpTextKana">かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。</li><li data-i18n="helpTextWidth">全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。</li><li data-i18n="helpTextReuse">「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。</li><li data-i18n="helpTextUndo">「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。</li><li data-i18n="helpTextNoHistory">入力した文字列や変換履歴は保存しません。</li></ul>
       <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
       <p data-i18n="helpPrivacyBody">入力した日付や文字列はブラウザー内で処理され、このアプリから外部へ送信されません。入力内容や変換履歴も保存しません。</p>
       <p class="dialog-note" data-i18n="helpOffline">必要なコードは配布用HTMLに内包され、実行時の外部通信は行いません。</p>
@@ -1047,12 +1048,12 @@
           eraTitle: '西暦・和暦', eraDescription: '明治・大正・昭和・平成・令和と西暦を相互変換します。', westernToEra: '西暦 → 和暦', eraToWestern: '和暦 → 西暦', gregorianDate: '西暦の日付', era: '元号', eraYear: '年', month: '月', day: '日', eraRangeNote: '1873年1月1日以降を対象にします。',
           copy: 'コピー', copied: 'コピーしました', copyFailed: 'コピーできませんでした',
           worldClock: '世界時計', worldClockDescription: '現在地と選んだ都市の時刻を並べて確認します。', addCity: '都市を追加', citySearchPlaceholder: '都市名を検索', deviceClockNote: '端末の時計を使用します', currentLocation: '現在地', previousDay: '前日', nextDay: '翌日', daysEarlier: '{n}日前', daysLater: '{n}日後', removeCity: '{city}を削除', cityRemoved: '{city}を削除しました', undo: '元に戻す', cityRestored: '{city}を戻しました', cityAlreadyAdded: 'この都市はすでに表示されています', cityLimitReached: '追加できる都市は12件までです', noCitiesFound: '一致する都市がありません', localZoneFallback: '端末のタイムゾーン',
-          timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
-          textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
+          timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', unsupportedTimezonePrecision: 'この日時は、UTCオフセットに秒が含まれるか、年が0001〜9999の範囲外になるため変換できません。分単位のオフセットで、この年の範囲に収まる日時を選んでください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
+          textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', useAsInput: '入力に使う', textReused: '変換結果を入力に使いました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
           buildInfo: 'アプリ情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: '完全内包HTMLとして生成',
           helpBasicsTitle: '基本操作', helpStep1: '日付・時刻・文字から使いたいカテゴリを選びます。', helpStep2: '入力を変更すると、表示中の変換結果が自動で更新されます。', helpStep3: '結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。',
           helpDateTitle: '日付計算について', helpDateWeekdays: '平日は土曜日と日曜日だけを除き、祝日は考慮しません。', helpDateMonthEnd: '月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。', helpDateEra: '和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。',
-          helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
+          helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。', helpTimePrecision: '時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextReuse: '「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。', helpTextUndo: '「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '入力した日付や文字列はブラウザー内で処理され、このアプリから外部へ送信されません。入力内容や変換履歴も保存しません。', helpOffline: '必要なコードは配布用HTMLに内包され、実行時の外部通信は行いません。',
           helpNotesTitle: '注意事項', helpNoteClock: '世界時計は端末の時計を基準にするため、端末時刻がずれている場合は表示もずれます。',
           invalidDate: '有効な日付を入力してください。', invalidQuantity: '0以上の整数を入力してください。', resultOutOfRange: '計算結果がブラウザーで扱える日付範囲を超えています。', referenceBeforeStart: '基準日は開始日以降の日付にしてください。', unsupportedEraDate: '1873年1月1日より前の日付は対象外です。', invalidEraDate: 'その元号には存在しない日付です。', invalidEraInput: '元号・年・月・日を正しく入力してください。',
@@ -1069,12 +1070,12 @@
           eraTitle: 'Gregorian / Japanese era', eraDescription: 'Convert between Gregorian dates and Meiji, Taisho, Showa, Heisei, or Reiwa.', westernToEra: 'Gregorian → Era', eraToWestern: 'Era → Gregorian', gregorianDate: 'Gregorian date', era: 'Era', eraYear: 'Year', month: 'Month', day: 'Day', eraRangeNote: 'Supported from January 1, 1873 onward.',
           copy: 'Copy', copied: 'Copied', copyFailed: 'Could not copy',
           worldClock: 'World clock', worldClockDescription: 'Compare your current zone with the cities you choose.', addCity: 'Add city', citySearchPlaceholder: 'Search cities', deviceClockNote: 'Uses your device clock', currentLocation: 'Current', previousDay: 'Previous day', nextDay: 'Next day', daysEarlier: '{n} days earlier', daysLater: '{n} days later', removeCity: 'Remove {city}', cityRemoved: 'Removed {city}', undo: 'Undo', cityRestored: 'Restored {city}', cityAlreadyAdded: 'That city is already shown', cityLimitReached: 'You can show up to 12 cities', noCitiesFound: 'No matching cities', localZoneFallback: 'Device time zone',
-          timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
-          textInputTitle: 'Enter text', textInputDescription: 'Kana and width conversion results update together as you type. The input is not saved.', inputText: 'Input', textInputPlaceholder: 'Type or paste text', textNotSaved: 'Your text is processed on this device and is not saved.', characterCount: 'Characters: {n}', textEmptyResult: 'Results appear here as you type', clear: 'Clear', textCleared: 'Input cleared', kanaConvert: 'Kana conversion', kanaDescription: 'See hiragana, katakana, and half-width kana results together.', hiragana: 'Hiragana', katakana: 'Katakana', halfwidthKana: 'Half-width kana', widthConvert: 'Full / half width', widthDescription: 'Choose which character types are converted between full and half width.', conversionTargets: 'Conversion targets', letters: 'Letters', digits: 'Numbers', symbols: 'Symbols', spaces: 'Spaces', kanaWidthNote: 'Kana and Japanese punctuation follow the width of the selected result.', fullwidth: 'Full width', halfwidth: 'Half width',
+          timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', unsupportedTimezonePrecision: 'This date/time requires seconds in its UTC offset or falls outside years 0001–9999. Choose a date/time with whole-minute offsets within that range.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
+          textInputTitle: 'Enter text', textInputDescription: 'Kana and width conversion results update together as you type. The input is not saved.', inputText: 'Input', textInputPlaceholder: 'Type or paste text', textNotSaved: 'Your text is processed on this device and is not saved.', characterCount: 'Characters: {n}', textEmptyResult: 'Results appear here as you type', clear: 'Clear', textCleared: 'Input cleared', useAsInput: 'Use as input', textReused: 'Result used as input', kanaConvert: 'Kana conversion', kanaDescription: 'See hiragana, katakana, and half-width kana results together.', hiragana: 'Hiragana', katakana: 'Katakana', halfwidthKana: 'Half-width kana', widthConvert: 'Full / half width', widthDescription: 'Choose which character types are converted between full and half width.', conversionTargets: 'Conversion targets', letters: 'Letters', digits: 'Numbers', symbols: 'Symbols', spaces: 'Spaces', kanaWidthNote: 'Kana and Japanese punctuation follow the width of the selected result.', fullwidth: 'Full width', halfwidth: 'Half width',
           buildInfo: 'App information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Generated as one self-contained HTML file',
           helpBasicsTitle: 'Basics', helpStep1: 'Choose Date, Time, or Text.', helpStep2: 'Conversion results update automatically when you change an input.', helpStep3: 'Where a Copy button is available, it copies only that result.',
           helpDateTitle: 'Date calculations', helpDateWeekdays: 'Weekday counts exclude Saturday and Sunday only; public holidays are not considered.', helpDateMonthEnd: 'When adding months or years and the same day does not exist, the result is clamped to the final day of that month.', helpDateEra: 'Japanese era conversion supports Meiji, Taisho, Showa, Heisei, and Reiwa from January 1, 1873 onward.',
-          helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
+          helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence.', helpTimePrecision: 'Time input has minute precision. Historical offsets containing seconds and destination years outside 0001–9999 show a limitation message.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextReuse: 'Use as input replaces the input with a result so you can continue converting. Copy preserves leading and trailing spaces and line breaks.', helpTextUndo: 'Use as input and Clear can be undone while the Undo message is visible. Editing or another replacement makes the previous Undo unavailable.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Entered dates and text are processed in the browser and are not sent outside by this app. Inputs and conversion history are not stored.', helpOffline: 'Required code is embedded in the distributable HTML and the app performs no runtime network requests.',
           helpNotesTitle: 'Notes', helpNoteClock: 'The world clock uses your device clock, so an incorrect device time will also affect displayed times.',
           invalidDate: 'Enter a valid date.', invalidQuantity: 'Enter a whole number of zero or more.', resultOutOfRange: 'The calculated date is outside the date range supported by the browser.', referenceBeforeStart: 'The reference date must be on or after the start date.', unsupportedEraDate: 'Dates before January 1, 1873 are outside the supported range.', invalidEraDate: 'That date does not exist within the selected era.', invalidEraInput: 'Enter a valid era, year, month, and day.',
@@ -1192,21 +1193,22 @@
         const now = new Date();
         return `${now.getFullYear().toString().padStart(4, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       }
+      function utcCalendarDate(year, month, day) {
+        // Date.UTC remaps years 0–99 to 1900–1999; setUTCFullYear preserves the calendar year.
+        const date = new Date(0); date.setUTCFullYear(year, month - 1, day); return date;
+      }
       function parseYmd(value) {
         const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
         if (!match) return null;
-        const year = Number(match[1]); const month = Number(match[2]); const day = Number(match[3]);
-        const date = new Date(Date.UTC(year, month - 1, day));
-        if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
-        return { year, month, day, date, value: `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` };
+        return makeYmd(Number(match[1]), Number(match[2]), Number(match[3]));
       }
       function ymdFromDate(date) { return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate(), date }; }
       function compareYmd(a, b) { return Math.sign(a.date.getTime() - b.date.getTime()); }
       function daysBetween(a, b) { return Math.round((b.date.getTime() - a.date.getTime()) / DAY_MS); }
-      function daysInMonth(year, month) { return new Date(Date.UTC(year, month, 0)).getUTCDate(); }
+      function daysInMonth(year, month) { return utcCalendarDate(year, month + 1, 0).getUTCDate(); }
       function makeYmd(year, month, day) {
         if (!Number.isInteger(year) || year < 1 || year > 9999 || !Number.isInteger(month) || month < 1 || month > 12 || !Number.isInteger(day) || day < 1 || day > daysInMonth(year, month)) return null;
-        const date = new Date(Date.UTC(year, month - 1, day));
+        const date = utcCalendarDate(year, month, day);
         return { year, month, day, date, value: `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` };
       }
       function addDays(input, amount) {
@@ -1337,27 +1339,34 @@
         });
         return unique;
       }
-      let selectedCityIds = sanitizeSelectedCityIds(readJsonStorage(storageKeys.cities, []));
-      if (!selectedCityIds.length) selectedCityIds = sanitizeSelectedCityIds(DEFAULT_CITY_IDS);
+      const savedCityIds = readJsonStorage(storageKeys.cities, null);
+      let selectedCityIds = sanitizeSelectedCityIds(Array.isArray(savedCityIds) ? savedCityIds : DEFAULT_CITY_IDS);
       function persistSelectedCities() { writeJsonStorage(storageKeys.cities, selectedCityIds); }
       function zoneDateParts(date, timeZone) {
         try {
-          const formatter = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+          const formatter = new Intl.DateTimeFormat('en-CA', { timeZone, calendar: 'gregory', era: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
           const parts = Object.fromEntries(formatter.formatToParts(date).filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
-          return { year: Number(parts.year), month: Number(parts.month), day: Number(parts.day), hour: Number(parts.hour), minute: Number(parts.minute), second: Number(parts.second) };
+          // Intl labels 1 BC as year 1; Date arithmetic uses astronomical year 0.
+          return { year: parts.era === 'BC' ? 1 - Number(parts.year) : Number(parts.year), month: Number(parts.month), day: Number(parts.day), hour: Number(parts.hour), minute: Number(parts.minute), second: Number(parts.second) };
         } catch { return null; }
       }
       function zoneDateSerial(date, timeZone) {
-        const parts = zoneDateParts(date, timeZone); return parts ? Math.floor(Date.UTC(parts.year, parts.month - 1, parts.day) / DAY_MS) : null;
+        const parts = zoneDateParts(date, timeZone); return parts ? Math.floor(utcCalendarDate(parts.year, parts.month, parts.day).getTime() / DAY_MS) : null;
       }
       function zoneOffsetMinutes(date, timeZone) {
         const parts = zoneDateParts(date, timeZone); if (!parts) return null;
-        const reconstructed = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+        const reconstructed = utcCalendarDate(parts.year, parts.month, parts.day); reconstructed.setUTCHours(parts.hour, parts.minute, parts.second, 0);
         const currentSecond = Math.floor(date.getTime() / 1000) * 1000;
-        return Math.round((reconstructed - currentSecond) / 60000);
+        // Preserve historical offset seconds so the minute-only UI can reject them explicitly.
+        return (reconstructed.getTime() - currentSecond) / 60000;
+      }
+      function supportsMinuteConversion(date, timeZone) {
+        const parts = zoneDateParts(date, timeZone);
+        return Boolean(parts && parts.year >= 1 && parts.year <= 9999 && parts.second === 0 && Number.isInteger(zoneOffsetMinutes(date, timeZone)));
       }
       function formatUtcOffset(minutes) {
         if (!Number.isFinite(minutes)) return 'UTC';
+        if (!Number.isInteger(minutes)) return t('unsupportedTimezonePrecision');
         if (minutes === 0) return 'UTC';
         const sign = minutes > 0 ? '+' : '-'; const absolute = Math.abs(minutes); const hours = Math.floor(absolute / 60); const mins = absolute % 60;
         return `UTC${sign}${hours}${mins ? `:${String(mins).padStart(2, '0')}` : ''}`;
@@ -1480,7 +1489,7 @@
         const date = new Date(0); date.setUTCFullYear(wall.year, wall.month - 1, wall.day); date.setUTCHours(wall.hour, wall.minute, 0, 0); return date.getTime();
       }
       function wallMatches(parts, wall) {
-        return Boolean(parts && parts.year === wall.year && parts.month === wall.month && parts.day === wall.day && parts.hour === wall.hour && parts.minute === wall.minute);
+        return Boolean(parts && parts.year === wall.year && parts.month === wall.month && parts.day === wall.day && parts.hour === wall.hour && parts.minute === wall.minute && parts.second === 0);
       }
       function resolveWallTime(wall, timeZone) {
         const naive = wallUtcMs(wall); const offsets = new Set();
@@ -1489,7 +1498,7 @@
         });
         const candidates = [];
         offsets.forEach(offset => {
-          const date = new Date(naive - offset * 60000); if (wallMatches(zoneDateParts(date, timeZone), wall) && !candidates.some(item => item.getTime() === date.getTime())) candidates.push(date);
+          const date = new Date(naive - Math.round(offset * 60000)); if (wallMatches(zoneDateParts(date, timeZone), wall) && !candidates.some(item => item.getTime() === date.getTime())) candidates.push(date);
         });
         return candidates.sort((a, b) => a - b);
       }
@@ -1505,8 +1514,10 @@
         if (diff === -1) return t('previousDay'); if (diff === 1) return t('nextDay');
         if (diff < -1) return t('daysEarlier', { n: Math.abs(diff) }); if (diff > 1) return t('daysLater', { n: diff }); return '';
       }
-      function clearTimezoneResult(message = '') {
-        setError($('#timezoneError'), message); $('#timezoneAmbiguity').hidden = true; timezoneCandidates = []; timezoneOccurrenceIndex = 0;
+      function clearTimezoneResult(message = '', { preserveAmbiguity = false } = {}) {
+        setError($('#timezoneError'), message);
+        if (!preserveAmbiguity || timezoneCandidates.length < 2) { timezoneCandidates = []; timezoneOccurrenceIndex = 0; }
+        updateAmbiguityUi();
         $('#timezoneResultCity').textContent = '—'; $('#timezoneResultCountry').textContent = ''; $('#timezoneResultTime').textContent = '—'; $('#timezoneResultDate').textContent = '—'; $('#timezoneResultZone').textContent = '—'; $('#timezoneResultCopy').textContent = ''; $('#timezoneRelation').hidden = true; $('#timezoneOtherCities').textContent = '';
       }
       function updateAmbiguityUi() {
@@ -1522,6 +1533,11 @@
         selectedCityIds.map(cityById).filter(Boolean).filter(city => city.id !== sourceChoice?.city?.id && city.id !== targetChoice?.city?.id).forEach(city => {
           const card = document.createElement('div'); card.className = 'converted-city-card';
           const name = document.createElement('strong'); name.textContent = cityName(city); card.append(name);
+          if (!supportsMinuteConversion(instant, city.zone)) {
+            const time = document.createElement('div'); time.className = 'converted-time'; time.textContent = '—'; card.append(time);
+            const note = document.createElement('div'); note.className = 'converted-date'; note.textContent = t('unsupportedTimezonePrecision'); card.append(note);
+            root.append(card); return;
+          }
           const time = document.createElement('div'); time.className = 'converted-time'; time.textContent = formatWorldTime(instant, city.zone); card.append(time);
           const date = document.createElement('div'); date.className = 'converted-date'; date.textContent = formatWorldDate(instant, city.zone); card.append(date);
           const relation = sourceDayRelation(instant, city.zone, wall); if (relation) { const chip = document.createElement('span'); chip.className = 'converted-relation'; chip.textContent = relation; card.append(chip); }
@@ -1535,8 +1551,10 @@
         timezoneCandidates = resolveWallTime(wall, source.zone);
         if (!timezoneCandidates.length) { clearTimezoneResult(t('nonexistentLocalTime')); return; }
         if (timezoneOccurrenceIndex >= timezoneCandidates.length) timezoneOccurrenceIndex = 0;
+        const instant = timezoneCandidates[timezoneOccurrenceIndex];
+        if (!supportsMinuteConversion(instant, source.zone) || !supportsMinuteConversion(instant, target.zone)) { clearTimezoneResult(t('unsupportedTimezonePrecision'), { preserveAmbiguity: true }); return; }
         setError($('#timezoneError')); updateAmbiguityUi();
-        const instant = timezoneCandidates[timezoneOccurrenceIndex]; const targetName = timezoneChoiceName(target); const relation = sourceDayRelation(instant, target.zone, wall);
+        const targetName = timezoneChoiceName(target); const relation = sourceDayRelation(instant, target.zone, wall);
         $('#timezoneResultCity').textContent = targetName; $('#timezoneResultCountry').textContent = timezoneChoiceCountry(target);
         $('#timezoneResultTime').textContent = formatWorldTime(instant, target.zone); $('#timezoneResultDate').textContent = formatZoneFullDate(instant, target.zone); $('#timezoneResultZone').textContent = `${formatUtcOffset(zoneOffsetMinutes(instant, target.zone))} · ${target.zone}`;
         $('#timezoneResultCopy').textContent = `${formatZoneFullDate(instant, target.zone)} ${formatWorldTime(instant, target.zone)} · ${targetName}`;
@@ -1550,11 +1568,19 @@
       }
       function setTimezoneNow() { setTimezoneInputsToInstant(new Date()); updateTimezoneConversion({ resetOccurrence: true }); }
       function swapTimezones() {
-        const sourceSelect = $('#timezoneSource'); const targetSelect = $('#timezoneTarget'); const wall = wallRequest(); const source = timezoneChoice(sourceSelect.value);
+        const sourceSelect = $('#timezoneSource'); const targetSelect = $('#timezoneTarget'); const wall = wallRequest(); const source = timezoneChoice(sourceSelect.value); const target = timezoneChoice(targetSelect.value);
         let instant = null; if (wall && source) { const candidates = resolveWallTime(wall, source.zone); if (candidates.length) instant = candidates[Math.min(timezoneOccurrenceIndex, candidates.length - 1)]; }
+        // Rejected conversions must not silently lose seconds or write an uneditable year on Swap.
+        if (instant && (!target || !supportsMinuteConversion(instant, source.zone) || !supportsMinuteConversion(instant, target.zone))) instant = null;
         const previousSource = sourceSelect.value; sourceSelect.value = targetSelect.value; targetSelect.value = previousSource;
-        if (instant) setTimezoneInputsToInstant(instant, timezoneChoice(sourceSelect.value));
-        updateTimezoneConversion({ resetOccurrence: true });
+        timezoneOccurrenceIndex = 0;
+        if (instant) {
+          const nextSource = timezoneChoice(sourceSelect.value); setTimezoneInputsToInstant(instant, nextSource);
+          const nextWall = wallRequest();
+          // The new source can repeat this wall time: select the occurrence of the original instant.
+          if (nextSource && nextWall) timezoneOccurrenceIndex = Math.max(0, resolveWallTime(nextWall, nextSource.zone).findIndex(candidate => candidate.getTime() === instant.getTime()));
+        }
+        updateTimezoneConversion();
       }
 
       function syncDesktopTabs(key) {
@@ -1601,11 +1627,41 @@
         const kanaConverted = Array.from(String(text), halfwidthKanaChar).join('');
         return Array.from(kanaConverted, char => { const category=fullwidthCategory(char); if (!category || !options[category]) return char; if (category==='spaces') return ' '; return String.fromCodePoint(char.codePointAt(0)-0xFEE0); }).join('');
       }
-      function setTextResult(id, value) { const element=$(id); if (!element) return; const hasValue=Boolean(value); element.textContent=hasValue ? value : t('textEmptyResult'); element.classList.toggle('is-empty', !hasValue); }
+      // Keep actual text separate from translated empty messages and date placeholders.
+      const textResultValues = new Map();
+      let textInputRevision = 0;
+      function setTextResult(id, value) {
+        const element=$(id); if (!element) return;
+        textResultValues.set(element.id, value);
+        const hasValue=value.length > 0;
+        element.textContent=hasValue ? value : t('textEmptyResult');
+        element.classList.toggle('is-empty', !hasValue);
+      }
       function updateTextConversions() {
         const value=$('#textInput')?.value || ''; const options=widthOptions();
         setTextResult('#hiraganaResult', value ? toHiragana(value) : ''); setTextResult('#katakanaResult', value ? toKatakana(value) : ''); setTextResult('#halfwidthKanaResult', value ? toHalfwidthKana(value) : ''); setTextResult('#fullwidthResult', value ? toFullwidthText(value, options) : ''); setTextResult('#halfwidthResult', value ? toHalfwidthText(value, options) : '');
         const count=Array.from(value).length; $('#textCharacterCount').textContent=t('characterCount', { n: new Intl.NumberFormat(language === 'ja' ? 'ja-JP' : 'en-US').format(count) }); $('#clearTextButton').disabled=!value;
+        $$('[data-copy-target]').forEach(syncCopyButton);
+        $$('[data-reuse-target]').forEach(button => {
+          const result=textResultValues.get(button.dataset.reuseTarget);
+          button.disabled=!result || result === value;
+        });
+      }
+      function replaceTextInput(value, messageKey) {
+        const input=$('#textInput'); const previous=input.value;
+        if (value === previous) return;
+        input.value=value;
+        const revision=++textInputRevision;
+        updateTextConversions(); input.focus();
+        AppToast.show({ message: t(messageKey), actionLabel: t('undo'), duration: 5000, onAction: () => {
+          // Typing, a newer replacement, or an earlier Undo invalidates this action.
+          if (textInputRevision !== revision || input.value !== value) return;
+          textInputRevision+=1; input.value=previous; updateTextConversions(); input.focus();
+        } });
+      }
+      function reuseTextResult(targetId) {
+        const value=textResultValues.get(targetId);
+        if (value) replaceTextInput(value, 'textReused');
       }
       function setCategory(key, options = {}) {
         if (!['date', 'time', 'text'].includes(key)) return;
@@ -1626,9 +1682,9 @@
         $('#betweenWeekdays').textContent = formatSignedCount(countWeekdays(start, end, includeBoth), 'dayUnit', 'daysUnit');
       }
       function updateAdd() {
-        const base = parseYmd($('#addBaseDate').value); const quantity = Number($('#addQuantity').value); const error = $('#addError');
+        const base = parseYmd($('#addBaseDate').value); const quantityText = $('#addQuantity').value.trim(); const quantity = Number(quantityText); const error = $('#addError');
         if (!base) { setError(error, t('invalidDate')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
-        if (!Number.isInteger(quantity) || quantity < 0 || quantity > 100000) { setError(error, t('invalidQuantity')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
+        if (!quantityText || !Number.isInteger(quantity) || quantity < 0 || quantity > 100000) { setError(error, t('invalidQuantity')); $('#addResultMain').textContent = '—'; $('#addResultCopy').textContent = ''; return; }
         const direction = $('#addDirection').value === 'before' ? -1 : 1; const unit = $('#addUnit').value; let result = null;
         if (unit === 'day') result = addDays(base, quantity * direction);
         else if (unit === 'week') result = addDays(base, quantity * 7 * direction);
@@ -1696,7 +1752,9 @@
         populateEraSelect(); populateTimezoneSelects(); refreshAllResults(); renderWorldClocks(); updateTimezoneConversion(); if (!$('#citySearchResults')?.hidden) renderCitySearchResults();
       }
       function copyTargetHasValue(target) {
-        if (!target || target.classList?.contains('is-empty')) return false;
+        if (!target) return false;
+        if (textResultValues.has(target.id)) return textResultValues.get(target.id).length > 0;
+        if (target.classList?.contains('is-empty')) return false;
         const value=target.textContent?.trim() || '';
         return Boolean(value && value !== '—');
       }
@@ -1715,13 +1773,22 @@
       }
 
       async function copyResult(targetId) {
-        const target = document.getElementById(targetId); const value = target?.textContent?.trim() || '';
-        if (!value || value === '—') return;
-        try { await navigator.clipboard.writeText(value); AppToast.show({ message: t('copied'), tone: 'success' }); }
+        const target=document.getElementById(targetId);
+        if (!copyTargetHasValue(target)) return;
+        const value=textResultValues.has(targetId) ? textResultValues.get(targetId) : target.textContent.trim();
+        const revision=textInputRevision;
+        let ok=false;
+        try { await navigator.clipboard.writeText(value); ok=true; }
         catch {
-          const area = document.createElement('textarea'); area.value = value; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0'; document.body.append(area); area.select();
-          const ok = document.execCommand('copy'); area.remove(); AppToast.show({ message: t(ok ? 'copied' : 'copyFailed'), tone: ok ? 'success' : 'warning' });
+          const focused=document.activeElement;
+          const area=document.createElement('textarea');
+          area.value=value; area.setAttribute('readonly', ''); area.style.position='fixed'; area.style.opacity='0';
+          try { document.body.append(area); area.select(); ok=document.execCommand('copy'); }
+          catch { /* Copy may be unavailable even through the compatibility path. */ }
+          finally { area.remove(); focused?.focus({ preventScroll: true }); }
         }
+        // A delayed clipboard response must not replace a newer text-edit Undo.
+        if (revision === textInputRevision) AppToast.show({ message: t(ok ? 'copied' : 'copyFailed'), tone: ok ? 'success' : 'warning' });
       }
 
       const today = readToday();
@@ -1767,9 +1834,10 @@
       $('#worldClockList').addEventListener('click', event => { const remove = event.target.closest('[data-remove-city]'); if (remove) removeWorldClockCity(remove.dataset.removeCity); });
       document.addEventListener('pointerdown', event => { if (!event.target.closest('.city-search-wrap')) hideCitySearchResults(); });
       window.setInterval(() => renderWorldClocks(new Date()), 30000);
-      $('#textInput').addEventListener('input', updateTextConversions);
+      $('#textInput').addEventListener('input', () => { textInputRevision+=1; updateTextConversions(); });
       ['widthLetters','widthDigits','widthSymbols','widthSpaces'].forEach(id => $(`#${id}`).addEventListener('input', updateTextConversions));
-      $('#clearTextButton').addEventListener('click', () => { const previous=$('#textInput').value; if (!previous) return; $('#textInput').value=''; updateTextConversions(); AppToast.show({ message: t('textCleared'), actionLabel: t('undo'), onAction: () => { $('#textInput').value=previous; updateTextConversions(); $('#textInput').focus(); }, duration: 5000 }); });
+      $('#clearTextButton').addEventListener('click', () => replaceTextInput('', 'textCleared'));
+      $$('[data-reuse-target]').forEach(button => button.addEventListener('click', () => reuseTextResult(button.dataset.reuseTarget)));
 
       $('#versionBadge').textContent = `v${APP_CONFIG.version}`; $('#buildVersion').textContent = APP_CONFIG.version; $('#builtAt').textContent = BUILD_MANIFEST.generatedAtUtc || '—'; $('#dependencyCount').textContent = String(BUILD_MANIFEST.dependencies?.length || 0);
       applyLanguage();

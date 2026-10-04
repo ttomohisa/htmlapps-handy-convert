@@ -225,6 +225,19 @@ $buildArguments = @{}
 if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 & (Join-Path $Root "build-standalone.ps1") @buildArguments
 
+# Run application behavior regressions against source and the generated readable release.
+$testFiles = @(Get-ChildItem -LiteralPath (Join-Path $Root "scripts/tests") -Filter "*.test.cjs" | ForEach-Object { $_.FullName })
+$previousTestHtml = $env:HANDY_CONVERT_HTML
+try {
+  foreach ($htmlPath in @("src/index.template.html", "dist/index.html")) {
+    $env:HANDY_CONVERT_HTML = Join-Path $Root $htmlPath
+    & node --test @testFiles
+    if ($LASTEXITCODE -ne 0) { throw "Application regression tests failed for $htmlPath." }
+  }
+} finally {
+  $env:HANDY_CONVERT_HTML = $previousTestHtml
+}
+
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
 
 # WebRTC readiness DataChannel regression
