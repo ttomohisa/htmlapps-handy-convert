@@ -65,6 +65,8 @@ This app has no third-party runtime package dependencies, so the normal build do
 
 - **World clock** — Search for cities, add or remove them, and compare current local time, date context, and UTC offset. Removed cities can be restored with Undo.
 - **Time-zone conversion** — Choose source and destination cities, then enter the source local date/time. If a daylight-saving transition creates a nonexistent local time, the app reports it instead of silently changing the input. If the same local time occurs twice, choose the first or second occurrence.
+- **Copy ISO** — Copy the primary destination as `YYYY-MM-DDTHH:mm±HH:mm`, for example `2026-11-01T01:30-05:00`. The numeric UTC offset distinguishes repeated local times; ordinary Copy keeps its localized date/time and city. Both actions are unavailable for invalid or unsupported results.
+- **Current time** — Fill the selected source at minute precision using the actual current occurrence during a clock overlap. Initial loading uses the same rule.
 
 The world clock uses your device clock. If the device time is incorrect, the displayed current time will also be incorrect.
 
