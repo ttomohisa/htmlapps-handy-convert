@@ -146,3 +146,52 @@ test('DST gap and invalid input remain safe when swapping', () => {
   assert.equal(app.getElement('timezoneError').textContent, 'invalidLocalDateTime');
   assert.equal(app.context.state.occurrence(), 0);
 });
+
+function freezeClock(app, now) {
+  const NativeDate = vm.runInContext('Date', app.context);
+  app.context.Date = class extends NativeDate {
+    constructor(...args) { super(...(args.length ? args : [now])); }
+    static now() { return NativeDate.parse(now); }
+  };
+}
+
+for (const [name, now, from, expected, occurrence] of [
+  ['first New York overlap occurrence', '2026-11-01T05:30:42.123Z', 'new-york', '2026-11-01T05:30:00.000Z', 0],
+  ['second New York overlap occurrence', '2026-11-01T06:30:42.123Z', 'new-york', '2026-11-01T06:30:00.000Z', 1],
+  ['ordinary New York time', '2026-10-05T12:34:56.789Z', 'new-york', '2026-10-05T12:34:00.000Z', 0],
+  ['Tokyo time', '2026-11-01T06:30:42.123Z', 'tokyo', '2026-11-01T06:30:00.000Z', 0],
+  ['last minute before the spring gap', '2026-03-08T06:59:45.000Z', 'new-york', '2026-03-08T06:59:00.000Z', 0],
+  ['first minute after the spring gap', '2026-03-08T07:00:45.000Z', 'new-york', '2026-03-08T07:00:00.000Z', 0]
+]) test(`Current time preserves ${name} at minute precision`, () => {
+  const app = setup(); app.convert({ from, to: from === 'tokyo' ? 'new-york' : 'tokyo' });
+  freezeClock(app, now); app.context.setTimezoneNow();
+  assert.equal(app.instant(), expected);
+  assert.equal(app.context.state.occurrence(), occurrence);
+  app.context.setTimezoneNow();
+  assert.equal(app.instant(), expected, 'Repeated Current time remains stable');
+});
+
+for (const [now, occurrence] of [['2026-11-01T05:30:42.123Z', 0], ['2026-11-01T06:30:42.123Z', 1]]) {
+  test(`Startup in New York preserves overlap occurrence ${occurrence + 1}`, () => {
+    const app = setup({ localTimeZone: 'America/New_York' });
+    freezeClock(app, now);
+    const bootstrapLine = source.split('\n').find(line => line.trimStart().startsWith('populateTimezoneSelects();'));
+    assert.ok(bootstrapLine, 'Execute the real converter initialization');
+    vm.runInContext(bootstrapLine, app.context);
+    app.context.updateTimezoneConversion();
+    assert.equal(app.instant(), now.replace('42.123Z', '00.000Z'));
+    assert.equal(app.context.state.occurrence(), occurrence);
+    assert.equal(app.getElement('timezoneTime').value, '01:30');
+  });
+}
+
+test('Explicit occurrence selection and edits remain available after Current time', () => {
+  const app = setup(); app.convert({ from: 'new-york', to: 'tokyo' });
+  freezeClock(app, '2026-11-01T06:30:42.123Z'); app.context.setTimezoneNow();
+  assert.equal(app.context.state.occurrence(), 1);
+  app.context.state.chooseOccurrence(0);
+  assert.equal(app.instant(), '2026-11-01T05:30:00.000Z');
+  app.context.setTimezoneNow();
+  app.context.updateTimezoneConversion({ resetOccurrence: true });
+  assert.equal(app.context.state.occurrence(), 0, 'Editing still defaults to the first occurrence');
+});

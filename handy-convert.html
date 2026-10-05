@@ -294,6 +294,7 @@
     .result-row span:first-child { color: var(--muted); }
     .result-row strong { text-align: right; overflow-wrap: anywhere; }
     .result-action-row { display: flex; justify-content: flex-end; margin-top: 10px; }
+    .timezone-result .result-action-row { gap: 8px; flex-wrap: wrap; }
     .error-box {
       margin-top: 12px;
       padding: 10px 12px;
@@ -810,7 +811,7 @@
             <div class="timezone-result-time" id="timezoneResultTime">—</div>
             <div class="timezone-result-date" id="timezoneResultDate">—</div>
             <div class="timezone-result-zone" id="timezoneResultZone">—</div>
-            <div class="result-action-row"><button class="small-button" type="button" data-copy-target="timezoneResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="timezoneResultCopy"></span>
+            <div class="result-action-row"><button class="small-button" type="button" data-copy-target="timezoneResultCopy" data-i18n="copy">コピー</button><button class="small-button" type="button" data-copy-target="timezoneResultIso" data-i18n="copyIso" disabled>ISO形式でコピー</button></div><span class="sr-only" id="timezoneResultCopy"></span><span class="sr-only" id="timezoneResultIso"></span>
           </div>
           <div class="converted-city-grid" id="timezoneOtherCities" aria-live="polite"></div>
           <p class="timezone-empty-note" id="timezoneOtherCitiesNote" data-i18n="otherCitiesNote">世界時計に追加した都市も同じ日時で表示します。</p>
@@ -920,7 +921,7 @@
       <h3 data-i18n="helpDateTitle">日付計算について</h3>
       <ul><li data-i18n="helpDateWeekdays">平日は土曜日と日曜日だけを除き、祝日は考慮しません。</li><li data-i18n="helpDateMonthEnd">月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。</li><li data-i18n="helpDateEra">和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。</li></ul>
       <h3 data-i18n="helpTimeTitle">世界時計について</h3>
-      <ul><li data-i18n="helpTimeDevice">世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。</li><li data-i18n="helpTimeCities">追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。</li><li data-i18n="helpTimeDst">夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。</li><li data-i18n="helpTimePrecision">時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。</li></ul>
+      <ul><li data-i18n="helpTimeDevice">世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。</li><li data-i18n="helpTimeCities">追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。</li><li data-i18n="helpTimeDst">夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。現在時刻と起動時は、実際の現在時刻に合う方を選びます。</li><li data-i18n="helpTimeCopyIso">ISO形式でコピーすると、変換先の日時をYYYY-MM-DDTHH:mm±HH:mm形式でコピーします。分単位の日時とUTCオフセットを含むため、同じ現地時刻が2回ある場合も区別できます。</li><li data-i18n="helpTimePrecision">時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。</li></ul>
       <h3 data-i18n="helpTextTitle">文字変換について</h3>
       <ul><li data-i18n="helpTextKana">かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。</li><li data-i18n="helpTextWidth">全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。</li><li data-i18n="helpTextReuse">「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。</li><li data-i18n="helpTextUndo">「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。</li><li data-i18n="helpTextNoHistory">入力した文字列や変換履歴は保存しません。</li></ul>
       <h3 data-i18n="helpPrivacyTitle">プライバシー</h3>
@@ -942,7 +943,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.0","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-04T15:22:11.3884526Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.0"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-05T23:32:19.3819662Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.0"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
@@ -1048,12 +1049,12 @@
           eraTitle: '西暦・和暦', eraDescription: '明治・大正・昭和・平成・令和と西暦を相互変換します。', westernToEra: '西暦 → 和暦', eraToWestern: '和暦 → 西暦', gregorianDate: '西暦の日付', era: '元号', eraYear: '年', month: '月', day: '日', eraRangeNote: '1873年1月1日以降を対象にします。',
           copy: 'コピー', copied: 'コピーしました', copyFailed: 'コピーできませんでした',
           worldClock: '世界時計', worldClockDescription: '現在地と選んだ都市の時刻を並べて確認します。', addCity: '都市を追加', citySearchPlaceholder: '都市名を検索', deviceClockNote: '端末の時計を使用します', currentLocation: '現在地', previousDay: '前日', nextDay: '翌日', daysEarlier: '{n}日前', daysLater: '{n}日後', removeCity: '{city}を削除', cityRemoved: '{city}を削除しました', undo: '元に戻す', cityRestored: '{city}を戻しました', cityAlreadyAdded: 'この都市はすでに表示されています', cityLimitReached: '追加できる都市は12件までです', noCitiesFound: '一致する都市がありません', localZoneFallback: '端末のタイムゾーン',
-          timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', unsupportedTimezonePrecision: 'この日時は、UTCオフセットに秒が含まれるか、年が0001〜9999の範囲外になるため変換できません。分単位のオフセットで、この年の範囲に収まる日時を選んでください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
+          timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', copyIso: 'ISO形式でコピー', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', unsupportedTimezonePrecision: 'この日時は、UTCオフセットに秒が含まれるか、年が0001〜9999の範囲外になるため変換できません。分単位のオフセットで、この年の範囲に収まる日時を選んでください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
           textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', useAsInput: '入力に使う', textReused: '変換結果を入力に使いました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
           buildInfo: 'アプリ情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: '完全内包HTMLとして生成',
           helpBasicsTitle: '基本操作', helpStep1: '日付・時刻・文字から使いたいカテゴリを選びます。', helpStep2: '入力を変更すると、表示中の変換結果が自動で更新されます。', helpStep3: '結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。',
           helpDateTitle: '日付計算について', helpDateWeekdays: '平日は土曜日と日曜日だけを除き、祝日は考慮しません。', helpDateMonthEnd: '月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。', helpDateEra: '和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。',
-          helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。', helpTimePrecision: '時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextReuse: '「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。', helpTextUndo: '「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
+          helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。現在時刻と起動時は、実際の現在時刻に合う方を選びます。', helpTimeCopyIso: 'ISO形式でコピーすると、変換先の日時をYYYY-MM-DDTHH:mm±HH:mm形式でコピーします。分単位の日時とUTCオフセットを含むため、同じ現地時刻が2回ある場合も区別できます。', helpTimePrecision: '時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextReuse: '「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。', helpTextUndo: '「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
           helpPrivacyTitle: 'プライバシー', helpPrivacyBody: '入力した日付や文字列はブラウザー内で処理され、このアプリから外部へ送信されません。入力内容や変換履歴も保存しません。', helpOffline: '必要なコードは配布用HTMLに内包され、実行時の外部通信は行いません。',
           helpNotesTitle: '注意事項', helpNoteClock: '世界時計は端末の時計を基準にするため、端末時刻がずれている場合は表示もずれます。',
           invalidDate: '有効な日付を入力してください。', invalidQuantity: '0以上の整数を入力してください。', resultOutOfRange: '計算結果がブラウザーで扱える日付範囲を超えています。', referenceBeforeStart: '基準日は開始日以降の日付にしてください。', unsupportedEraDate: '1873年1月1日より前の日付は対象外です。', invalidEraDate: 'その元号には存在しない日付です。', invalidEraInput: '元号・年・月・日を正しく入力してください。',
@@ -1070,12 +1071,12 @@
           eraTitle: 'Gregorian / Japanese era', eraDescription: 'Convert between Gregorian dates and Meiji, Taisho, Showa, Heisei, or Reiwa.', westernToEra: 'Gregorian → Era', eraToWestern: 'Era → Gregorian', gregorianDate: 'Gregorian date', era: 'Era', eraYear: 'Year', month: 'Month', day: 'Day', eraRangeNote: 'Supported from January 1, 1873 onward.',
           copy: 'Copy', copied: 'Copied', copyFailed: 'Could not copy',
           worldClock: 'World clock', worldClockDescription: 'Compare your current zone with the cities you choose.', addCity: 'Add city', citySearchPlaceholder: 'Search cities', deviceClockNote: 'Uses your device clock', currentLocation: 'Current', previousDay: 'Previous day', nextDay: 'Next day', daysEarlier: '{n} days earlier', daysLater: '{n} days later', removeCity: 'Remove {city}', cityRemoved: 'Removed {city}', undo: 'Undo', cityRestored: 'Restored {city}', cityAlreadyAdded: 'That city is already shown', cityLimitReached: 'You can show up to 12 cities', noCitiesFound: 'No matching cities', localZoneFallback: 'Device time zone',
-          timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', unsupportedTimezonePrecision: 'This date/time requires seconds in its UTC offset or falls outside years 0001–9999. Choose a date/time with whole-minute offsets within that range.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
+          timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', copyIso: 'Copy ISO', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', unsupportedTimezonePrecision: 'This date/time requires seconds in its UTC offset or falls outside years 0001–9999. Choose a date/time with whole-minute offsets within that range.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
           textInputTitle: 'Enter text', textInputDescription: 'Kana and width conversion results update together as you type. The input is not saved.', inputText: 'Input', textInputPlaceholder: 'Type or paste text', textNotSaved: 'Your text is processed on this device and is not saved.', characterCount: 'Characters: {n}', textEmptyResult: 'Results appear here as you type', clear: 'Clear', textCleared: 'Input cleared', useAsInput: 'Use as input', textReused: 'Result used as input', kanaConvert: 'Kana conversion', kanaDescription: 'See hiragana, katakana, and half-width kana results together.', hiragana: 'Hiragana', katakana: 'Katakana', halfwidthKana: 'Half-width kana', widthConvert: 'Full / half width', widthDescription: 'Choose which character types are converted between full and half width.', conversionTargets: 'Conversion targets', letters: 'Letters', digits: 'Numbers', symbols: 'Symbols', spaces: 'Spaces', kanaWidthNote: 'Kana and Japanese punctuation follow the width of the selected result.', fullwidth: 'Full width', halfwidth: 'Half width',
           buildInfo: 'App information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Generated as one self-contained HTML file',
           helpBasicsTitle: 'Basics', helpStep1: 'Choose Date, Time, or Text.', helpStep2: 'Conversion results update automatically when you change an input.', helpStep3: 'Where a Copy button is available, it copies only that result.',
           helpDateTitle: 'Date calculations', helpDateWeekdays: 'Weekday counts exclude Saturday and Sunday only; public holidays are not considered.', helpDateMonthEnd: 'When adding months or years and the same day does not exist, the result is clamped to the final day of that month.', helpDateEra: 'Japanese era conversion supports Meiji, Taisho, Showa, Heisei, and Reiwa from January 1, 1873 onward.',
-          helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence.', helpTimePrecision: 'Time input has minute precision. Historical offsets containing seconds and destination years outside 0001–9999 show a limitation message.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextReuse: 'Use as input replaces the input with a result so you can continue converting. Copy preserves leading and trailing spaces and line breaks.', helpTextUndo: 'Use as input and Clear can be undone while the Undo message is visible. Editing or another replacement makes the previous Undo unavailable.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
+          helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence. Current time and startup select the occurrence matching the actual current time.', helpTimeCopyIso: 'Copy ISO copies the destination date/time as YYYY-MM-DDTHH:mm±HH:mm. It includes the minute-precision time and UTC offset, so repeated local times remain distinct.', helpTimePrecision: 'Time input has minute precision. Historical offsets containing seconds and destination years outside 0001–9999 show a limitation message.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextReuse: 'Use as input replaces the input with a result so you can continue converting. Copy preserves leading and trailing spaces and line breaks.', helpTextUndo: 'Use as input and Clear can be undone while the Undo message is visible. Editing or another replacement makes the previous Undo unavailable.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
           helpPrivacyTitle: 'Privacy', helpPrivacyBody: 'Entered dates and text are processed in the browser and are not sent outside by this app. Inputs and conversion history are not stored.', helpOffline: 'Required code is embedded in the distributable HTML and the app performs no runtime network requests.',
           helpNotesTitle: 'Notes', helpNoteClock: 'The world clock uses your device clock, so an incorrect device time will also affect displayed times.',
           invalidDate: 'Enter a valid date.', invalidQuantity: 'Enter a whole number of zero or more.', resultOutOfRange: 'The calculated date is outside the date range supported by the browser.', referenceBeforeStart: 'The reference date must be on or after the start date.', unsupportedEraDate: 'Dates before January 1, 1873 are outside the supported range.', invalidEraDate: 'That date does not exist within the selected era.', invalidEraInput: 'Enter a valid era, year, month, and day.',
@@ -1506,6 +1507,14 @@
         try { return new Intl.DateTimeFormat(language === 'ja' ? 'ja-JP' : 'en-US', language === 'ja' ? { timeZone, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' } : { timeZone, year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' }).format(date); }
         catch { return '—'; }
       }
+      function formatZoneIsoMinute(instant, timeZone) {
+        if (!supportsMinuteConversion(instant, timeZone)) return '';
+        const offset = zoneOffsetMinutes(instant, timeZone);
+        // Shift the numeric instant, never parse localized display strings.
+        const local = new Date(instant.getTime() + offset * 60000).toISOString().slice(0, 16);
+        const absolute = Math.abs(offset); const sign = offset < 0 ? '-' : '+';
+        return `${local}${sign}${String(Math.floor(absolute / 60)).padStart(2, '0')}:${String(absolute % 60).padStart(2, '0')}`;
+      }
       function sourceDayRelation(date, targetZone, wall) {
         const target = zoneDateParts(date, targetZone); if (!target) return '';
         const sourceSerial = Math.floor(wallUtcMs({ ...wall, hour: 0, minute: 0 }) / DAY_MS);
@@ -1518,7 +1527,7 @@
         setError($('#timezoneError'), message);
         if (!preserveAmbiguity || timezoneCandidates.length < 2) { timezoneCandidates = []; timezoneOccurrenceIndex = 0; }
         updateAmbiguityUi();
-        $('#timezoneResultCity').textContent = '—'; $('#timezoneResultCountry').textContent = ''; $('#timezoneResultTime').textContent = '—'; $('#timezoneResultDate').textContent = '—'; $('#timezoneResultZone').textContent = '—'; $('#timezoneResultCopy').textContent = ''; $('#timezoneRelation').hidden = true; $('#timezoneOtherCities').textContent = '';
+        $('#timezoneResultCity').textContent = '—'; $('#timezoneResultCountry').textContent = ''; $('#timezoneResultTime').textContent = '—'; $('#timezoneResultDate').textContent = '—'; $('#timezoneResultZone').textContent = '—'; $('#timezoneResultCopy').textContent = ''; $('#timezoneResultIso').textContent = ''; $('#timezoneRelation').hidden = true; $('#timezoneOtherCities').textContent = '';
       }
       function updateAmbiguityUi() {
         const box = $('#timezoneAmbiguity'); if (!box) return; box.hidden = timezoneCandidates.length < 2;
@@ -1544,12 +1553,13 @@
           root.append(card);
         });
       }
-      function updateTimezoneConversion({ resetOccurrence = false } = {}) {
+      function updateTimezoneConversion({ resetOccurrence = false, preferredInstant = null } = {}) {
         const wall = wallRequest(); const source = timezoneChoice($('#timezoneSource')?.value); const target = timezoneChoice($('#timezoneTarget')?.value);
         if (!wall || !source || !target) { clearTimezoneResult(t('invalidLocalDateTime')); return; }
         if (resetOccurrence) timezoneOccurrenceIndex = 0;
         timezoneCandidates = resolveWallTime(wall, source.zone);
         if (!timezoneCandidates.length) { clearTimezoneResult(t('nonexistentLocalTime')); return; }
+        if (preferredInstant) timezoneOccurrenceIndex = Math.max(0, timezoneCandidates.findIndex(candidate => candidate.getTime() === preferredInstant.getTime()));
         if (timezoneOccurrenceIndex >= timezoneCandidates.length) timezoneOccurrenceIndex = 0;
         const instant = timezoneCandidates[timezoneOccurrenceIndex];
         if (!supportsMinuteConversion(instant, source.zone) || !supportsMinuteConversion(instant, target.zone)) { clearTimezoneResult(t('unsupportedTimezonePrecision'), { preserveAmbiguity: true }); return; }
@@ -1558,6 +1568,7 @@
         $('#timezoneResultCity').textContent = targetName; $('#timezoneResultCountry').textContent = timezoneChoiceCountry(target);
         $('#timezoneResultTime').textContent = formatWorldTime(instant, target.zone); $('#timezoneResultDate').textContent = formatZoneFullDate(instant, target.zone); $('#timezoneResultZone').textContent = `${formatUtcOffset(zoneOffsetMinutes(instant, target.zone))} · ${target.zone}`;
         $('#timezoneResultCopy').textContent = `${formatZoneFullDate(instant, target.zone)} ${formatWorldTime(instant, target.zone)} · ${targetName}`;
+        $('#timezoneResultIso').textContent = formatZoneIsoMinute(instant, target.zone);
         const relationEl = $('#timezoneRelation'); relationEl.textContent = relation; relationEl.hidden = !relation;
         renderConvertedOtherCities(instant, wall, source, target);
       }
@@ -1566,7 +1577,12 @@
         $('#timezoneDate').value = `${String(parts.year).padStart(4, '0')}-${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`;
         $('#timezoneTime').value = `${String(parts.hour).padStart(2, '0')}:${String(parts.minute).padStart(2, '0')}`;
       }
-      function setTimezoneNow() { setTimezoneInputsToInstant(new Date()); updateTimezoneConversion({ resetOccurrence: true }); }
+      function setTimezoneNow() {
+        const now = new Date(); const instant = new Date(Math.floor(now.getTime() / 60000) * 60000);
+        setTimezoneInputsToInstant(instant);
+        // An overlap has two candidates; keep the one matching the current minute.
+        updateTimezoneConversion({ preferredInstant: instant });
+      }
       function swapTimezones() {
         const sourceSelect = $('#timezoneSource'); const targetSelect = $('#timezoneTarget'); const wall = wallRequest(); const source = timezoneChoice(sourceSelect.value); const target = timezoneChoice(targetSelect.value);
         let instant = null; if (wall && source) { const candidates = resolveWallTime(wall, source.zone); if (candidates.length) instant = candidates[Math.min(timezoneOccurrenceIndex, candidates.length - 1)]; }
@@ -1795,7 +1811,7 @@
       $('#betweenStart').value = today; $('#betweenEnd').value = today; $('#addBaseDate').value = today; $('#elapsedEnd').value = today; $('#gregorianDate').value = today;
       const thirtyYearsAgo = addMonthsClamped(parseYmd(today), -360); $('#elapsedStart').value = thirtyYearsAgo?.value || today;
       const todayParts = parseYmd(today); if (todayParts) { const todayEra = eraForDate(todayParts); if (todayEra) { $('#eraSelect').value = todayEra.id; $('#eraYear').value = String(eraYearFor(todayEra, todayParts.year)); $('#eraMonth').value = String(todayParts.month); $('#eraDay').value = String(todayParts.day); } }
-      populateTimezoneSelects(); setTimezoneInputsToInstant(new Date(), timezoneChoice('local'));
+      populateTimezoneSelects(); setTimezoneNow();
 
       mobileNav = window.AppMobileBottomBar.mount($('#mobileBottomBar'), { initialPage: activeCategory, onPageChange: ({ key }) => { activeCategory = key; writeStorage(storageKeys.category, key); syncDesktopTabs(key); } });
       mobileNav.showPage(activeCategory, { scroll: false }); syncDesktopTabs(activeCategory);

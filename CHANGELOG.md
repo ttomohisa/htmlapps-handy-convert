@@ -3,10 +3,12 @@
 ## [Unreleased]
 
 ### Added
+- Added bilingual Copy ISO for the primary time-zone result, including the destination UTC offset at minute precision while keeping localized Copy unchanged.
 - Added localized Use as input actions for all five text results, allowing chained kana and width conversions with guarded Undo.
 - Added dependency-free workflow regression tests to the repository check.
 
 ### Fixed
+- Preserve the actual current occurrence during daylight-saving overlaps when using Current time or first opening the converter.
 - Refresh the checked-in `handy-convert.html` on default builds and fail validation when it is stale, so repository downloads include the same fixes as GitHub Pages.
 - Preserve leading/trailing whitespace and line breaks when copying text; allow whitespace-only and literal em-dash results.
 - Prevent Clear/reuse Undo from overwriting newer input and delayed clipboard feedback from replacing newer text Undo.
