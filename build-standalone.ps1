@@ -434,6 +434,14 @@ if ($appConfig.build.PSObject.Properties.Name -contains "sizeBudget" -and $appCo
   }
 }
 
+# Publish the repository download only for the default build. Custom outputs are
+# used by validation and experiments and must not overwrite the checked-in file.
+if (-not $OutputPathWasSpecified) {
+  $downloadPath = Join-Path $Root "handy-convert.html"
+  [System.IO.File]::Copy($OutputPath, $downloadPath, $true)
+  Write-Host "[OK] Repository download: $downloadPath" -ForegroundColor Green
+}
+
 $outputHash = Get-Sha256FileHex $OutputPath
 $outputSizeMb = [Math]::Round($readableBytes / 1MB, 2)
 Write-Host ""

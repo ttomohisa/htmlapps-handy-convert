@@ -37,17 +37,17 @@ Just [open the demo](https://ttomohisa.github.io/htmlapps-handy-convert/). No in
 
 ### Use the standalone HTML
 
-1. Download `dist/index.html` or `dist/index.self-extract.html` from this repository.
+1. Open [`handy-convert.html`](handy-convert.html) in this repository and choose **Download raw file**.
 2. Open the file in a current browser.
 3. The app runs from that single file without requiring a local server.
 
-`dist/index.html` is the readable standalone build. `dist/index.self-extract.html` stores the same app as a gzip-compressed payload and restores it locally in the browser with `DecompressionStream`.
+`handy-convert.html` is the checked-in readable download. Building locally also generates the same app as `dist/index.html`. `dist/index.self-extract.html` stores the same app as a gzip-compressed payload and restores it locally in the browser with `DecompressionStream`.
 
 ### Build it yourself (advanced)
 
 1. Download or clone this repository on Windows.
 2. Double-click `build-standalone.bat`.
-3. The build verifies the repository and generates the standalone files under `dist/`.
+3. The build verifies the standalone files, generates both variants under `dist/`, and refreshes `handy-convert.html`.
 4. Copy either generated HTML file wherever you need it.
 
 This app has no third-party runtime package dependencies, so the normal build does not need to download libraries. Node.js, Python, and a local web server are not required.
@@ -92,6 +92,7 @@ Each push to `main` runs `scripts/check-repository.ps1`, rebuilds the standalone
 
 ```text
 .
+├─ handy-convert.html           # Generated, checked-in standalone download
 ├─ src/index.template.html       # Application template
 ├─ app.config.json               # App metadata and build settings
 ├─ dependencies.json             # Runtime dependency declaration (empty for this app)
@@ -109,6 +110,8 @@ Each push to `main` runs `scripts/check-repository.ps1`, rebuilds the standalone
 ```
 
 ### Build and verify
+
+Run `build-standalone.ps1` (or the batch file) after source changes and commit the regenerated `handy-convert.html`. Do not edit generated HTML by hand. Explicit `-OutputPath` builds leave the checked-in download untouched. The `dist/` directory is generated locally and in CI; its HTML files are not committed.
 
 The repository check also runs the dependency-free Node.js regression tests in `scripts/tests/` (Node.js 18 or later).
 
@@ -131,6 +134,7 @@ The build and verification flow checks, among other things:
 - Runtime network access is blocked when required by `app.config.json`
 - No forbidden external runtime references remain
 - The self-extracting build restores the same source HTML
+- The checked-in download matches the fresh build, ignoring only its build timestamp; validation fails instead of replacing a stale download
 - Required repository files and release assets are present
 
 ## Privacy and runtime network protection
