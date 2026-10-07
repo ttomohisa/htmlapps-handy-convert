@@ -22,27 +22,37 @@ function setup({ savedCities = null, localTimeZone = 'UTC', storageUnavailable =
       set textContent(value) { content = value; this.children = []; },
       get textContent() { return content; },
       append(...children) { this.children.push(...children); },
-      setAttribute() {}, removeAttribute() {}
+      attrs: {}, setAttribute(key, value) { this.attrs[key] = String(value); }, removeAttribute(key) { delete this.attrs[key]; },
+      getAttribute(key) { return this.attrs[key] ?? null; },
+      addEventListener(type, callback) { this[type] = callback; }
     };
   }
   function getElement(id) { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); }
+  const translated = [...source.matchAll(/<[^>]+\bdata-i18n(?:-[\w-]+)?="[^"]+"[^>]*>/g)].map(([html], index) => {
+    const node = getElement(html.match(/\bid="([^"]+)"/)?.[1] || `translated-${index}`);
+    for (const [, key, value] of html.matchAll(/data-(i18n[\w-]*)="([^"]+)"/g)) node.dataset[key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+    return node;
+  });
   const context = {
-    DAY_MS: 86400000, localTimeZone, storageKeys: { cities: 'cities' }, language: 'en',
+    DAY_MS: 86400000, localTimeZone, storageKeys: { cities: 'cities', language: 'language' }, language: 'en',
     localStorage: {
       getItem(key) { if (storageUnavailable) throw new Error('Storage unavailable'); return storage.get(key) ?? null; },
       setItem(key, value) { if (storageUnavailable) throw new Error('Storage unavailable'); storage.set(key, value); }
     },
-    $: selector => getElement(selector.slice(1)), $$: () => [],
-    document: { createElement: element, querySelector: selector => getElement(selector) },
+    $: selector => getElement(selector.slice(1)), $$: selector => { const key = selector.match(/^\[data-([\w-]+)\]$/)?.[1]?.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()); return key ? translated.filter(node => key in node.dataset) : []; },
+    APP_CONFIG: { name: 'Handy Convert' }, populateEraSelect() {}, refreshAllResults() {},
+    document: { documentElement: {}, createElement: element, querySelector: selector => getElement(selector) },
     t: key => key, AppToast: { show(toast) { toasts.push(toast); } }
   };
   vm.createContext(context);
   vm.runInContext([
-    extract('      const CITY_ZONES =', '      const localTimeZone ='),
+    extract('      const translations =', '      const localTimeZone ='),
     extract('      function readStorage(', '      function detectLanguage('),
     extract('      function readToday(', '      function addDays('),
     extract('      function setError(', '      const AppToast ='),
     extract('      function cityById(', '      function syncDesktopTabs('),
+    extract('      function applyLanguage()', '      function copyTargetHasValue('),
+    source.split('\n').find(line => line.trimStart().startsWith("$('#languageButton').addEventListener")),
     'globalThis.state = { cities: () => selectedCityIds, occurrence: () => timezoneOccurrenceIndex, instant: () => timezoneCandidates[timezoneOccurrenceIndex], chooseOccurrence: index => { timezoneOccurrenceIndex = index; updateTimezoneConversion(); } };'
   ].join('\n'), context);
   function convert({ from = 'tokyo', to = 'new-york', date = '2026-11-01', time = '15:30', occurrence = 0 } = {}) {
@@ -51,7 +61,7 @@ function setup({ savedCities = null, localTimeZone = 'UTC', storageUnavailable =
     context.updateTimezoneConversion({ resetOccurrence: true });
     if (occurrence) context.state.chooseOccurrence(occurrence);
   }
-  return { context, getElement, storage, toasts, convert, cities: () => Array.from(context.state.cities()), instant: () => context.state.instant()?.toISOString() };
+  return { context, getElement, translated, storage, toasts, convert, cities: () => Array.from(context.state.cities()), instant: () => context.state.instant()?.toISOString() };
 }
 
 test('Saved empty World clock selection stays empty on reload', () => {
@@ -194,4 +204,47 @@ test('Explicit occurrence selection and edits remain available after Current tim
   app.context.setTimezoneNow();
   app.context.updateTimezoneConversion({ resetOccurrence: true });
   assert.equal(app.context.state.occurrence(), 0, 'Editing still defaults to the first occurrence');
+});
+
+
+for (const language of ['ja', 'en']) test(`${language}: target-language header labels preserve privacy and Help`, () => {
+  const app = setup();
+  app.context.language = language;
+  app.context.t = key => vm.runInContext('translations', app.context)[app.context.language][key] || key;
+  app.context.applyLanguage();
+  for (const current of [language, language === 'ja' ? 'en' : 'ja', language]) {
+    const button = app.getElement('languageButton');
+    const label = current === 'ja' ? '英語に切り替え' : 'Switch to Japanese';
+    assert.equal(app.context.document.documentElement.lang, current);
+    assert.equal(button.textContent, current === 'ja' ? 'EN' : 'JA');
+    assert.equal(button.getAttribute('aria-label'), label);
+    assert.equal(button.title, label);
+    assert.equal(app.translated.find(node => node.dataset.i18n === 'localBadge').textContent, current === 'ja' ? '完全ローカル処理' : 'Fully local processing');
+    assert.equal(app.getElement('helpButton').getAttribute('aria-label'), current === 'ja' ? '使い方と注意事項' : 'How to use & notes');
+    button.click();
+  }
+});
+
+for (const [zone, time, occurrence] of [['tokyo', '15:30', 0], ['local', '15:30', 0], ['new-york', '01:30', 0], ['new-york', '01:30', 1]]) {
+  test(`Language changes preserve equal ${zone} zones and occurrence ${occurrence + 1}`, () => {
+    const app = setup(); app.convert({ from: zone, to: zone, time, occurrence });
+    const instant = app.instant();
+    const iso = app.getElement('timezoneResultIso').textContent;
+    for (let index = 0; index < 4; index++) {
+      app.getElement('languageButton').click();
+      assert.equal(app.getElement('timezoneSource').value, zone);
+      assert.equal(app.getElement('timezoneTarget').value, zone);
+      assert.equal(app.getElement('timezoneDate').value, '2026-11-01');
+      assert.equal(app.getElement('timezoneTime').value, time);
+      assert.equal(app.context.state.occurrence(), occurrence);
+      assert.equal(app.instant(), instant);
+      assert.equal(app.getElement('timezoneResultIso').textContent, iso);
+    }
+  });
+}
+
+for (const [localTimeZone, target] of [['UTC', 'tokyo'], ['Asia/Tokyo', 'new-york']]) test(`Fresh ${localTimeZone} converter retains its distinct default zones`, () => {
+  const app = setup({ localTimeZone }); app.context.populateTimezoneSelects();
+  assert.equal(app.getElement('timezoneSource').value, 'local');
+  assert.equal(app.getElement('timezoneTarget').value, target);
 });

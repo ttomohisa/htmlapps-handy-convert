@@ -16,6 +16,8 @@ GitHub Pages delivers the initial HTML. After it loads, date calculations, world
 
 [![Handy Convert screenshot](assets/screenshot-en.png)](https://ttomohisa.github.io/htmlapps-handy-convert/)
 
+Use EN / JA in the header to switch languages. Entered date/time and selected source/destination zones are preserved, including matching zones.
+
 ## Features
 
 - **Compare two dates** — See total days, weeks and days, calendar elapsed period, and weekday count between two dates.

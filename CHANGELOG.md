@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.1] - 2026-10-07
+
+### Fixed
+- Standardize EN / JA language targets with localized target-language tooltips and accessible labels.
+- Preserve intentionally equal source/destination time zones when changing language without changing the date/time or selected DST occurrence.
+
 ## [Unreleased]
 
 ### Added
