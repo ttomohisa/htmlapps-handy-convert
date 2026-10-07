@@ -637,7 +637,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="language-button" id="languageButton" type="button" aria-label="Switch language">EN</button>
+        <button class="language-button" id="languageButton" type="button" title="英語に切り替え" aria-label="英語に切り替え">EN</button>
         <button class="icon-button header-icon-button" id="helpButton" type="button" data-i18n-title="helpTitle" data-i18n-aria-label="helpTitle" title="使い方と注意事項" aria-label="使い方と注意事項">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><path d="M12 17h.01"/></svg>
         </button>
@@ -918,6 +918,7 @@
       <!-- APP:HELP:BEGIN -->
       <h3 data-i18n="helpBasicsTitle">基本操作</h3>
       <ol><li data-i18n="helpStep1">日付・時刻・文字から使いたいカテゴリを選びます。</li><li data-i18n="helpStep2">入力を変更すると、表示中の変換結果が自動で更新されます。</li><li data-i18n="helpStep3">結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。</li></ol>
+      <p data-i18n="helpLanguage">ヘッダーのEN / JAで表示言語を切り替えられます。入力日時と選んだ変換元・変換先は、同じタイムゾーンを選んだ場合も保持されます。</p>
       <h3 data-i18n="helpDateTitle">日付計算について</h3>
       <ul><li data-i18n="helpDateWeekdays">平日は土曜日と日曜日だけを除き、祝日は考慮しません。</li><li data-i18n="helpDateMonthEnd">月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。</li><li data-i18n="helpDateEra">和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。</li></ul>
       <h3 data-i18n="helpTimeTitle">世界時計について</h3>
@@ -942,8 +943,8 @@
     (() => {
       'use strict';
 
-      const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.0","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-05T23:32:19.3819662Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.0"},"dependencies":[]};
+      const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.1","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-07T05:54:07.5494119Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.1"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
@@ -1052,6 +1053,7 @@
           timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', copyIso: 'ISO形式でコピー', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', unsupportedTimezonePrecision: 'この日時は、UTCオフセットに秒が含まれるか、年が0001〜9999の範囲外になるため変換できません。分単位のオフセットで、この年の範囲に収まる日時を選んでください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
           textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', useAsInput: '入力に使う', textReused: '変換結果を入力に使いました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
           buildInfo: 'アプリ情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: '完全内包HTMLとして生成',
+          helpLanguage: 'ヘッダーのEN / JAで表示言語を切り替えられます。入力日時と選んだ変換元・変換先は、同じタイムゾーンを選んだ場合も保持されます。',
           helpBasicsTitle: '基本操作', helpStep1: '日付・時刻・文字から使いたいカテゴリを選びます。', helpStep2: '入力を変更すると、表示中の変換結果が自動で更新されます。', helpStep3: '結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。',
           helpDateTitle: '日付計算について', helpDateWeekdays: '平日は土曜日と日曜日だけを除き、祝日は考慮しません。', helpDateMonthEnd: '月・年の加減算で同じ日が存在しない場合は、その月の最終日に合わせます。', helpDateEra: '和暦は明治・大正・昭和・平成・令和に対応し、1873年1月1日以降を対象にします。',
           helpTimeTitle: '世界時計・タイムゾーン変換について', helpTimeDevice: '世界時計とタイムゾーン変換は、端末の時計とブラウザーのタイムゾーン情報を使用します。', helpTimeCities: '追加した都市だけを端末内に保存します。タイムゾーン変換へ入力した日時は保存しません。', helpTimeDst: '夏時間の切り替えで存在しない現地時刻はエラーとして表示し、同じ現地時刻が2回存在する場合は1回目・2回目を選べます。現在時刻と起動時は、実際の現在時刻に合う方を選びます。', helpTimeCopyIso: 'ISO形式でコピーすると、変換先の日時をYYYY-MM-DDTHH:mm±HH:mm形式でコピーします。分単位の日時とUTCオフセットを含むため、同じ現地時刻が2回ある場合も区別できます。', helpTimePrecision: '時刻入力は分単位です。秒を含む歴史的な時差や、変換先が0001〜9999年の範囲外の場合は、制限を表示します。', helpTextTitle: '文字変換について', helpTextKana: 'かな変換では、ひらがな・カタカナ・半角カナを同じ入力から表示します。', helpTextWidth: '全角・半角では英字・数字・記号・スペースの対象を個別に選べます。漢字や絵文字など、対象外の文字はそのまま残します。', helpTextReuse: '「入力に使う」で結果を入力欄へ戻し、変換を続けられます。コピーは前後の空白や改行も残します。', helpTextUndo: '「入力に使う」とクリアは、表示中の「元に戻す」で取り消せます。編集や次の置き換えを行うと、前の取り消しは使えなくなります。', helpTextNoHistory: '入力した文字列や変換履歴は保存しません。',
@@ -1074,6 +1076,7 @@
           timezoneTitle: 'Time-zone conversion', timezoneDescription: 'Convert a local date and time to another city using the time-zone data in your browser, including DST changes.', fromCity: 'From', toCity: 'To', localDate: 'Local date', localTime: 'Local time', currentTime: 'Current time', copyIso: 'Copy ISO', swapTimezones: 'Swap source and destination', ambiguousTimeTitle: 'This local time occurs twice', firstOccurrence: 'First occurrence', secondOccurrence: 'Second occurrence', nonexistentLocalTime: 'This local time does not exist because of a daylight-saving or other clock transition.', invalidLocalDateTime: 'Enter a valid date and time.', unsupportedTimezonePrecision: 'This date/time requires seconds in its UTC offset or falls outside years 0001–9999. Choose a date/time with whole-minute offsets within that range.', otherCitiesNote: 'Cities added to the World clock are also shown for the same instant.',
           textInputTitle: 'Enter text', textInputDescription: 'Kana and width conversion results update together as you type. The input is not saved.', inputText: 'Input', textInputPlaceholder: 'Type or paste text', textNotSaved: 'Your text is processed on this device and is not saved.', characterCount: 'Characters: {n}', textEmptyResult: 'Results appear here as you type', clear: 'Clear', textCleared: 'Input cleared', useAsInput: 'Use as input', textReused: 'Result used as input', kanaConvert: 'Kana conversion', kanaDescription: 'See hiragana, katakana, and half-width kana results together.', hiragana: 'Hiragana', katakana: 'Katakana', halfwidthKana: 'Half-width kana', widthConvert: 'Full / half width', widthDescription: 'Choose which character types are converted between full and half width.', conversionTargets: 'Conversion targets', letters: 'Letters', digits: 'Numbers', symbols: 'Symbols', spaces: 'Spaces', kanaWidthNote: 'Kana and Japanese punctuation follow the width of the selected result.', fullwidth: 'Full width', halfwidth: 'Half width',
           buildInfo: 'App information', appVersion: 'App version', builtAt: 'Built at', dependencies: 'Embedded dependencies', footer: 'Generated as one self-contained HTML file',
+          helpLanguage: 'Use EN / JA in the header to switch languages. Entered date/time and selected source/destination zones are preserved, including matching zones.',
           helpBasicsTitle: 'Basics', helpStep1: 'Choose Date, Time, or Text.', helpStep2: 'Conversion results update automatically when you change an input.', helpStep3: 'Where a Copy button is available, it copies only that result.',
           helpDateTitle: 'Date calculations', helpDateWeekdays: 'Weekday counts exclude Saturday and Sunday only; public holidays are not considered.', helpDateMonthEnd: 'When adding months or years and the same day does not exist, the result is clamped to the final day of that month.', helpDateEra: 'Japanese era conversion supports Meiji, Taisho, Showa, Heisei, and Reiwa from January 1, 1873 onward.',
           helpTimeTitle: 'World clock and time-zone conversion', helpTimeDevice: 'The world clock and converter use your device clock and the time-zone data provided by your browser.', helpTimeCities: 'Only the cities you add are stored on this device. Date and time values entered in the converter are not stored.', helpTimeDst: 'If a local time does not exist during a clock transition, the converter shows an error. If a local time occurs twice, you can choose the first or second occurrence. Current time and startup select the occurrence matching the actual current time.', helpTimeCopyIso: 'Copy ISO copies the destination date/time as YYYY-MM-DDTHH:mm±HH:mm. It includes the minute-precision time and UTC offset, so repeated local times remain distinct.', helpTimePrecision: 'Time input has minute precision. Historical offsets containing seconds and destination years outside 0001–9999 show a limitation message.', helpTextTitle: 'Text conversion', helpTextKana: 'Kana conversion shows hiragana, katakana, and half-width kana from the same input.', helpTextWidth: 'Full / half width lets you choose letters, numbers, symbols, and spaces separately. Kanji, emoji, and other characters outside the target range are preserved.', helpTextReuse: 'Use as input replaces the input with a result so you can continue converting. Copy preserves leading and trailing spaces and line breaks.', helpTextUndo: 'Use as input and Clear can be undone while the Undo message is visible. Editing or another replacement makes the previous Undo unavailable.', helpTextNoHistory: 'Entered text and conversion history are not saved.',
@@ -1477,7 +1480,6 @@
         });
         source.value = timezoneChoice(oldSource) ? oldSource : 'local';
         target.value = timezoneChoice(oldTarget) ? oldTarget : (localTimeZone === 'Asia/Tokyo' ? 'new-york' : 'tokyo');
-        if (source.value === target.value) target.value = source.value === 'tokyo' ? 'new-york' : 'tokyo';
       }
       function wallRequest() {
         const ymd = parseYmd($('#timezoneDate')?.value || ''); const match = /^(\d{2}):(\d{2})$/.exec($('#timezoneTime')?.value || '');
@@ -1760,7 +1762,8 @@
         $$('[data-i18n-title]').forEach(element => { element.title = t(element.dataset.i18nTitle); });
         $$('[data-i18n-aria-label]').forEach(element => { element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel)); });
         $$('[data-i18n-placeholder]').forEach(element => { element.placeholder = t(element.dataset.i18nPlaceholder); });
-        $('#languageButton').textContent = language === 'ja' ? 'EN' : '日本語';
+        $('#languageButton').textContent = language === 'ja' ? 'EN' : 'JA';
+        $('#languageButton').title = language === 'ja' ? '英語に切り替え' : 'Switch to Japanese';
         $('#languageButton').setAttribute('aria-label', language === 'ja' ? '英語に切り替え' : 'Switch to Japanese');
         document.title = APP_CONFIG.name;
         $('#brandName').textContent = APP_CONFIG.name;

@@ -7,7 +7,7 @@
 - **English subtitle:** Date, time & text utilities
 - **Repository:** `ttomohisa/htmlapps-handy-convert`
 - **Browser Kitty path:** `/tools/handy-convert/`
-- **Current implementation version:** v1.0.0
+- **Current implementation version:** v1.0.1
 - **Release artifacts:** checked-in `handy-convert.html`, generated `dist/index.html`, and `dist/index.self-extract.html`
 
 ## 2. Purpose
@@ -120,6 +120,7 @@ Requirements:
 ### 6.2 Time-zone conversion (implemented in v0.4.0)
 
 - Source city/time zone + local date/time.
+- Language changes preserve the source and destination selections, including intentionally equal zones, the entered date/time, and the selected DST occurrence.
 - Primary destination city/time zone with Swap action. Swap preserves the selected instant, including the correct occurrence during a daylight-saving overlap.
 - Additional same-instant results for cities already selected in the World clock.
 - Current-time shortcut and startup set the wall-clock input at minute precision and preserve the actual current instant, including the correct occurrence during a daylight-saving overlap. Explicit occurrence selection and date/time edits keep their existing behavior.
@@ -194,6 +195,7 @@ v1.0 does not include:
 - Visible focus styles and keyboard operation.
 - `aria-live` for result/status updates where appropriate.
 - Respect `prefers-reduced-motion`.
+- The header language button shows EN / JA for the target language, with localized title and accessible label (`英語に切り替え` / `Switch to Japanese`); the exact local-processing badge and Help remain bilingual.
 - Help dialog closes with its close button, Escape, and backdrop click.
 - Long labels must not create horizontal scrolling in Japanese or English.
 - Interactive controls should provide comfortable touch targets on smartphones.

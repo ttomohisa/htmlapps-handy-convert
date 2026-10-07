@@ -16,6 +16,8 @@ GitHub Pagesから最初のHTMLを読み込んだ後、日付計算、世界時�
 
 [![Handy Convertの画面](assets/screenshot.png)](https://ttomohisa.github.io/htmlapps-handy-convert/)
 
+ヘッダーのEN / JAで表示言語を切り替えられます。入力日時と選んだ変換元・変換先は、同じタイムゾーンを選んだ場合も保持されます。
+
 ## 主な機能
 
 - **2つの日付を比較** — 日数、週＋日、暦上の経過期間、平日数をまとめて確認できます。

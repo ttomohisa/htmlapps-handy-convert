@@ -3,7 +3,7 @@
   "name": "Handy Convert",
   "nameJa": "Handy Convert",
   "slug": "handy-convert",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Small date, time, and Japanese text conversion tools that run entirely in your browser.",
   "descriptionJa": "日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。",
   "defaultLanguage": "auto",
