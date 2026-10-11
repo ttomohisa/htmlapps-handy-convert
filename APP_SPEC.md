@@ -7,7 +7,7 @@
 - **English subtitle:** Date, time & text utilities
 - **Repository:** `ttomohisa/htmlapps-handy-convert`
 - **Browser Kitty path:** `/tools/handy-convert/`
-- **Current implementation version:** v1.0.1
+- **Current implementation version:** v1.0.2
 - **Release artifacts:** checked-in `handy-convert.html`, generated `dist/index.html`, and `dist/index.self-extract.html`
 
 ## 2. Purpose
@@ -196,7 +196,8 @@ v1.0 does not include:
 - `aria-live` for result/status updates where appropriate.
 - Respect `prefers-reduced-motion`.
 - The header language button shows EN / JA for the target language, with localized title and accessible label (`英語に切り替え` / `Switch to Japanese`); the exact local-processing badge and Help remain bilingual.
-- Help dialog closes with its close button, Escape, and backdrop click.
+- Help dialog closes with its close button, Escape, and backdrop click. While a native modal is open, both document scroll containers are locked; the existing Help body remains independently scrollable. Closing restores normal page scrolling without a JavaScript lock to clean up.
+- Initial header and build-information version labels match the app configuration before initialization.
 - Long labels must not create horizontal scrolling in Japanese or English.
 - Interactive controls should provide comfortable touch targets on smartphones.
 - Text conversion shows a clear empty-result message and a live character count.
@@ -252,5 +253,6 @@ The Text category must preserve characters outside the intended conversion range
 - Text conversion covers voiced/semi-voiced kana, half-width kana, mixed full/half-width ASCII, punctuation, spaces, multiline input, and preservation of kanji/emoji outside the conversion scope.
 - Gregorian/era invalid inputs produce an explanatory inline error rather than a native alert.
 - Copy result works with a compatibility fallback and produces a Toast. Regression tests cover native/fallback exact whitespace, chained kana/width results, stale Undo, repeated/no-op reuse, and delayed Copy completion.
-- Help content matches current behavior and contains no starter text.
+- Help content matches current behavior and contains no starter text. At short viewport heights, the header/Close and final Help note remain reachable, outside-wheel scrolling does not move the background page, and Close/Escape/backdrop/reopen restore normal navigation.
+- Modal layout, version labels, and the local-processing shield are covered by the repository's source/readable-artifact regression loop; native scrolling, focus, and resize behavior still require browser verification.
 - README files, config, changelog, screenshots, and favicon match Handy Convert.

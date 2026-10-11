@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.2] - 2026-10-11
+
+### Fixed
+- Lock both document scroll containers while native Help is open, preserving the existing dialog shell, inner scrolling, and native dismissal.
+- Synchronize initial header and build-information version labels with the release configuration.
+
+### Tests and documentation
+- Add source/readable-artifact modal-layout, version-label, and existing local-processing shield regression contracts to the canonical test discovery.
+- Explain Help scrolling and dismissal in Japanese/English Help and README files.
+
 ## [1.0.1] - 2026-10-07
 
 ### Fixed
