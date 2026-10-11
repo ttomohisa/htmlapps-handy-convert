@@ -18,6 +18,8 @@ GitHub Pages delivers the initial HTML. After it loads, date calculations, world
 
 Use EN / JA in the header to switch languages. Entered date/time and selected source/destination zones are preserved, including matching zones.
 
+While Help is open, the background stays still and only the content scrolls. Use Close, Escape, or click the backdrop to return.
+
 ## Features
 
 - **Compare two dates** — See total days, weeks and days, calendar elapsed period, and weekday count between two dates.
