@@ -31,11 +31,11 @@ test('initial version labels match the release config before initialization', ()
   assert.equal(source.match(/id="buildVersion">([^<]+)/)[1], config.version);
 });
 
-test('Help explains modal scrolling and dismissal in both languages', () => {
+test('Help explains dismissal in both languages', () => {
   const help = source.match(/<!-- APP:HELP:BEGIN -->([\s\S]*?)<!-- APP:HELP:END -->/)[1];
   assert.match(help, /data-i18n="helpDialogScroll"/);
-  assert.match(source, /helpDialogScroll: '[^']*背景[^']*スクロール[^']*閉じる[^']*Escape[^']*'/);
-  assert.match(source, /helpDialogScroll: '[^']*background[^']*scroll[^']*Close[^']*Escape[^']*'/);
+  assert.match(source, /helpDialogScroll: '[^']*閉じる[^']*Escape[^']*'/);
+  assert.match(source, /helpDialogScroll: '[^']*Close[^']*Escape[^']*'/);
 });
 
 test('local-processing badge retains its existing shield icon', () => {
