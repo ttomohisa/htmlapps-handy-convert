@@ -256,3 +256,8 @@ The Text category must preserve characters outside the intended conversion range
 - Help content matches current behavior and contains no starter text. At short viewport heights, the header/Close and final Help note remain reachable, outside-wheel scrolling does not move the background page, and Close/Escape/backdrop/reopen restore normal navigation.
 - Modal layout, version labels, and the local-processing shield are covered by the repository's source/readable-artifact regression loop; native scrolling, focus, and resize behavior still require browser verification.
 - README files, config, changelog, screenshots, and favicon match Handy Convert.
+
+## Shared mobile footer and Help build information
+
+- Hide only the informational page footer at the existing smartphone breakpoint (600px); preserve functional bottom navigation/actions and Help controls.
+- The existing build-information disclosure is the final item inside the scrollable Help body, retaining its metadata IDs, population, and desktop/mobile availability.

@@ -544,6 +544,7 @@
       .clock-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
+      footer { display: none; }
       :root { --header-height: 58px; }
       body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
       .header-inner { padding-block: 8px; }
@@ -883,15 +884,6 @@
       </div>
     </section>
     <!-- APP:END -->
-
-    <details class="app-info">
-      <summary data-i18n="buildInfo">アプリ情報</summary>
-      <div class="build-grid">
-        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.2</strong></div>
-        <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
-        <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">—</strong></div>
-      </div>
-    </details>
   </main>
 
   <footer><span id="footerName">Handy Convert</span> · <span data-i18n="footer">完全内包HTMLとして生成</span></footer>
@@ -934,6 +926,14 @@
       <h3 data-i18n="helpNotesTitle">注意事項</h3>
       <ul><li data-i18n="helpNoteClock">世界時計は端末の時計を基準にするため、端末時刻がずれている場合は表示もずれます。</li></ul>
       <!-- APP:HELP:END -->
+    <details class="app-info">
+      <summary data-i18n="buildInfo">アプリ情報</summary>
+      <div class="build-grid">
+        <div class="build-item"><span data-i18n="appVersion">アプリバージョン</span><strong id="buildVersion">1.0.2</strong></div>
+        <div class="build-item"><span data-i18n="builtAt">生成日時</span><strong id="builtAt">—</strong></div>
+        <div class="build-item"><span data-i18n="dependencies">内包依存数</span><strong id="dependencyCount">—</strong></div>
+      </div>
+    </details>
     </div>
   </dialog>
 
@@ -1829,7 +1829,7 @@
       const helpDialogBody = helpDialog.querySelector('.dialog-body');
       const openHelpDialog = () => { helpDialog.showModal(); if (helpDialogBody) { helpDialogBody.scrollTop = 0; requestAnimationFrame(() => { helpDialogBody.scrollTop = 0; }); } };
       $('#helpButton').addEventListener('click', openHelpDialog); $('#closeHelpButton').addEventListener('click', () => helpDialog.close());
-      helpDialog.addEventListener('click', event => { const rect = helpDialog.getBoundingClientRect(); const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; if (outside) helpDialog.close(); });
+      helpDialog.addEventListener('click', event => {if(event.target!==helpDialog)return; const rect = helpDialog.getBoundingClientRect(); const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom; if (outside) helpDialog.close(); });
       $$('[data-today-target]').forEach(button => button.addEventListener('click', () => { const input = document.getElementById(button.dataset.todayTarget); if (input) { input.value = readToday(); input.dispatchEvent(new Event('input', { bubbles: true })); } }));
       $('#swapDatesButton').addEventListener('click', () => { const start = $('#betweenStart').value; $('#betweenStart').value = $('#betweenEnd').value; $('#betweenEnd').value = start; updateBetween(); });
       ['betweenStart','betweenEnd','countBothEndpoints'].forEach(id => $(`#${id}`).addEventListener('input', updateBetween));
