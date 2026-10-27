@@ -622,6 +622,8 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
   </style>
+  <style>__BK_UI_CSS__</style>
+  <script data-bk-ui-version="1.0.0">__BK_UI_JS__</script>
 </head>
 <body>
   <header class="app-header">
@@ -641,8 +643,8 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="language-button" id="languageButton" type="button" title="英語に切り替え" aria-label="英語に切り替え">EN</button>
-        <button class="icon-button header-icon-button" id="helpButton" type="button" data-i18n-title="helpTitle" data-i18n-aria-label="helpTitle" title="使い方と注意事項" aria-label="使い方と注意事項">
+        <button data-bk-button data-bk-variant="secondary" class="language-button" data-bk-header-action id="languageButton" type="button" title="英語に切り替え" aria-label="英語に切り替え">EN</button>
+        <button data-bk-button data-bk-variant="secondary" class="icon-button header-icon-button" data-bk-header-action id="helpButton" type="button" data-i18n-title="helpTitle" data-i18n-aria-label="helpTitle" title="使い方と注意事項" aria-label="使い方と注意事項">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><path d="M12 17h.01"/></svg>
         </button>
       </div>
@@ -686,10 +688,10 @@
             <div><h2 class="tool-title" data-i18n="betweenTitle">2つの日付の間</h2><p class="tool-description" data-i18n="betweenDescription">日数、週数、月日、平日数をまとめて確認します。</p></div>
           </div>
           <div class="field-grid">
-            <label class="field"><span class="field-label" data-i18n="startDate">開始日</span><span class="field-with-action"><input class="control" id="betweenStart" type="date"><button class="small-button" type="button" data-today-target="betweenStart" data-i18n="today">今日</button></span></label>
-            <label class="field"><span class="field-label" data-i18n="endDate">終了日</span><span class="field-with-action"><input class="control" id="betweenEnd" type="date"><button class="small-button" type="button" data-today-target="betweenEnd" data-i18n="today">今日</button></span></label>
+            <label class="field"><span class="field-label" data-i18n="startDate">開始日</span><span class="field-with-action"><input class="control" id="betweenStart" type="date"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-today-target="betweenStart" data-i18n="today">今日</button></span></label>
+            <label class="field"><span class="field-label" data-i18n="endDate">終了日</span><span class="field-with-action"><input class="control" id="betweenEnd" type="date"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-today-target="betweenEnd" data-i18n="today">今日</button></span></label>
           </div>
-          <div class="inline-actions"><button class="small-button" id="swapDatesButton" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg><span data-i18n="swap">入れ替える</span></button></div>
+          <div class="inline-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" id="swapDatesButton" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg><span data-i18n="swap">入れ替える</span></button></div>
           <label class="checkbox-row"><input id="countBothEndpoints" type="checkbox"><span data-i18n="countBoth">開始日と終了日を両方数える</span></label>
           <div class="result-box" id="betweenResult" aria-live="polite">
             <div class="result-main" id="betweenMain">—</div>
@@ -707,13 +709,13 @@
             <div class="tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="9"/></svg></div>
             <div><h2 class="tool-title" data-i18n="addTitle">○日後・○日前</h2><p class="tool-description" data-i18n="addDescription">基準日から日・週・月・年を足し引きします。</p></div>
           </div>
-          <label class="field"><span class="field-label" data-i18n="baseDate">基準日</span><span class="field-with-action"><input class="control" id="addBaseDate" type="date"><button class="small-button" type="button" data-today-target="addBaseDate" data-i18n="today">今日</button></span></label>
+          <label class="field"><span class="field-label" data-i18n="baseDate">基準日</span><span class="field-with-action"><input class="control" id="addBaseDate" type="date"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-today-target="addBaseDate" data-i18n="today">今日</button></span></label>
           <div class="field-grid three" style="margin-top:10px">
             <label class="field"><span class="field-label" data-i18n="quantity">数</span><input class="control" id="addQuantity" type="number" min="0" max="100000" step="1" value="30" inputmode="numeric"></label>
             <label class="field"><span class="field-label" data-i18n="unit">単位</span><select class="control" id="addUnit"><option value="day" data-i18n="unitDay">日</option><option value="week" data-i18n="unitWeek">週</option><option value="month" data-i18n="unitMonth">月</option><option value="year" data-i18n="unitYear">年</option></select></label>
             <label class="field"><span class="field-label" data-i18n="direction">方向</span><select class="control" id="addDirection"><option value="after" data-i18n="after">後</option><option value="before" data-i18n="before">前</option></select></label>
           </div>
-          <div class="result-box" id="addResult" aria-live="polite"><div class="result-main" id="addResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="addResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="addResultCopy"></span></div>
+          <div class="result-box" id="addResult" aria-live="polite"><div class="result-main" id="addResultMain">—</div><div class="result-action-row"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="addResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="addResultCopy"></span></div>
           <div class="error-box" id="addError" hidden></div>
         </article>
 
@@ -724,7 +726,7 @@
           </div>
           <div class="field-grid">
             <label class="field"><span class="field-label" data-i18n="startOrBirth">開始日 / 生年月日</span><input class="control" id="elapsedStart" type="date"></label>
-            <label class="field"><span class="field-label" data-i18n="referenceDate">基準日</span><span class="field-with-action"><input class="control" id="elapsedEnd" type="date"><button class="small-button" type="button" data-today-target="elapsedEnd" data-i18n="today">今日</button></span></label>
+            <label class="field"><span class="field-label" data-i18n="referenceDate">基準日</span><span class="field-with-action"><input class="control" id="elapsedEnd" type="date"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-today-target="elapsedEnd" data-i18n="today">今日</button></span></label>
           </div>
           <div class="result-box" aria-live="polite">
             <div class="result-main" id="elapsedMain">—</div>
@@ -745,7 +747,7 @@
             <section class="subpanel" aria-labelledby="westernToEraTitle">
               <h3 id="westernToEraTitle" data-i18n="westernToEra">西暦 → 和暦</h3>
               <label class="field"><span class="field-label" data-i18n="gregorianDate">西暦の日付</span><input class="control" id="gregorianDate" type="date" min="1873-01-01"></label>
-              <div class="result-box" aria-live="polite"><div class="result-main" id="eraResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="eraResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="eraResultCopy"></span></div>
+              <div class="result-box" aria-live="polite"><div class="result-main" id="eraResultMain">—</div><div class="result-action-row"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="eraResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="eraResultCopy"></span></div>
               <div class="error-box" id="eraWesternError" hidden></div>
             </section>
             <section class="subpanel" aria-labelledby="eraToWesternTitle">
@@ -756,7 +758,7 @@
                 <label class="field era-month"><span class="field-label" data-i18n="month">月</span><input class="control" id="eraMonth" type="number" min="1" max="12" step="1" value="9" inputmode="numeric"></label>
                 <label class="field era-day"><span class="field-label" data-i18n="day">日</span><input class="control" id="eraDay" type="number" min="1" max="31" step="1" value="5" inputmode="numeric"></label>
               </div>
-              <div class="result-box" aria-live="polite"><div class="result-main" id="westernResultMain">—</div><div class="result-action-row"><button class="small-button" type="button" data-copy-target="westernResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="westernResultCopy"></span></div>
+              <div class="result-box" aria-live="polite"><div class="result-main" id="westernResultMain">—</div><div class="result-action-row"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="westernResultCopy" data-i18n="copy">コピー</button></div><span class="sr-only" id="westernResultCopy"></span></div>
               <div class="error-box" id="eraInputError" hidden></div>
             </section>
           </div>
@@ -796,12 +798,12 @@
                 <label class="field"><span class="field-label" data-i18n="localTime">現地の時刻</span><input class="control" id="timezoneTime" type="time" step="60"></label>
               </div>
             </div>
-            <button class="small-button icon-only timezone-swap" id="swapTimezonesButton" type="button" data-i18n-title="swapTimezones" data-i18n-aria-label="swapTimezones" title="変換元と変換先を入れ替える" aria-label="変換元と変換先を入れ替える">
+            <button data-bk-button data-bk-variant="secondary" class="small-button icon-only timezone-swap" id="swapTimezonesButton" type="button" data-i18n-title="swapTimezones" data-i18n-aria-label="swapTimezones" title="変換元と変換先を入れ替える" aria-label="変換元と変換先を入れ替える">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m0 0-3-3m3 3-3 3M20 16H5m0 0 3 3m-3-3 3-3"/></svg>
             </button>
             <label class="field"><span class="field-label" data-i18n="toCity">変換先</span><select class="control" id="timezoneTarget"></select></label>
           </div>
-          <div class="timezone-actions"><button class="small-button" id="timezoneNowButton" type="button" data-i18n="currentTime">現在時刻</button></div>
+          <div class="timezone-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" id="timezoneNowButton" type="button" data-i18n="currentTime">現在時刻</button></div>
           <div class="ambiguity-box" id="timezoneAmbiguity" hidden>
             <div class="ambiguity-title" data-i18n="ambiguousTimeTitle">この時刻は2通りあります</div>
             <div class="ambiguity-options">
@@ -815,7 +817,7 @@
             <div class="timezone-result-time" id="timezoneResultTime">—</div>
             <div class="timezone-result-date" id="timezoneResultDate">—</div>
             <div class="timezone-result-zone" id="timezoneResultZone">—</div>
-            <div class="result-action-row"><button class="small-button" type="button" data-copy-target="timezoneResultCopy" data-i18n="copy">コピー</button><button class="small-button" type="button" data-copy-target="timezoneResultIso" data-i18n="copyIso" disabled>ISO形式でコピー</button></div><span class="sr-only" id="timezoneResultCopy"></span><span class="sr-only" id="timezoneResultIso"></span>
+            <div class="result-action-row"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="timezoneResultCopy" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="timezoneResultIso" data-i18n="copyIso" disabled>ISO形式でコピー</button></div><span class="sr-only" id="timezoneResultCopy"></span><span class="sr-only" id="timezoneResultIso"></span>
           </div>
           <div class="converted-city-grid" id="timezoneOtherCities" aria-live="polite"></div>
           <p class="timezone-empty-note" id="timezoneOtherCitiesNote" data-i18n="otherCitiesNote">世界時計に追加した都市も同じ日時で表示します。</p>
@@ -832,7 +834,7 @@
             <div><h2 class="tool-title" data-i18n="textInputTitle">文字を入力</h2><p class="tool-description" data-i18n="textInputDescription">入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。</p></div>
           </div>
           <label class="field"><span class="field-label" data-i18n="inputText">入力</span><textarea class="control text-input" id="textInput" rows="6" aria-describedby="textPrivacyNote textCharacterCount" data-i18n-placeholder="textInputPlaceholder" placeholder="文字を入力または貼り付けてください"></textarea></label>
-          <div class="text-input-actions"><span class="text-privacy-note" id="textPrivacyNote" data-i18n="textNotSaved">入力した文字列は端末内だけで処理し、保存しません。</span><span class="text-action-group"><span class="text-character-count" id="textCharacterCount" aria-live="polite">0文字</span><button class="small-button" id="clearTextButton" type="button" data-i18n="clear">クリア</button></span></div>
+          <div class="text-input-actions"><span class="text-privacy-note" id="textPrivacyNote" data-i18n="textNotSaved">入力した文字列は端末内だけで処理し、保存しません。</span><span class="text-action-group"><span class="text-character-count" id="textCharacterCount" aria-live="polite">0文字</span><button data-bk-button data-bk-variant="secondary" class="small-button" id="clearTextButton" type="button" data-i18n="clear">クリア</button></span></div>
         </article>
 
         <article class="tool-card wide">
@@ -842,15 +844,15 @@
           </div>
           <div class="text-result-grid three">
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="hiragana">ひらがな</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="hiraganaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="hiraganaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
+              <div class="text-result-head"><h3 data-i18n="hiragana">ひらがな</h3><span class="text-result-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="hiraganaResult" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-reuse-target="hiraganaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="hiraganaResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="katakana">カタカナ</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="katakanaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="katakanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
+              <div class="text-result-head"><h3 data-i18n="katakana">カタカナ</h3><span class="text-result-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="katakanaResult" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-reuse-target="katakanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="katakanaResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="halfwidthKana">半角カナ</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="halfwidthKanaResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="halfwidthKanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
+              <div class="text-result-head"><h3 data-i18n="halfwidthKana">半角カナ</h3><span class="text-result-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="halfwidthKanaResult" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-reuse-target="halfwidthKanaResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="halfwidthKanaResult">—</div>
             </section>
           </div>
@@ -873,11 +875,11 @@
           </details>
           <div class="text-result-grid two">
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="fullwidth">全角</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="fullwidthResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="fullwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
+              <div class="text-result-head"><h3 data-i18n="fullwidth">全角</h3><span class="text-result-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="fullwidthResult" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-reuse-target="fullwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="fullwidthResult">—</div>
             </section>
             <section class="text-result-card">
-              <div class="text-result-head"><h3 data-i18n="halfwidth">半角</h3><span class="text-result-actions"><button class="small-button" type="button" data-copy-target="halfwidthResult" data-i18n="copy">コピー</button><button class="small-button" type="button" data-reuse-target="halfwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
+              <div class="text-result-head"><h3 data-i18n="halfwidth">半角</h3><span class="text-result-actions"><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-copy-target="halfwidthResult" data-i18n="copy">コピー</button><button data-bk-button data-bk-variant="secondary" class="small-button" type="button" data-reuse-target="halfwidthResult" data-i18n="useAsInput" disabled>入力に使う</button></span></div>
               <div class="text-output" id="halfwidthResult">—</div>
             </section>
           </div>
@@ -905,12 +907,12 @@
   <dialog id="helpDialog" aria-labelledby="helpDialogTitle">
     <div class="dialog-header">
       <h2 id="helpDialogTitle" data-i18n="helpTitle">使い方と注意事項</h2>
-      <button class="icon-button" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる">
+      <button data-bk-button data-bk-variant="secondary" class="icon-button" id="closeHelpButton" type="button" data-i18n-title="close" data-i18n-aria-label="close" title="閉じる" aria-label="閉じる">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
       </button>
     </div>
     <div class="dialog-body">
-      <!-- APP:HELP:BEGIN -->
+      <!-- APP:HELP:BEGIN --><p data-i18n="uiHelp"></p>
       <h3 data-i18n="helpBasicsTitle">基本操作</h3>
       <ol><li data-i18n="helpStep1">日付・時刻・文字から使いたいカテゴリを選びます。</li><li data-i18n="helpStep2">入力を変更すると、表示中の変換結果が自動で更新されます。</li><li data-i18n="helpStep3">結果にコピーがある場合は、その文字列だけをクリップボードへコピーできます。</li></ol>
       <p data-i18n="helpDialogScroll">閉じるボタン・Escapeキー・背景のクリックで閉じられます。</p>
@@ -939,7 +941,7 @@
 
   <div class="app-toast" id="appToast" role="status" aria-live="polite" aria-atomic="true" data-tone="default">
     <span class="app-toast-message" id="appToastMessage"></span>
-    <button class="app-toast-action" id="appToastAction" type="button" hidden></button>
+    <button data-bk-button data-bk-variant="secondary" class="app-toast-action" id="appToastAction" type="button" hidden></button>
   </div>
 
   <script>
@@ -1043,7 +1045,7 @@
       const DAY_MS = 86400000;
       const SUPPORTED_START = '1873-01-01';
       const translations = {
-        ja: {
+        ja: {uiHelp:'入力した日付・日時・文字はこのタブ内だけに保持します。都市と表示カテゴリの保存に失敗した場合は、この画面で選択を保って再試行できます。',
           brandMeta: '日付・時刻・文字のちょっとした変換', helpTitle: '使い方と注意事項', close: '閉じる',
           introTitle: '日付・時刻・文字のちょっとした変換', lead: '日付計算、世界時計、タイムゾーン、かな・全角半角など、たまに必要になる変換をひとつにまとめます。', localBadge: '完全ローカル処理', categoriesLabel: 'カテゴリ',
           categoryDate: '日付', categoryTime: '時刻', categoryText: '文字',
@@ -1052,7 +1054,7 @@
           elapsedTitle: '年齢・経過期間', elapsedDescription: '生年月日や開始日から、基準日までの期間を確認します。', startOrBirth: '開始日 / 生年月日', referenceDate: '基準日', detailedPeriod: '詳しい期間', totalDays: '合計日数',
           eraTitle: '西暦・和暦', eraDescription: '明治・大正・昭和・平成・令和と西暦を相互変換します。', westernToEra: '西暦 → 和暦', eraToWestern: '和暦 → 西暦', gregorianDate: '西暦の日付', era: '元号', eraYear: '年', month: '月', day: '日', eraRangeNote: '1873年1月1日以降を対象にします。',
           copy: 'コピー', copied: 'コピーしました', copyFailed: 'コピーできませんでした',
-          worldClock: '世界時計', worldClockDescription: '現在地と選んだ都市の時刻を並べて確認します。', addCity: '都市を追加', citySearchPlaceholder: '都市名を検索', deviceClockNote: '端末の時計を使用します', currentLocation: '現在地', previousDay: '前日', nextDay: '翌日', daysEarlier: '{n}日前', daysLater: '{n}日後', removeCity: '{city}を削除', cityRemoved: '{city}を削除しました', undo: '元に戻す', cityRestored: '{city}を戻しました', cityAlreadyAdded: 'この都市はすでに表示されています', cityLimitReached: '追加できる都市は12件までです', noCitiesFound: '一致する都市がありません', localZoneFallback: '端末のタイムゾーン',
+          worldClock: '世界時計', worldClockDescription: '現在地と選んだ都市の時刻を並べて確認します。', addCity: '都市を追加', citySearchPlaceholder: '都市名を検索', deviceClockNote: '端末の時計を使用します', currentLocation: '現在地', previousDay: '前日', nextDay: '翌日', daysEarlier: '{n}日前', daysLater: '{n}日後', removeCity: '{city}を一覧から取り除く', cityRemoved: '{city}を一覧から取り除きました', undo: '元に戻す', cityRestored: '{city}を戻しました', cityAlreadyAdded: 'この都市はすでに表示されています', cityLimitReached: '追加できる都市は12件までです', noCitiesFound: '一致する都市がありません', localZoneFallback: '端末のタイムゾーン',
           timezoneTitle: 'タイムゾーン変換', timezoneDescription: '指定した現地日時を別の都市へ変換します。夏時間もブラウザーのタイムゾーン情報から判定します。', fromCity: '変換元', toCity: '変換先', localDate: '現地の日付', localTime: '現地の時刻', currentTime: '現在時刻', copyIso: 'ISO形式でコピー', swapTimezones: '変換元と変換先を入れ替える', ambiguousTimeTitle: 'この時刻は2通りあります', firstOccurrence: '1回目', secondOccurrence: '2回目', nonexistentLocalTime: 'この時刻は、夏時間などの時刻切り替えにより現地には存在しません。', invalidLocalDateTime: '有効な日付と時刻を入力してください。', unsupportedTimezonePrecision: 'この日時は、UTCオフセットに秒が含まれるか、年が0001〜9999の範囲外になるため変換できません。分単位のオフセットで、この年の範囲に収まる日時を選んでください。', otherCitiesNote: '世界時計に追加した都市も同じ日時で表示します。',
           textInputTitle: '文字を入力', textInputDescription: '入力すると、かな・全角・半角の結果をまとめて更新します。入力内容は保存しません。', inputText: '入力', textInputPlaceholder: '文字を入力または貼り付けてください', textNotSaved: '入力した文字列は端末内だけで処理し、保存しません。', characterCount: '{n}文字', textEmptyResult: '入力するとここに表示します', clear: 'クリア', textCleared: '入力をクリアしました', useAsInput: '入力に使う', textReused: '変換結果を入力に使いました', kanaConvert: 'かな変換', kanaDescription: 'ひらがな、カタカナ、半角カナを同時に確認できます。', hiragana: 'ひらがな', katakana: 'カタカナ', halfwidthKana: '半角カナ', widthConvert: '全角・半角', widthDescription: '文字種ごとに、全角・半角へ変換する対象を選べます。', conversionTargets: '変換対象', letters: '英字', digits: '数字', symbols: '記号', spaces: 'スペース', kanaWidthNote: 'カナと日本語の句読点は、全角・半角の結果に合わせて変換します。', fullwidth: '全角', halfwidth: '半角',
           buildInfo: 'アプリ情報', appVersion: 'アプリバージョン', builtAt: '生成日時', dependencies: '内包依存数', footer: '完全内包HTMLとして生成',
@@ -1066,7 +1068,7 @@
           dayUnit: '日', daysUnit: '日', weekUnit: '週間', monthUnit: 'か月', yearUnit: '年', fullYears: '満{n}年', earlierSuffix: '前', laterSuffix: '後',
           eraMeiji: '明治', eraTaisho: '大正', eraShowa: '昭和', eraHeisei: '平成', eraReiwa: '令和'
         },
-        en: {
+        en: {uiHelp:'Entered dates, times and text stay only in this tab. If saving cities or category fails, current selections remain available and saving can be retried.',
           brandMeta: 'Small date, time & text conversions', helpTitle: 'How to use & notes', close: 'Close',
           introTitle: 'Small date, time & text conversions', lead: 'Keep occasional date calculations, world clocks, time zones, kana, and width conversions in one lightweight browser tool.', localBadge: 'Fully local processing', categoriesLabel: 'Categories',
           categoryDate: 'Date', categoryTime: 'Time', categoryText: 'Text',
@@ -1178,15 +1180,16 @@
       const localTimeZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
 
       const storageKeys = { language: `${APP_CONFIG.slug}:language`, category: `${APP_CONFIG.slug}:category`, cities: `${APP_CONFIG.slug}:world-clock-cities` };
-      let language = readStorage(storageKeys.language) || detectLanguage();
+      let language = BrowserKittyUI.resolveLanguage({legacyKeys:[storageKeys.language]});
       let activeCategory = readStorage(storageKeys.category) || 'date';
       if (!['date', 'time', 'text'].includes(activeCategory)) activeCategory = 'date';
       let mobileNav = null;
 
       function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
-      function writeStorage(key, value) { try { localStorage.setItem(key, value); } catch { /* Storage can be unavailable. */ } }
+      const pendingPreferences=new Map();let languageSessionOnly=false;
+      function writeStorage(key,value){let saved=false;try{localStorage.setItem(key,value);pendingPreferences.delete(key);saved=true;}catch{pendingPreferences.set(key,value);}if(typeof renderSharedUi==='function')renderSharedUi();return saved;}
       function readJsonStorage(key, fallback) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } }
-      function writeJsonStorage(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage can be unavailable. */ } }
+      function writeJsonStorage(key,value){return writeStorage(key,JSON.stringify(value));}
       function detectLanguage() {
         if (APP_CONFIG.defaultLanguage === 'ja' || APP_CONFIG.defaultLanguage === 'en') return APP_CONFIG.defaultLanguage;
         return (navigator.language || '').toLowerCase().startsWith('ja') ? 'ja' : 'en';
@@ -1288,14 +1291,12 @@
       }
       function setError(element, message = '') { element.textContent = message; element.hidden = !message; }
 
-      const AppToast = (() => {
-        const root = $('#appToast'); const message = $('#appToastMessage'); const action = $('#appToastAction'); let timer = 0; let actionHandler = null;
-        function dismiss() { clearTimeout(timer); timer = 0; root.classList.remove('show'); actionHandler = null; }
-        function show({ message: text = '', actionLabel = '', onAction = null, duration = 3200, tone = 'default' } = {}) {
-          clearTimeout(timer); message.textContent = String(text); root.dataset.tone = tone; actionHandler = typeof onAction === 'function' ? onAction : null; action.textContent = actionLabel || ''; action.hidden = !actionHandler || !actionLabel; root.classList.add('show'); if (duration > 0) timer = window.setTimeout(dismiss, duration); return Object.freeze({ dismiss });
-        }
-        action.addEventListener('click', () => { const handler = actionHandler; dismiss(); if (handler) handler(); });
-        return Object.freeze({ show, dismiss });
+      const AppToast = (()=>{const root=$('#appToast'),message=$('#appToastMessage'),action=$('#appToastAction');let timer=0,actionHandler=null,translation=null,expiresAt=0,remaining=0;
+        function dismiss(){clearTimeout(timer);timer=0;root.classList.remove('show');actionHandler=null;translation=null;}
+        function schedule(ms){remaining=ms;expiresAt=Date.now()+ms;if(ms>0)timer=window.setTimeout(()=>{timer=0;if(root.contains(document.activeElement))return;dismiss();},ms);}
+        function relocalize(){if(!translation)return;message.textContent=t(translation.messageKey,typeof translation.params==='function'?translation.params():translation.params);action.textContent=t(translation.actionKey);}
+        function show({message:text='',actionLabel='',onAction=null,duration=3200,tone='default',messageKey=null,messageParams={},actionKey='undo'}={}){clearTimeout(timer);message.textContent=String(text);root.dataset.tone=tone;actionHandler=typeof onAction==='function'?onAction:null;translation=messageKey?{messageKey,params:messageParams,actionKey}:null;action.textContent=actionLabel||'';action.hidden=!actionHandler||!actionLabel;root.classList.add('show');schedule(duration);return Object.freeze({dismiss});}
+        root.addEventListener('focusin',()=>{if(timer){remaining=Math.max(1,expiresAt-Date.now());clearTimeout(timer);timer=0;}});root.addEventListener('focusout',event=>{if(!root.contains(event.relatedTarget)&&root.classList.contains('show')&&remaining>0)schedule(remaining);});action.addEventListener('click',()=>{const handler=actionHandler;dismiss();if(handler)handler();});return Object.freeze({show,dismiss,relocalize});
       })();
       window.AppToast = AppToast;
 
@@ -1406,7 +1407,7 @@
         place.append(row);
         const country = document.createElement('div'); country.className = 'clock-country'; country.textContent = isLocal ? timeZone : cityCountry(city); place.append(country); head.append(place);
         if (!isLocal && city) {
-          const remove = document.createElement('button'); remove.className = 'clock-remove'; remove.type = 'button'; remove.dataset.removeCity = city.id; remove.title = t('removeCity', { city: cityName(city) }); remove.setAttribute('aria-label', remove.title);
+          const remove = document.createElement('button'); remove.className = 'clock-remove'; remove.type = 'button'; remove.dataset.removeCity = city.id;remove.dataset.bkButton='';remove.dataset.bkVariant='secondary'; remove.title = t('removeCity', { city: cityName(city) }); remove.setAttribute('aria-label', remove.title);
           remove.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'; head.append(remove);
         }
         card.append(head);
@@ -1460,7 +1461,7 @@
       function removeWorldClockCity(id) {
         const index = selectedCityIds.indexOf(id); const city = cityById(id); if (index < 0 || !city) return;
         selectedCityIds.splice(index, 1); persistSelectedCities(); renderWorldClocks(); updateTimezoneConversion();
-        AppToast.show({ message: t('cityRemoved', { city: cityName(city) }), actionLabel: t('undo'), duration: 5000, onAction: () => {
+        AppToast.show({ message: t('cityRemoved', { city: cityName(city) }),messageKey:'cityRemoved',messageParams:()=>({city:cityName(city)}), actionLabel: t('undo'), duration: 5000, onAction: () => {
           if (!selectedCityIds.includes(id) && selectedCityIds.length < MAX_WORLD_CLOCK_CITIES) { selectedCityIds.splice(Math.min(index, selectedCityIds.length), 0, id); persistSelectedCities(); renderWorldClocks(); updateTimezoneConversion(); AppToast.show({ message: t('cityRestored', { city: cityName(city) }), tone: 'success' }); }
         } });
       }
@@ -1674,7 +1675,7 @@
         input.value=value;
         const revision=++textInputRevision;
         updateTextConversions(); input.focus();
-        AppToast.show({ message: t(messageKey), actionLabel: t('undo'), duration: 5000, onAction: () => {
+        AppToast.show({ message: t(messageKey),messageKey, actionLabel: t('undo'), duration: 5000, onAction: () => {
           // Typing, a newer replacement, or an earlier Undo invalidates this action.
           if (textInputRevision !== revision || input.value !== value) return;
           textInputRevision+=1; input.value=previous; updateTextConversions(); input.focus();
@@ -1686,7 +1687,7 @@
       }
       function setCategory(key, options = {}) {
         if (!['date', 'time', 'text'].includes(key)) return;
-        activeCategory = key; writeStorage(storageKeys.category, key); syncDesktopTabs(key);
+        copySourceRevision++;activeCategory = key;writeStorage(storageKeys.category,key);syncDesktopTabs(key);
         if (mobileNav?.currentPage() !== key) mobileNav?.showPage(key, { scroll: options.scroll !== false });
         else $$('.category-page').forEach(page => page.classList.toggle('is-mobile-active', page.dataset.categoryPage === key));
       }
@@ -1758,6 +1759,7 @@
         ERAS.forEach(era => { const option = document.createElement('option'); option.value = era.id; option.textContent = t(era.key); select.append(option); });
         select.value = ERAS.some(era => era.id === current) ? current : 'reiwa'; updateEraLimits();
       }
+      function renderSharedUi(){const retention=$('#retention');if(!retention)return;BrowserKittyUI.setSaveStatus(retention,{mode:'session',language});retention.textContent+=' '+(language==='ja'?'言語・表示カテゴリ・都市だけをこのブラウザーに保存します。':'Only language, category and cities are saved in this browser.');$('#preferenceNotice').textContent=pendingPreferences.size?(language==='ja'?'表示カテゴリまたは都市を保存できませんでした。現在の選択はこの画面で使えます。再試行できます。':'Category or cities could not be saved. Current selections remain usable on this screen. Retry saving.'):'';$('#retryPreferences').hidden=!pendingPreferences.size;$('#retryPreferences').textContent=language==='ja'?'設定の保存を再試行':'Retry saving preferences';$('#languageNotice').textContent=languageSessionOnly?BrowserKittyUI.text('languageSessionOnly',language):'';$('#copyNotice').textContent=copyFailures.size?(language==='ja'?'コピーできませんでした。同じ結果のコピーを再試行してください。':'Copy failed. Retry copying the same result.'):'';}
       function refreshAllResults() { updateBetween(); updateAdd(); updateElapsed(); updateWesternToEra(); updateEraToWestern(); updateTextConversions(); }
       function applyLanguage() {
         document.documentElement.lang = language;
@@ -1771,7 +1773,7 @@
         document.title = APP_CONFIG.name;
         $('#brandName').textContent = APP_CONFIG.name;
         $('#footerName').textContent = APP_CONFIG.name;
-        populateEraSelect(); populateTimezoneSelects(); refreshAllResults(); renderWorldClocks(); updateTimezoneConversion(); if (!$('#citySearchResults')?.hidden) renderCitySearchResults();
+        populateEraSelect(); populateTimezoneSelects(); refreshAllResults(); renderWorldClocks(); updateTimezoneConversion(); if (!$('#citySearchResults')?.hidden) renderCitySearchResults();AppToast.relocalize?.();renderSharedUi();
       }
       function copyTargetHasValue(target) {
         if (!target) return false;
@@ -1780,9 +1782,10 @@
         const value=target.textContent?.trim() || '';
         return Boolean(value && value !== '—');
       }
+      const copyFailures=new Map(),pendingCopies=new Map();let copyRequest=0,copySourceRevision=0;
       function syncCopyButton(button) {
         const target=document.getElementById(button.dataset.copyTarget || '');
-        button.disabled=!copyTargetHasValue(target);
+        const busy=pendingCopies.has(button.dataset.copyTarget);BrowserKittyUI.setButtonState(button,busy?'busy':copyTargetHasValue(target)?'ready':'unavailable');
       }
       function setupCopyButtonStates() {
         $$('[data-copy-target]').forEach(button => {
@@ -1794,24 +1797,7 @@
         });
       }
 
-      async function copyResult(targetId) {
-        const target=document.getElementById(targetId);
-        if (!copyTargetHasValue(target)) return;
-        const value=textResultValues.has(targetId) ? textResultValues.get(targetId) : target.textContent.trim();
-        const revision=textInputRevision;
-        let ok=false;
-        try { await navigator.clipboard.writeText(value); ok=true; }
-        catch {
-          const focused=document.activeElement;
-          const area=document.createElement('textarea');
-          area.value=value; area.setAttribute('readonly', ''); area.style.position='fixed'; area.style.opacity='0';
-          try { document.body.append(area); area.select(); ok=document.execCommand('copy'); }
-          catch { /* Copy may be unavailable even through the compatibility path. */ }
-          finally { area.remove(); focused?.focus({ preventScroll: true }); }
-        }
-        // A delayed clipboard response must not replace a newer text-edit Undo.
-        if (revision === textInputRevision) AppToast.show({ message: t(ok ? 'copied' : 'copyFailed'), tone: ok ? 'success' : 'warning' });
-      }
+      async function copyResult(targetId){const target=document.getElementById(targetId);if(!copyTargetHasValue(target)||pendingCopies.has(targetId))return;const value=textResultValues.has(targetId)?textResultValues.get(targetId):target.textContent.trim(),revision=textInputRevision,sourceRevision=copySourceRevision,category=typeof activeCategory==='undefined'?null:activeCategory,request=++copyRequest;pendingCopies.set(targetId,request);const current=()=>request===copyRequest&&revision===textInputRevision&&sourceRevision===copySourceRevision&&(typeof activeCategory==='undefined'||category===activeCategory)&&copyTargetHasValue(target);$$('[data-copy-target]').forEach(syncCopyButton);let ok=false;try{try{await navigator.clipboard.writeText(value);ok=true;}catch{if(!current())return;const focused=document.activeElement;let area;try{area=document.createElement('textarea');area.value=value;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();ok=document.execCommand('copy');}catch{ok=false;}finally{const owned=area&&document.activeElement===area;try{area?.remove();}finally{if(owned&&current()&&focused?.isConnected&&focused.focus)focused.focus({preventScroll:true});}}}if(current()){if(ok)copyFailures.delete(targetId);else copyFailures.set(targetId,'copyFailed');AppToast.show({message:t(ok?'copied':'copyFailed'),tone:ok?'success':'warning'});renderSharedUi();}}finally{if(pendingCopies.get(targetId)===request)pendingCopies.delete(targetId);$$('[data-copy-target]').forEach(syncCopyButton);}}
 
       const today = readToday();
       $('#betweenStart').value = today; $('#betweenEnd').value = today; $('#addBaseDate').value = today; $('#elapsedEnd').value = today; $('#gregorianDate').value = today;
@@ -1819,10 +1805,11 @@
       const todayParts = parseYmd(today); if (todayParts) { const todayEra = eraForDate(todayParts); if (todayEra) { $('#eraSelect').value = todayEra.id; $('#eraYear').value = String(eraYearFor(todayEra, todayParts.year)); $('#eraMonth').value = String(todayParts.month); $('#eraDay').value = String(todayParts.day); } }
       populateTimezoneSelects(); setTimezoneNow();
 
-      mobileNav = window.AppMobileBottomBar.mount($('#mobileBottomBar'), { initialPage: activeCategory, onPageChange: ({ key }) => { activeCategory = key; writeStorage(storageKeys.category, key); syncDesktopTabs(key); } });
-      mobileNav.showPage(activeCategory, { scroll: false }); syncDesktopTabs(activeCategory);
+      let initializingCategory=true;
+      mobileNav = window.AppMobileBottomBar.mount($('#mobileBottomBar'), { initialPage: activeCategory, onPageChange: ({ key }) => { activeCategory = key;if(!initializingCategory)writeStorage(storageKeys.category,key);syncDesktopTabs(key); } });
+      mobileNav.showPage(activeCategory, { scroll: false });syncDesktopTabs(activeCategory);initializingCategory=false;
       $$('.category-tab').forEach(button => button.addEventListener('click', () => setCategory(button.dataset.category)));
-      $('#languageButton').addEventListener('click', () => { language = language === 'ja' ? 'en' : 'ja'; writeStorage(storageKeys.language, language); applyLanguage(); });
+      $('#languageButton').addEventListener('click', () => { language = language === 'ja' ? 'en' : 'ja'; languageSessionOnly=!BrowserKittyUI.chooseLanguage(language).persisted;applyLanguage(); });
       const helpDialog = $('#helpDialog');
       const helpDialogBody = helpDialog.querySelector('.dialog-body');
       const openHelpDialog = () => { helpDialog.showModal(); if (helpDialogBody) { helpDialogBody.scrollTop = 0; requestAnimationFrame(() => { helpDialogBody.scrollTop = 0; }); } };
@@ -1861,6 +1848,8 @@
       $('#clearTextButton').addEventListener('click', () => replaceTextInput('', 'textCleared'));
       $$('[data-reuse-target]').forEach(button => button.addEventListener('click', () => reuseTextResult(button.dataset.reuseTarget)));
 
+      $('#retryPreferences').addEventListener('click',()=>{for(const[key,value]of [...pendingPreferences])writeStorage(key,value);renderSharedUi();});
+      for(const id of ['betweenStart','betweenEnd','countBothEndpoints','addBaseDate','addQuantity','addUnit','addDirection','elapsedStart','elapsedEnd','gregorianDate','eraSelect','eraYear','eraMonth','eraDay','timezoneSource','timezoneTarget','timezoneDate','timezoneTime'])for(const event of ['input','change'])$('#'+id).addEventListener(event,()=>{copySourceRevision++;});
       $('#versionBadge').textContent = `v${APP_CONFIG.version}`; $('#buildVersion').textContent = APP_CONFIG.version; $('#builtAt').textContent = BUILD_MANIFEST.generatedAtUtc || '—'; $('#dependencyCount').textContent = String(BUILD_MANIFEST.dependencies?.length || 0);
       applyLanguage();
     })();

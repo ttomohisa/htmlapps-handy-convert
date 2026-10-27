@@ -261,3 +261,7 @@ The Text category must preserve characters outside the intended conversion range
 
 - Hide only the informational page footer at the existing smartphone breakpoint (600px); preserve functional bottom navigation/actions and Help controls.
 - The existing build-information disclosure is the final item inside the scrollable Help body, retaining its metadata IDs, population, and desktop/mobile availability.
+
+## Common UI v1
+
+Visible tab-only draft retention and saved-preference scope. Shared language precedence is read-only at startup. Explicit category/city persistence failures retain current selections and show retry; retries contain only explicit failed writes. Clipboard fallback rejects obsolete sources before writing and persistent copy recovery is per result. Existing city/text Undo retains its callback/expiry during translation and pauses expiry while keyboard focus is within the toast.

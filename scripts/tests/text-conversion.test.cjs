@@ -15,15 +15,15 @@ function setup({ fallback = false, copyOk = true, copyThrows = false } = {}) {
   const elements = new Map(), copied = [], areas = [], toasts = [];
   function element(id = '') {
     const classes = new Set();
-    return { id, value: '', textContent: '', checked: true, disabled: false, dataset: {}, style: {},
+    return { isConnected:true,id, value: '', textContent: '', checked: true, disabled: false, dataset: {}, style: {},
       classList: { contains: name => classes.has(name), toggle: (name, on) => on ? classes.add(name) : classes.delete(name) },
       focus() { document.activeElement = this; }, select() { document.activeElement = this; },
-      setAttribute() {}, remove() { this.removed = true; },
+      setAttribute() {},removeAttribute(){},remove() { this.removed = true; },
       addEventListener(type, fn) { this[type] = fn; }
     };
   }
   for (const id of ['textInput', 'clearTextButton', 'textCharacterCount', 'widthLetters', 'widthDigits', 'widthSymbols', 'widthSpaces', 'dateResult', ...resultIds]) elements.set(id, element(id));
-  const copyButtons = [...resultIds, 'dateResult'].map(id => ({ dataset: { copyTarget: id }, disabled: false }));
+  const copyButtons = [...resultIds, 'dateResult'].map(id => ({ dataset: { copyTarget: id }, disabled: false,setAttribute(){},removeAttribute(){} }));
   const reuseButtons = [...source.matchAll(/data-reuse-target="([^"]+)"/g)].map(([, id]) => ({ dataset: { reuseTarget: id }, disabled: false, addEventListener(type, fn) { this[type] = fn; } }));
   const document = {
     activeElement: elements.get('textInput'),
@@ -39,7 +39,7 @@ function setup({ fallback = false, copyOk = true, copyThrows = false } = {}) {
     $: selector => elements.get(selector.slice(1)),
     $$: selector => selector === '[data-copy-target]' ? copyButtons : selector === '[data-reuse-target]' ? reuseButtons : []
   };
-  vm.createContext(context);
+  context.renderSharedUi=()=>{};vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,'../../components/ui-conventions.js'),'utf8'),context);
   vm.runInContext(extract('      const FULL_TO_HALF_KANA =', '      function setCategory'), context);
   vm.runInContext(extract('      function copyTargetHasValue', '      const today = readToday();'), context);
   for (const line of source.split('\n').filter(line => line.includes("$('#textInput').addEventListener('input'") || line.includes("$('#clearTextButton').addEventListener('click'") || line.includes("$$('[data-reuse-target]').forEach(button => button.addEventListener"))) vm.runInContext(line, context);
@@ -134,3 +134,9 @@ test('Smartphone CSS gives text result cards one column through the 600px naviga
   const mobileCss = source.slice(source.indexOf('@media (max-width: 600px)'), source.indexOf('@media (max-width: 360px)'));
   assert.match(mobileCss, /\.text-result-grid\.three,\s*\.text-result-grid\.two\s*\{\s*grid-template-columns:\s*1fr;/);
 });
+
+function enableSharedUi(c){for(const id of ['retention','preferenceNotice','retryPreferences','languageNotice','copyNotice'])c.elements.set(id,{textContent:'',hidden:false,dataset:{},setAttribute(){},removeAttribute(){}});c.context.pendingPreferences=new Map();c.context.languageSessionOnly=false;vm.runInContext(extract('      function renderSharedUi()', '      function refreshAllResults()'),c.context);}
+test('obsolete native copy rejection cannot start fallback after text replacement',async()=>{const c=setup();c.type('old');let reject;c.context.navigator.clipboard.writeText=()=>new Promise((_,r)=>reject=r);const pending=c.context.copyResult('katakanaResult');c.type('new');reject(Error('blocked'));await pending;assert.equal(c.areas.length,0);assert.equal(c.toasts.length,0)});
+test('copy attachment throw is cleaned and fallback does not steal newer focus',async()=>{const c=setup({fallback:true});c.type('かな');c.document.body.append=()=>{throw Error('attached then failed')};await c.context.copyResult('katakanaResult');assert.equal(c.areas.at(-1).removed,true);const later={};c.document.body.append=()=>{};c.document.execCommand=()=>{c.document.activeElement=later;return false};await c.context.copyResult('katakanaResult');assert.equal(c.document.activeElement,later)});
+test('per-result copy failure persists across edits/language and unrelated success',async()=>{const c=setup({fallback:true,copyOk:false});enableSharedUi(c);c.type('かな');await c.context.copyResult('katakanaResult');assert.match(c.elements.get('copyNotice').textContent,/Copy failed/);c.type('かに');c.context.language='ja';c.context.renderSharedUi();assert.match(c.elements.get('copyNotice').textContent,/コピーできません/);c.context.navigator.clipboard={writeText:async()=>{}};await c.context.copyResult('hiraganaResult');assert.match(c.elements.get('copyNotice').textContent,/コピーできません/);await c.context.copyResult('katakanaResult');assert.equal(c.elements.get('copyNotice').textContent,'')});
+test('actual Undo toast relocalizes without replacing callback and pauses focused expiry',()=>{const c=setup();const timers=new Map();let serial=0;for(const id of ['appToast','appToastMessage','appToastAction'])c.elements.set(id,{textContent:'',dataset:{},hidden:false,classes:new Set(),addEventListener(type,fn){this[type]=fn},classList:{add(){},remove(){},contains(){return true}}});const root=c.elements.get('appToast'),action=c.elements.get('appToastAction');root.contains=node=>node===root||node===action;c.context.window=c.context;c.context.setTimeout=(fn,ms)=>{timers.set(++serial,{fn,ms});return serial};c.context.clearTimeout=id=>timers.delete(id);c.context.t=key=>c.context.language==='ja'?({textCleared:'入力をクリアしました',undo:'元に戻す'}[key]||key):key;vm.runInContext(extract('      const AppToast =', '      function mountMobileBottomBar('),c.context);c.type('old draft');c.elements.get('clearTextButton').click();assert.equal(c.elements.get('textInput').value,'');assert.equal(timers.size,1);c.document.activeElement=action;root.focusin({});assert.equal(timers.size,0);c.context.language='ja';vm.runInContext('AppToast.relocalize()',c.context);assert.equal(action.textContent,'元に戻す');assert.equal(c.elements.get('appToastMessage').textContent,'入力をクリアしました');action.click();assert.equal(c.elements.get('textInput').value,'old draft');assert.equal(timers.size,0)});

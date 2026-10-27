@@ -39,7 +39,7 @@ function setup({ language = 'en', localTimeZone = 'UTC', fallback = false } = {}
     AppToast: { show(value) { toasts.push(value); } },
     $: selector => get(selector.slice(1)), $$: selector => selector === '[data-copy-target]' ? buttons : []
   };
-  vm.createContext(context);
+  context.renderSharedUi=()=>{};vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,'../../components/ui-conventions.js'),'utf8'),context);
   vm.runInContext([
     extract('      const DAY_MS =', '      const localTimeZone ='),
     extract('      function readStorage(', '      function detectLanguage('),

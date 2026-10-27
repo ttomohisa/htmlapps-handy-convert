@@ -44,7 +44,7 @@ function setup({ savedCities = null, localTimeZone = 'UTC', storageUnavailable =
     document: { documentElement: {}, createElement: element, querySelector: selector => getElement(selector) },
     t: key => key, AppToast: { show(toast) { toasts.push(toast); } }
   };
-  vm.createContext(context);
+  context.renderSharedUi=()=>{};vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,'../../components/ui-conventions.js'),'utf8'),context);
   vm.runInContext([
     extract('      const translations =', '      const localTimeZone ='),
     extract('      function readStorage(', '      function detectLanguage('),
@@ -248,3 +248,7 @@ for (const [localTimeZone, target] of [['UTC', 'tokyo'], ['Asia/Tokyo', 'new-yor
   assert.equal(app.getElement('timezoneSource').value, 'local');
   assert.equal(app.getElement('timezoneTarget').value, target);
 });
+
+test('preference write failures retain city selections and retry only explicit pending writes',()=>{const app=setup({savedCities:'["london"]'});app.context.localStorage.setItem=()=>{throw Error('blocked')};app.context.copyFailures=new Map();vm.runInContext(extract('      function renderSharedUi()', '      function refreshAllResults()'),app.context);app.context.removeWorldClockCity('london');assert.deepEqual(app.cities(),[]);assert.match(app.getElement('preferenceNotice').textContent,/could not be saved/);app.context.language='ja';app.context.renderSharedUi();assert.match(app.getElement('preferenceNotice').textContent,/保存できません/);app.context.localStorage.setItem=(key,value)=>app.storage.set(key,value);vm.runInContext('for(const[key,value]of [...pendingPreferences])writeStorage(key,value)',app.context);assert.equal(app.storage.get('cities'),'[]');assert.equal(app.getElement('preferenceNotice').textContent,'');assert.deepEqual(setup({savedCities:app.storage.get('cities')}).cities(),[])});
+test('retry without explicit mutation never overwrites malformed stored preferences',()=>{const app=setup({savedCities:'{bad'});vm.runInContext('for(const[key,value]of [...pendingPreferences])writeStorage(key,value)',app.context);assert.equal(app.storage.get('cities'),'{bad')});
+test('initial mobile category display does not rewrite stored preference',()=>{const writes=[];const context={activeCategory:'text',storageKeys:{category:'category'},writeStorage:(...args)=>writes.push(args),syncDesktopTabs(){},window:{AppMobileBottomBar:{mount(root,options){return{showPage(key){options.onPageChange({key})}}}}},$(){return{}}};vm.createContext(context);vm.runInContext(extract('      let initializingCategory=true;', "      $$('.category-tab')"),context);assert.equal(writes.length,0)});

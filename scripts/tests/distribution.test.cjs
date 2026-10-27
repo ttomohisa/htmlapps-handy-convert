@@ -21,7 +21,7 @@ test('checked-in download matches the freshly built release apart from build tim
 
 test('readable release contains the current template with only declared placeholders replaced', () => {
   const readable = read('dist/index.html');
-  let expected = read('src/index.template.html');
+  let expected = read('src/index.template.html').replace('__BK_UI_CSS__',read('components/ui-conventions.css')).replace('__BK_UI_JS__',read('components/ui-conventions.js'));
   for (const [name, placeholder] of [['APP_CONFIG', '__APP_CONFIG_JSON__'], ['BUILD_MANIFEST', '__BUILD_MANIFEST_JSON__'], ['assetBundle', '__EMBEDDED_ASSET_BUNDLE_JSON__']]) {
     const match = readable.match(new RegExp(`const ${name} = (.*);`));
     assert.ok(match, `${name} is embedded in the readable release`);
@@ -39,7 +39,7 @@ test('self-extracting payload restores the exact readable release bytes', () => 
 test('default builds refresh the root download while custom outputs leave it untouched', () => {
   const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'handy-distribution-'));
   try {
-    for (const file of ['app.config.json', 'dependencies.json', 'dependencies.lock.json', 'build-standalone.ps1', 'src/index.template.html', 'scripts/build-self-extract.ps1', 'scripts/verify-standalone.ps1', 'scripts/verify-self-extract.ps1']) {
+    for (const file of ['app.config.json', 'dependencies.json', 'dependencies.lock.json', 'build-standalone.ps1', 'src/index.template.html', 'scripts/build-self-extract.ps1', 'scripts/verify-standalone.ps1', 'scripts/verify-self-extract.ps1','scripts/embed-ui-conventions.ps1','components/ui-conventions.js','components/ui-conventions.css','components/ui-conventions.lock.json']) {
       const destination = path.join(fixture, file);
       fs.mkdirSync(path.dirname(destination), { recursive: true });
       fs.copyFileSync(path.join(root, file), destination);
