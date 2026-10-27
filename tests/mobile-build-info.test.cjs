@@ -1,6 +1,6 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'../src/index.template.html'),'utf8');
-const originalBuild="<details class=\"app-info\">\n      <summary data-i18n=\"buildInfo\">アプリ情報</summary>\n      <div class=\"build-grid\">\n        <div class=\"build-item\"><span data-i18n=\"appVersion\">アプリバージョン</span><strong id=\"buildVersion\">1.0.2</strong></div>\n        <div class=\"build-item\"><span data-i18n=\"builtAt\">生成日時</span><strong id=\"builtAt\">—</strong></div>\n        <div class=\"build-item\"><span data-i18n=\"dependencies\">内包依存数</span><strong id=\"dependencyCount\">—</strong></div>\n      </div>\n    </details>";
+const originalBuild=`<details class=\"app-info\">\n      <summary data-i18n=\"buildInfo\">アプリ情報</summary>\n      <div class=\"build-grid\">\n        <div class=\"build-item\"><span data-i18n=\"appVersion\">アプリバージョン</span><strong id=\"buildVersion\">${require('../app.config.json').version}</strong></div>\n        <div class=\"build-item\"><span data-i18n=\"builtAt\">生成日時</span><strong id=\"builtAt\">—</strong></div>\n        <div class=\"build-item\"><span data-i18n=\"dependencies\">内包依存数</span><strong id=\"dependencyCount\">—</strong></div>\n      </div>\n    </details>`;
 test('existing build block is unique and the last Help scroll-body item',()=>{
  const main=html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
  assert.doesNotMatch(main,/id="buildVersion"/);
