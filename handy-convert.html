@@ -762,6 +762,10 @@
   </header>
 
   <main class="main">
+    <p id="retention" data-bk-save-status role="status" aria-live="polite"></p>
+    <p id="preferenceNotice" role="alert"></p>
+    <button id="retryPreferences" type="button" data-bk-button data-bk-variant="secondary" hidden></button>
+    <p id="languageNotice" role="status"></p><p id="copyNotice" role="alert"></p>
     <section class="page-intro" aria-labelledby="heroTitle">
       <div>
         <h1 id="heroTitle" data-i18n="introTitle">日付・時刻・文字のちょっとした変換</h1>
@@ -1059,7 +1063,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.3","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-27T13:16:35.9641461Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.3"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-27T13:42:27.1530380Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.3"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
