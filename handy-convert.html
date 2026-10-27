@@ -83,7 +83,7 @@
     }
     .brand-mark svg { width: 27px; height: 27px; display: block; }
     .brand-copy { min-width: 0; }
-    .brand-name {
+    .brand-name { display: flex; align-items: center;
       margin: 0;
       font-size: 17px;
       line-height: 1.2;
@@ -92,7 +92,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .version-badge {
+    #brandName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .version-badge { flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       margin-left: 7px;
@@ -113,7 +114,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .header-actions { flex-shrink: 0; margin-left: auto; display: flex; align-items: center; gap: 12px; }
     .language-button {
       min-width: 40px;
       min-height: 40px;
@@ -946,7 +947,7 @@
       'use strict';
 
       const APP_CONFIG = {"$schema":"./schemas/app-config.schema.json","name":"Handy Convert","nameJa":"Handy Convert","slug":"handy-convert","version":"1.0.3","description":"Small date, time, and Japanese text conversion tools that run entirely in your browser.","descriptionJa":"日付・時刻・日本語表記のちょっとした変換を、ブラウザー内だけで行うツールです。","defaultLanguage":"auto","repository":{"owner":"ttomohisa","name":"htmlapps-handy-convert"},"build":{"output":"dist/index.html","blockRuntimeNetwork":true,"selfExtract":{"enabled":true,"output":"dist/index.self-extract.html"},"sizeBudget":{"readableWarningMb":2,"selfExtractWarningMb":1}}};
-      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-27T03:07:51.5292347Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.3"},"dependencies":[]};
+      const BUILD_MANIFEST = {"schemaVersion":2,"builder":"single-html-app-template/1.2","generatedAtUtc":"2026-10-27T03:20:30.8409858Z","app":{"name":"Handy Convert","slug":"handy-convert","version":"1.0.3"},"dependencies":[]};
       // Asset payloads are Base64 exactly once. The JSON bundle itself is embedded directly.
       const assetBundle = {"schemaVersion":2,"dependencies":{}};
       const blobUrls = new Set();
