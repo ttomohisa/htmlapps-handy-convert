@@ -28,7 +28,7 @@ async function main() {
   try {
     for (const file of ['dist/index.html', 'dist/index.self-extract.html', 'handy-convert.html']) {
       for (const language of ['ja', 'en']) {
-        for (const [width, height] of [[1360, 900], [601, 568], [600, 568], [360, 640], [320, 568], [393, 252]]) {
+        for (const [width, height] of [[1360, 900], [601, 568], [600, 568], [360, 640], [390,844], [320, 568], [393, 252]]) {
           const context = await browser.newContext({ viewport: { width, height }, locale: language, reducedMotion: 'reduce' });
           const page = await context.newPage();
           const errors = [], requests = [];
@@ -55,6 +55,9 @@ async function main() {
             assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label + ': page width');
 
             await page.locator('#helpButton').click();
+        const visibleHelpText = await page.locator('#helpDialog').innerText();
+        assert.doesNotMatch(visibleHelpText, /(?:EN\s*\/\s*JA|JA\s*[\/／]\s*EN|ヘッダーのEN|Use EN in the header)/, label + ': redundant language instructions removed');
+
             const body = page.locator('#helpDialog .dialog-body');
             assert.ok(await body.evaluate(el => el.lastElementChild.contains(document.querySelector('#buildVersion'))), label + ': build is final body child');
             assert.equal(await page.locator(buildSelector).count(), 1, label);

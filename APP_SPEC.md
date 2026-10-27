@@ -7,7 +7,7 @@
 - **English subtitle:** Date, time & text utilities
 - **Repository:** `ttomohisa/htmlapps-handy-convert`
 - **Browser Kitty path:** `/tools/handy-convert/`
-- **Current implementation version:** v1.0.2
+- **Current implementation version:** v1.0.3
 - **Release artifacts:** checked-in `handy-convert.html`, generated `dist/index.html`, and `dist/index.self-extract.html`
 
 ## 2. Purpose
